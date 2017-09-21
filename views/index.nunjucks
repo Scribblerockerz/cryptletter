@@ -1,0 +1,49 @@
+{% extends 'layout.nunjucks' %}
+
+{% block body %}
+    <div class="page page--homepage">
+        <h1 class="page__title">Cryptletter</h1>
+        <div class="page__slogan">
+            Encrypted self-destructing messages.<br>
+            Even Cruise would like to have it!
+        </div>
+
+        <div class="pane pane--letter">
+            <form class="form form--message" action="" method="post">
+                <div class="pane__body">
+                    <textarea id="message" name="message" class="pane__input" cols="30" rows="10" autocomplete="off" autofocus>Dear John Doe,
+
+here is the password you requested:
+
+p4ssw0rd
+
+This message will be available for 15min after you open it,
+so please store this password securely on a post-it near your computer.
+
+Just kidding!</textarea>
+
+                    <br><br>
+
+                    <span class="text text--ps">
+                        PS: This message destroys itself in about
+                        <select id="destructionDelay" name="delay">
+                          {% for minutes, label in delays %}
+                            <option value="{{ minutes }}">{{ label }}</option>
+                          {% endfor %}
+                        </select>
+                    </span>
+                </div>
+
+                <div class="pane__footer">
+                    <button id="btn--encrypt" type="submit" class="btn btn--encrypt">Encrypt</button>
+                </div>
+            </form>
+
+            <div class="secret" id="secret" style="display: none">
+                <input class="secret__message secret__message--url" type="text" id="url" readonly>
+
+                <p class="secret__note">This url is available for about <span id="selected-delay">15</span>min <br> <strong>after</strong> someone visits it for the first time</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
