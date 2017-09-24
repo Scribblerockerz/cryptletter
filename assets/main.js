@@ -145,7 +145,7 @@ $(document).ready(function () {
     var $letter = $('#letter');
     if ($letter.length) {
       var activeUntil = new Date($letter.data('available-until'));
-      setInterval(function () {
+      activeUntil && setInterval(function () {
         if (activeUntil < new Date()) {
           $('.page').remove();
           location.reload();
