@@ -116,6 +116,28 @@ app.get('/clear', (req, res) => {
 
 //-----------------------------------------------------------------------------
 
+// Destroy message
+app.delete('/destroy/:token/$', (req, res) => {
+
+  const token = req.params.token;
+  const clientIp = getHashedIp(req, token);
+
+  mysql.createConnection(configuration.database)
+    .then((conn) => {
+      conn.query('DELETE FROM messages WHERE token = ? AND accessable_ip = ?', [token, clientIp]);
+      conn.end();
+
+      return true;
+    }).then((success) => {
+      return res.json({ success: success });
+    }).catch((error) => {
+      console.error(error);
+      return res.json({ success: false, error: 'Not found' });
+    });
+})
+
+//-----------------------------------------------------------------------------
+
 // display a single message
 app.get('/:token/$', (req, res) => {
 
@@ -158,6 +180,7 @@ app.get('/:token/$', (req, res) => {
 
       return res.render('show.nunjucks', {
         message: message.text,
+        token: message.token,
         activeUntilDate: moment(message.active_until).format('MMMM Do YYYY, h:mm:ss a'),
         timeRemaining: moment(message.active_until).fromNow()
       });
@@ -167,7 +190,7 @@ app.get('/:token/$', (req, res) => {
       console.error(error);
       return res.render('404');
     });
-})
+});
 
 //-----------------------------------------------------------------------------
 

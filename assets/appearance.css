@@ -25,6 +25,11 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+.page__title a {
+  color: #fff;
+  text-decoration: none;
+}
+
 .page__slogan {
     color: #fff;
     margin-bottom: 40px;
@@ -117,6 +122,25 @@ body {
     font-family: "Courier New";
     line-height: 1.2em;
     box-shadow: 0 2px 5px rgba(27, 21, 36, 0.2);
+}
+
+.btn--destroy {
+    background-color: #404d5c;
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+    padding: 10px 25px;
+    border: 0;
+    text-transform: uppercase;
+    font-family: "Courier New";
+    line-height: 1.2em;
+    box-shadow: 0 2px 5px rgba(27, 21, 36, 0.2);
+}
+
+.form {}
+
+.form--destroy {
+  margin-top: 20px;
 }
 
 

@@ -102,7 +102,7 @@ $(document).ready(function () {
 
         var encryptedMessage = AES.decrypt(message, secret).toString(encodingUTF8);
         if (encryptedMessage) {
-            $('#message').html(encryptedMessage);
+            $('#message').text(encryptedMessage);
             $('#raw-message').val(encryptedMessage);
         }
 
@@ -122,5 +122,22 @@ $(document).ready(function () {
 
             $('#raw-message').select();
         });
+    }
+
+    if ($('#form-destroy-message')) {
+      $('body').on('submit', '#form-destroy-message', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (this.action) {
+          $.ajax({
+            url: this.action,
+            type: 'DELETE',
+            success: function (res) {
+              location.reload();
+            }
+          });
+        }
+      });
     }
 });

@@ -3,7 +3,9 @@
 {% block body %}
     <div class="page page--show">
         <div class="page page--homepage">
-            <h1 class="page__title">Cryptletter</h1>
+            <h1 class="page__title">
+              <a href="/">Cryptletter</a>
+            </h1>
             <div class="page__slogan">
                 Encrypted self-destructing messages.<br>
                 Even Cruise would like to have it!
@@ -23,6 +25,10 @@
                     <span class="text text--ps">PS: This message destroys itself <span title="{{ activeUntilDate }}">{{ timeRemaining }}</span></span>
                 </div>
             </div>
+
+            <form id="form-destroy-message" class="form form--destroy" action="/destroy/{{ token }}/" method="delete">
+              <button id="btn--destroy" type="submit" class="btn btn--destroy">Destroy this message</button>
+            </form>
         </div>
     </div>
 {% endblock %}
