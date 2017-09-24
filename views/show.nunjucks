@@ -11,7 +11,7 @@
                 Even Cruise would like to have it!
             </div>
 
-            <div class="pane pane--letter">
+            <div id="letter" class="pane pane--letter" data-available-until="{{ activeUntilTimestamp }}">
                 <div class="pane__body">
                     <button class="pane__button" data-view="raw">view raw</button>
                     <button class="pane__button pane__button--hidden" data-view="text">view text</button>

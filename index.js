@@ -181,6 +181,7 @@ app.get('/:token/$', (req, res) => {
       return res.render('show.nunjucks', {
         message: message.text,
         token: message.token,
+        activeUntilTimestamp: (message.active_until*1),
         activeUntilDate: moment(message.active_until).format('MMMM Do YYYY, h:mm:ss a'),
         timeRemaining: moment(message.active_until).fromNow()
       });

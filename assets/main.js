@@ -124,6 +124,7 @@ $(document).ready(function () {
         });
     }
 
+    // Handle destroy button
     if ($('#form-destroy-message')) {
       $('body').on('submit', '#form-destroy-message', function (e) {
         e.preventDefault();
@@ -139,5 +140,16 @@ $(document).ready(function () {
           });
         }
       });
+    }
+
+    var $letter = $('#letter');
+    if ($letter.length) {
+      var activeUntil = new Date($letter.data('available-until'));
+      setInterval(function () {
+        if (activeUntil < new Date()) {
+          $('.page').remove();
+          location.reload();
+        }
+      }, 1000);
     }
 });
