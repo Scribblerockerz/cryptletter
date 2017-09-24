@@ -9,6 +9,6 @@
     <body>
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
-        <script src="/bundles/app/bundle.js"></script>
+        <script src="/bundle.js"></script>
     </body>
 </html>

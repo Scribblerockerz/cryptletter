@@ -14,12 +14,13 @@
                     <button class="pane__button" data-view="raw">view raw</button>
                     <button class="pane__button pane__button--hidden" data-view="text">view text</button>
 
-                    <pre data-stage="text" class="secret__message secret__message--unstyled"><code id="message" data-encrypted-message="{{ message }}">Encrypting message ...</code></pre>
+                    <script type="text/data" id="encrypted-message">{{ message }}</script>
+                    <pre data-stage="text" class="secret__message secret__message--unstyled"><code id="message">Encrypting message ...</code></pre>
                     <textarea data-stage="raw" style="display: none;" class="secret__message" type="text" id="raw-message" readonly rows="10"></textarea>
 
                     <br><br>
 
-                    <span class="text text--ps">PS: This message destroys itself in about <span title="{{ activeUntilDate }}">{{ timeRemaining }}</span></span>
+                    <span class="text text--ps">PS: This message destroys itself <span title="{{ activeUntilDate }}">{{ timeRemaining }}</span></span>
                 </div>
             </div>
         </div>

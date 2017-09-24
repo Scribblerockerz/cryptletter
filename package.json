@@ -7,12 +7,17 @@
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.18.1",
+    "crypto-js": "^3.1.9-1",
+    "css-loader": "^0.28.7",
     "express": "^4.15.4",
+    "jquery": "^3.2.1",
     "md5": "^2.2.1",
     "moment": "^2.18.1",
     "mysql": "^2.14.1",
     "nunjucks": "^3.0.1",
     "promise-mysql": "^3.0.2",
-    "randomstring": "^1.1.5"
+    "randomstring": "^1.1.5",
+    "style-loader": "^0.18.2",
+    "webpack": "^3.6.0"
   }
 }
