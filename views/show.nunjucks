@@ -26,7 +26,7 @@
                 </div>
             </div>
 
-            <form id="form-destroy-message" class="form form--destroy" action="/destroy/{{ token }}/" method="delete">
+            <form id="form-destroy-message" class="form form--destroy" action="/{{ token }}/" method="delete">
               <button id="btn--destroy" type="submit" class="btn btn--destroy">Destroy this message</button>
             </form>
         </div>
