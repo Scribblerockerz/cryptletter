@@ -11,7 +11,15 @@ const moment = require('moment');
 
 const app = express();
 
-const configuration = require('./parameters.json');
+//-----------------------------------------------------------------------------
+// Load configuration file
+let configurationFile = './parameters.json';
+
+if (process.argv[2]) {
+  configurationFile = process.argv[2];
+}
+
+const configuration = require(configurationFile);
 
 //-----------------------------------------------------------------------------
 
@@ -214,6 +222,6 @@ app.use(function(req, res, next){
 
 //-----------------------------------------------------------------------------
 
-app.listen(3000, () => {
-  console.log('Starting server on http://0.0.0.0:3000')
+app.listen(configuration.server.port, () => {
+  console.log(`Starting server on http://0.0.0.0:${configuration.server.port}`);
 })

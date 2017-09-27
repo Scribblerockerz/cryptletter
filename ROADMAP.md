@@ -3,7 +3,6 @@ This is an unordered list of upcomming tasks.
 
 ---
 
-- Add README.md
 - Add LICENCE
 - Prepare github release
 - Create repository on github
@@ -13,3 +12,6 @@ This is an unordered list of upcomming tasks.
 - Throw out jQuery
 - Create executable to cleanup messages via cli
 - Try executable with pkg, for ease of use
+- Add documentation
+- Add setup instructions
+- Add system requirements
