@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [unreleased]
 ### Added
+- Add build directory to .gitignore
+
+## [v0.0.1] - 28.09.17
+### Added
 - Add build step with pkg
 - Add README, LICENCE and CHANGELOG
 - Add roadmap
