@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [unreleased]
 ### Added
 - Add build directory to .gitignore
+- Add start script for development
 
 ### Changed
 - Update README.md information
