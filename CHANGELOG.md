@@ -14,3 +14,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Add destroy button to the show page
 - Add basic styling and encryption logic
 - Initial port from proof of concept prototype
+- Add pre-build executables and usage instructions to readme

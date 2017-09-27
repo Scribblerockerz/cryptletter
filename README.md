@@ -5,6 +5,17 @@ Self-hosted micro-service for encrypted self-destructing messages.
 **Current state:** *proof of concept*
 
 ---
+## Quick usage
+Download packaged executables from the `build/` directory.
+
+Copy the `parameters.json` form the project and configure it properly.
+
+Run
+```
+./cryptletter-linux ./path/to/your/parameters.json
+```
+
+---
 
 Sending plaintext passwords unencrypted through the internet highway isn't just risky, it's ridiculous.
 This project aims to make this process a bit more secure.
