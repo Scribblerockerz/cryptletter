@@ -15,3 +15,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Add basic styling and encryption logic
 - Initial port from proof of concept prototype
 - Add pre-build executables and usage instructions to readme
+- Remove binaries from repository

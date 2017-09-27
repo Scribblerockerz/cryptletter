@@ -26,10 +26,11 @@
   },
   "bin": "index.js",
   "pkg": {
+    "scripts": [],
     "assets": [
       "parameters.json",
-      "views/**/*.nunjucks",
-      "public/*"
+      "views/**/*",
+      "public/**/*"
     ]
   }
 }

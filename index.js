@@ -44,12 +44,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')))
 
 // View engine configuration
-nunjucks.configure('views', {
+nunjucks.configure(path.join(__dirname, 'views'), {
     autoescape: true,
     express: app
 });
 
 app.set('view engine', 'nunjucks');
+app.set('views', path.join(__dirname, 'views'));
 
 
 //-----------------------------------------------------------------------------
