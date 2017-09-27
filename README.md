@@ -38,4 +38,10 @@ Messages are restricted to the client's IP address at the first opening. Message
 Requirements: mysql/node
 ...
 
+## Build
+
+Build your own executable version with [pkg](https://www.npmjs.com/package/pkg).
+
+Install `pkg` globally and run `npm run build`.
+
 **...WIP...**

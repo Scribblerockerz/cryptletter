@@ -16,7 +16,7 @@ const app = express();
 let configurationFile = './parameters.json';
 
 if (process.argv[2]) {
-  configurationFile = process.argv[2];
+  configurationFile = path.join(process.cwd(), process.argv[2]);
 }
 
 const configuration = require(configurationFile);

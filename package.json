@@ -20,5 +20,16 @@
     "style-loader": "^0.18.2",
     "uglifyjs-webpack-plugin": "^0.4.6",
     "webpack": "^3.6.0"
+  },
+  "scripts": {
+    "build": "pkg ./package.json --out-path=build"
+  },
+  "bin": "index.js",
+  "pkg": {
+    "assets": [
+      "parameters.json",
+      "views/**/*.nunjucks",
+      "public/*"
+    ]
   }
 }
