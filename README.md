@@ -9,7 +9,7 @@ Self-hosted micro-service for encrypted self-destructing messages.
 Sending plaintext passwords unencrypted through the internet highway isn't just risky, it's ridiculous.
 This project aims to make this process a bit more secure.
 
-Retain control over the data which is send out.
+Retain control over the data which is send out and prevent living-security-issues laying around in the users inbox.
 
 ## Features
 
