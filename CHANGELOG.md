@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Update README.md information
 - Refactor index.js
 
+### Fixed
+- Fix query for message selection
+
 ## [v0.0.1] - 28.09.17
 ### Added
 - Add build step with pkg

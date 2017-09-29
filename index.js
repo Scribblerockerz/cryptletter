@@ -186,7 +186,7 @@ app.get('/:token/$', (req, res) => {
   connect().then((conn) => {
     connection = conn;
 
-    return conn.query('SELECT * FROM messages WHERE token = ? AND active_until > CURRENT_TIMESTAMP() OR active_until IS NULL LIMIT 1', token);
+    return conn.query('SELECT * FROM messages WHERE token = ? AND (active_until > CURRENT_TIMESTAMP() OR active_until IS NULL) LIMIT 1', token);
   }).then((rows) => {
     if (rows.length === 0) throw 'Message not found';
 
