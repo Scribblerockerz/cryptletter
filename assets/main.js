@@ -174,4 +174,9 @@ $(document).ready(function () {
           });
         }
     });
+
+    // application is finsihed loading
+    $('body')
+        .addClass('is--ready')
+        .removeClass('is--not-ready');
 });

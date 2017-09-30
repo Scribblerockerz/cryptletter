@@ -4,9 +4,10 @@
         <meta charset="UTF-8" />
         <title>{% block title %}Secure password sharing | Cryptletter{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
+        <script src="/initial.js"></script>
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     </head>
-    <body>
+    <body class="is--not-ready">
         {% block body %}
         <div class="{% block classes %}page{% endblock %}">
             <div class="page__container">

@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Add build directory to .gitignore
 - Add start script for development
 - Add styleguide with new appearance
+- Add autoprefixer
+- Add initialization smoothing to the body
 
 ### Changed
 - Update README.md information
