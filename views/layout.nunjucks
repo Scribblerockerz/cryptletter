@@ -7,7 +7,14 @@
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block body %}
+        <div class="{% block classes %}page{% endblock %}">
+            <div class="page__container">
+                {% include "partials/header.nunjucks" %}
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+        {% endblock %}
         {% block javascripts %}{% endblock %}
         <script src="/bundle.js"></script>
     </body>

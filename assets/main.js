@@ -21,6 +21,14 @@ var generateSecretKey = function () {
 };
 
 /**
+ * Get secret url by token, secret
+ */
+var getSecretUrl = function (token, secret) {
+    return window.location.href.replace(/\/+$/, '')
+            + '/' + token + '/#/' + secret;
+}
+
+/**
  * Helper function for replacing strings at index
  *
  * @param str
@@ -61,39 +69,62 @@ var animateEncryptionOnText = function ($elem, finishCallback, delay) {
     setTimeout(finishCallback, delay * i);
 };
 
+var checkRemainingTime = function(subjectSelector) {
+    var timestamp = $(subjectSelector).data('available-until');
+
+    if (!timestamp) { return false; }
+
+    var activeUntil = new Date(timestamp);
+    activeUntil && setInterval(function () {
+        if (activeUntil < new Date()) {
+          $('.page').remove();
+          location.reload();
+        }
+    }, 1000);
+}
+
 $(document).ready(function () {
 
+    var secret = generateSecretKey();
+
+    // Select all text inside read only container
+    $('body').on('focus', '.js--select-text', function (e) {
+        $(this).select();
+    });
+
     // Encrypt page
-    var $form = $('.form--message');
-    if ($form.length) {
-        var secret = generateSecretKey();
+    $('body').on('click', '.js--encrypt-message', function (e) {
 
-        $form.on('submit', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            $('#btn--encrypt').attr('disabled', 'disabled');
+        var $encryptButton = $(this);
+
+        // disable button while processing
+        $encryptButton.attr('disabled', 'disabled');
+
+        var $messageField = $('#message');
+        var $urlField = $('#url');
+        var $formStage = $('.js--stage-form');
+        var $linkStage = $('.js--stage-url');
+
+        var encryptedMessage = AES.encrypt($messageField.val().trim(), secret).toString();
+        var delay = $('#delay').val();
 
 
-            var $field = $('#message');
-            var encryptedMessage = AES.encrypt($field.val(), secret).toString();
-            var delay = $('#destructionDelay').val();
+        $('#selected-delay').text(delay);
 
-            $('#selected-delay').text(delay);
-
-            animateEncryptionOnText($field, function () {
-                $.post('/', { message: encryptedMessage, delay: delay }, function (res) {
-                    if (res.success && res.token) {
-                        $('#url').val(window.location.href.replace(/\/+$/, '') + '/' + res.token + '/#/' + secret);
-                        $('.form--message').slideUp(300);
-                        $('#secret').slideDown(300);
-                        $('#url').select();
-                    }
-                });
+        animateEncryptionOnText($messageField, function () {
+            $.post('/', { message: encryptedMessage, delay: delay }, function (res) {
+                if (res.success && res.token) {
+                    $urlField.val(getSecretUrl(res.token, secret));
+                    $formStage.slideUp(300);
+                    $linkStage.slideDown(300);
+                    $urlField.select();
+                    $encryptButton.fadeOut(300);
+                }
+                // TODO: implement error output
             });
-
-            return false;
         });
-    }
+    });
+
 
     // Decrypt
     if ($('.page--show').length) {
@@ -106,54 +137,41 @@ $(document).ready(function () {
             $('#raw-message').val(encryptedMessage);
         }
 
-        $('body').on('click', '.pane__button', function () {
+        checkRemainingTime('#letter');
+
+        //--- Stages switching
+
+        $('body').on('click', '.js--toggle-stage', function () {
            var $el = $(this);
            var mode = $el.data('view');
 
-            $('.pane__button[data-view]')
+            $('[data-view]')
                 .hide()
                 .filter('[data-view!="' + mode + '"]')
                 .show();
 
-            $('.secret__message[data-stage]')
+            $('[data-stage]')
                 .hide()
                 .filter('[data-stage="' + mode + '"]')
                 .show();
-
-            $('#raw-message').select();
         });
     }
 
     // Handle destroy button
-    if ($('#form-destroy-message')) {
-      $('body').on('submit', '#form-destroy-message', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
+    $('body').on('click', '.js--destroy-message', function (e) {
 
-        if (this.action) {
+        var $destroyButton = $(this).attr('disabled', 'disabled');
+        var actionUrl = $destroyButton.data('action');
+
+        if (actionUrl) {
           $.ajax({
-            url: this.action,
+            url: actionUrl,
             type: 'DELETE',
-            success: function (res) {
+            success: function () {
               location.reload();
             }
+            // TODO: implement error output
           });
         }
-      });
-    }
-
-    var $letter = $('#letter');
-    if ($letter.length) {
-      var timestamp = $letter.data('available-until');
-      if (!timestamp) {
-        return;
-      }
-      var activeUntil = new Date();
-      activeUntil && setInterval(function () {
-        if (activeUntil < new Date()) {
-          $('.page').remove();
-          location.reload();
-        }
-      }, 1000);
-    }
+    });
 });

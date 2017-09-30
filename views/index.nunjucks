@@ -1,49 +1,43 @@
 {% extends 'layout.nunjucks' %}
 
-{% block body %}
-    <div class="page page--homepage">
-        <h1 class="page__title"><a href="/">Cryptletter</a></h1>
-        <div class="page__slogan">
-            Encrypted self-destructing messages.<br>
-            Even Cruise would like to have it!
-        </div>
+{% block classes %}page page--homepage{% endblock %}
 
-        <div class="pane pane--letter">
-            <form class="form form--message" action="" method="post">
-                <div class="pane__body">
-                    <textarea id="message" name="message" class="pane__input" cols="30" rows="10" autocomplete="off" autofocus>Dear John Doe,
+{% block content %}
+    <div class="letter letter--striped letter--spaced">
+        <div class="js--stage-form">
+            <div class="letter__body">
+                <textarea
+                    id="message"
+                    rows="10"
+                    class="input input--textarea input--drag-down"
+                    autocomplete="off"
+                    autofocus="autofocus"
+                >{{ "Dear John Doe,\n\nhere is the password you requested:\n\np4ssw0rd\n\nThis message will be available for 15min after you open it,\nso please store this password securely on a post-it near your computer.\n\nJust kidding!" }}</textarea>
+            </div>
+            <div class="letter__footer letter__footer--separator">
+                <div class="u--danger">
+                    PS: This message destroys itself in about
 
-here is the password you requested:
-
-p4ssw0rd
-
-This message will be available for 15min after you open it,
-so please store this password securely on a post-it near your computer.
-
-Just kidding!</textarea>
-
-                    <br><br>
-
-                    <span class="text text--ps">
-                        PS: This message destroys itself in about
-                        <select id="destructionDelay" name="delay">
-                          {% for minutes, label in delays %}
-                            <option value="{{ minutes }}">{{ label }}</option>
-                          {% endfor %}
-                        </select>
-                    </span>
+                    <select id="delay" name="delay">
+                      {% for minutes, label in delays %}
+                        <option value="{{ minutes }}">{{ label }}</option>
+                      {% endfor %}
+                    </select>
                 </div>
-
-                <div class="pane__footer">
-                    <button id="btn--encrypt" type="submit" class="btn btn--encrypt">Encrypt message</button>
-                </div>
-            </form>
-
-            <div class="secret" id="secret" style="display: none">
-                <input class="secret__message secret__message--url" type="text" id="url" readonly>
-
-                <p class="secret__note">This url is available for about <span id="selected-delay">15</span>min <br> <strong>after</strong> someone visits it for the first time</p>
             </div>
         </div>
+        <div class="js--stage-url" style="display: none;">
+            <div class="letter__body">
+                <input type="text" class="input input--url-holder js--select-text" id="url" readonly="readonly">
+            </div>
+            <div class="letter__footer">
+                This url is available for about <span id="selected-delay">15</span>min<br>
+                <strong>after</strong> someone visits it for the first time.
+            </div>
+        </div>
+    </div>
+
+    <div class="u--center">
+        <button class="btn btn--primary js--encrypt-message">Encrypt message</button>
     </div>
 {% endblock %}

@@ -1,34 +1,29 @@
 {% extends 'layout.nunjucks' %}
 
-{% block body %}
-    <div class="page page--show">
-        <div class="page page--homepage">
-            <h1 class="page__title">
-              <a href="/">Cryptletter</a>
-            </h1>
-            <div class="page__slogan">
-                Encrypted self-destructing messages.<br>
-                Even Cruise would like to have it!
+{% block classes %}page page--show{% endblock %}
+
+{% block content %}
+    <script type="text/data" id="encrypted-message">{{ message }}</script>
+
+    <div id="letter" class="letter letter--striped letter--spaced"  data-available-until="{{ activeUntilTimestamp }}">
+        <div class="js--stage-form">
+            <div class="letter__header">
+                <button class="btn btn--nano js--toggle-stage" data-view="raw" style="display: inline-block;">view raw</button>
+                <button class="btn btn--nano js--toggle-stage" data-view="text">view text</button>
             </div>
-
-            <div id="letter" class="pane pane--letter" data-available-until="{{ activeUntilTimestamp }}">
-                <div class="pane__body">
-                    <button class="pane__button" data-view="raw">view raw</button>
-                    <button class="pane__button pane__button--hidden" data-view="text">view text</button>
-
-                    <script type="text/data" id="encrypted-message">{{ message }}</script>
-                    <pre data-stage="text" class="secret__message secret__message--unstyled"><code id="message">Encrypting message ...</code></pre>
-                    <textarea data-stage="raw" style="display: none;" class="secret__message" type="text" id="raw-message" readonly rows="10"></textarea>
-
-                    <br><br>
-
-                    <span class="text text--ps">PS: This message destroys itself <span title="{{ activeUntilDate }}">{{ timeRemaining }}</span></span>
+            <pre class="letter__body" data-stage="text" style="display: block;"><code id="message">Encrypting message, please wait ...</code></pre>
+            <div class="letter__body" data-stage="raw">
+                <textarea class="input input--textarea input--raw js--select-text" id="raw-message" readonly rows="10"></textarea>
+            </div>
+            <div class="letter__footer">
+                <div class="u--danger">
+                    PS: This message destroys itself <span title="{{ activeUntilDate }}">{{ timeRemaining }}</span>
                 </div>
             </div>
-
-            <form id="form-destroy-message" class="form form--destroy" action="/{{ token }}/" method="delete">
-              <button id="btn--destroy" type="submit" class="btn btn--destroy">Destroy this message</button>
-            </form>
         </div>
+    </div>
+
+    <div class="u--center">
+        <button class="btn btn--primary js--destroy-message" data-action="/{{ token }}/">I'm done, destroy message</button>
     </div>
 {% endblock %}

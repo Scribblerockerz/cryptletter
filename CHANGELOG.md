@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Update README.md information
 - Refactor index.js
+- Change appearance of the application
 
 ### Fixed
 - Fix query for message selection

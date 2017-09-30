@@ -5,8 +5,6 @@
 {% block body %}
 <div class="styleguide">
 
-
-
     <div class="styleguide__section">
         <div class="styleguide__headline">Typography</div>
         <div class="styleguide__description">Basic typographic elements</div>

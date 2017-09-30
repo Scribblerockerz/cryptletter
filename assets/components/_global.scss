@@ -14,7 +14,9 @@ body {
   margin: 0;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-family: Georgia;
   font-weight: 400;
 }
@@ -31,10 +33,30 @@ mark {
   background-color: rgba(255, 255, 165, 0.9);
 }
 
+pre,
+code {
+  width: 100%;
+  display: block;
+  font-family: 'Courier New';
+  overflow: scroll;
+  white-space: pre-line;
+}
 
 ::selection {
   background: rgba(158,220,252,0.32); /* WebKit/Blink Browsers */
 }
 ::-moz-selection {
   background: rgba(158,220,252,0.32); /* Gecko Browsers */
+}
+
+.logo {
+  background-image: url('images/logo.svg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 180px 46px;
+  font-size: 0;
+
+  width: 180px;
+  height: 46px;
+  display: inline-block;
 }
