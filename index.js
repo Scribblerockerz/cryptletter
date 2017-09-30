@@ -120,6 +120,15 @@ app.get('/', (req, res) => {
 
 
 
+// Styleguide
+//-----------------------------------------------------------------------------
+
+app.get('/styleguide', (req, res) => {
+  res.render('styleguide.nunjucks');
+});
+
+
+
 // Create a new message from post data
 //-----------------------------------------------------------------------------
 

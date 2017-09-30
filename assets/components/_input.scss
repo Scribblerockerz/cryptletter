@@ -1,0 +1,29 @@
+.input {
+  font-family: 'Courier New';
+  width: 100%;
+  display: block;
+  border: 0;
+  font-size: 14px;
+  outline: none;
+}
+
+.input--textarea {
+  padding-bottom: 20px;
+  resize: vertical;
+}
+
+.input--raw {
+  padding: 31px 30px 29px;
+  border: 3px solid #eee;
+}
+
+.input--drag-down {
+  margin-bottom: -30px;
+}
+
+.input--url-holder {
+  font-size: 13px;
+  padding: 9px 20px 8px 0;
+  border-bottom: 2px solid #B6D8FF;
+  text-overflow: ellipsis;
+}

@@ -1,4 +1,4 @@
-require('./appearance.css');
+require('./appearance.scss');
 
 var AES = require("crypto-js/aes");
 var encodingUTF8 = require("crypto-js/enc-utf8");

@@ -5,19 +5,30 @@
   "main": "index.js",
   "author": "Johannes Schröder <contact@scribblerockerz.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Scribblerockerz/cryptletter.git"
+  },
   "dependencies": {
-    "body-parser": "^1.18.1",
+    "body-parser": "^1.18.2",
     "crypto-js": "^3.1.9-1",
-    "css-loader": "^0.28.7",
-    "express": "^4.15.4",
+    "express": "^4.16.1",
     "jquery": "^3.2.1",
     "md5": "^2.2.1",
     "moment": "^2.18.1",
     "mysql": "^2.14.1",
     "nunjucks": "^3.0.1",
-    "promise-mysql": "^3.0.2",
-    "randomstring": "^1.1.5",
+    "promise-mysql": "^3.1.0",
+    "randomstring": "^1.1.5"
+  },
+  "devDependencies": {
+    "file-loader": "^1.1.3",
+    "css-loader": "^0.28.7",
     "style-loader": "^0.18.2",
+    "image-webpack-loader": "^3.4.2",
+    "node-sass": "^4.5.3",
+    "sass-loader": "^6.0.6",
+    "url-loader": "^0.5.9",
     "uglifyjs-webpack-plugin": "^0.4.6",
     "webpack": "^3.6.0"
   },

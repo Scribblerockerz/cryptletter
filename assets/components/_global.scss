@@ -1,0 +1,40 @@
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Courier New";
+  font-size: 16px;
+  line-height: 1.5em;
+  color: #fff;
+  background-color: #595E68;
+  padding: 0;
+  margin: 0;
+}
+
+h1, h2, h3 {
+  font-family: Georgia;
+  font-weight: 400;
+}
+
+a {
+  color: inherit;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+mark {
+  background-color: rgba(255, 255, 165, 0.9);
+}
+
+
+::selection {
+  background: rgba(158,220,252,0.32); /* WebKit/Blink Browsers */
+}
+::-moz-selection {
+  background: rgba(158,220,252,0.32); /* Gecko Browsers */
+}

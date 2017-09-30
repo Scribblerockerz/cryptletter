@@ -21,7 +21,6 @@ body {
     font-size: 38px;
     line-height: 1.2em;
     color: #fff;
-    text-shadow: 0 2px 5px rgba(27, 21, 36, 0.56);
     -webkit-font-smoothing: antialiased;
 }
 
@@ -118,29 +117,32 @@ body {
     text-align: center;
     padding: 10px 25px;
     border: 0;
-    text-transform: uppercase;
     font-family: "Courier New";
     line-height: 1.2em;
-    box-shadow: 0 2px 5px rgba(27, 21, 36, 0.2);
+    box-shadow: 0 6px 6px -5px rgba(27, 21, 36, 0.5);
 }
 
 .btn--destroy {
-    background-color: #404d5c;
-    color: #fff;
+    background-color: #1f2327;
+    color: #d4d4d4;
     font-size: 14px;
     text-align: center;
     padding: 10px 25px;
     border: 0;
-    text-transform: uppercase;
     font-family: "Courier New";
     line-height: 1.2em;
-    box-shadow: 0 2px 5px rgba(27, 21, 36, 0.2);
+    box-shadow: 0 6px 6px -5px rgba(27, 21, 36, 0.5);
+}
+
+.btn--destroy:hover {
+    background-color: #2f3a44;
+    color: #d4d4d4;
 }
 
 .form {}
 
 .form--destroy {
-  margin-top: 20px;
+  margin-top: 50px;
 }
 
 
@@ -179,7 +181,6 @@ body {
     font-size: 28px;
     line-height: 1.2em;
     color: #fff;
-    text-shadow: 0 2px 5px rgba(27, 21, 36, 0.56);
     -webkit-font-smoothing: antialiased;
 }
 

@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Secure password sharing | Passletter{% endblock %}</title>
+        <title>{% block title %}Secure password sharing | Cryptletter{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     </head>

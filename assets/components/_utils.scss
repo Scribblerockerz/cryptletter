@@ -1,0 +1,16 @@
+.utils {}
+
+.u--danger {
+  color: #DA4646;
+}
+
+.logo {
+  background-image: url('images/logo.svg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 180px 46px;
+
+  width: 180px;
+  height: 46px;
+  display: inline-block;
+}

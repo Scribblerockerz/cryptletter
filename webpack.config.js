@@ -11,6 +11,17 @@ module.exports = {
         rules: [{
             test: /\.css$/,
             use: [ 'style-loader', 'css-loader' ]
+        },{
+            test: /\.scss$/,
+            use: [
+                'style-loader',
+                'css-loader',
+                'sass-loader',
+                'image-webpack-loader'
+            ]
+        },{
+            test: /\.svg$/i,
+            use: ['url-loader', 'image-webpack-loader']
         }]
     },
     plugins: [

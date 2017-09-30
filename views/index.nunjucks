@@ -35,7 +35,7 @@ Just kidding!</textarea>
                 </div>
 
                 <div class="pane__footer">
-                    <button id="btn--encrypt" type="submit" class="btn btn--encrypt">Encrypt</button>
+                    <button id="btn--encrypt" type="submit" class="btn btn--encrypt">Encrypt message</button>
                 </div>
             </form>
 
