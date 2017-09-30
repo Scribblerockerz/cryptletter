@@ -1,6 +1,6 @@
 {
   "name": "cryptletter",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Self-hosted micro-service for encrypted self-destructing messages",
   "main": "index.js",
   "author": "Johannes Schröder <contact@scribblerockerz.com>",
