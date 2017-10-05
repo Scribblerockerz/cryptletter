@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Prevent encryption animation to take too long
 
+### Removed
+- Remove legacy appearance.css
+
 ### Fixed
 - Fix condition race for activeuntil on show message page
 
