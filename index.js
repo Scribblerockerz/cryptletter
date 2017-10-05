@@ -48,25 +48,18 @@ connect().then((conn) => {
 
 
 
-// CLI: Cleanup old entries from the cli
+// Cleanup old entries from the cli
 //-----------------------------------------------------------------------------
 
-if (process.argv[3] == 'cleanup') {
-  connect().then((conn) => {
-    // Run setup script before cli command (just in case)
-    conn.query(schemaSql);
+const deleteOldEntriesSql = 'DELETE FROM messages WHERE active_until IS NOT NULL AND active_until < CURRENT_TIMESTAMP() OR created_at < DATE_SUB(NOW(), INTERVAL 1 MONTH)';
 
-    // Perform actual query
-    conn.query('DELETE FROM messages WHERE active_until IS NOT NULL AND active_until < CURRENT_TIMESTAMP() OR created_at < DATE_SUB(NOW(), INTERVAL 1 MONTH)');
-    conn.end();
-  }).then(() => {
-    console.log('Successfully removed old entries from database');
-    process.exit();
-  }).catch((error) => {
-    console.error(error);
-    process.exit();
-  });
-}
+setTimeout(function () {
+    connect().then((conn) => {
+      // Perform actual query
+      conn.query(deleteOldEntriesSql);
+      conn.end();
+    });
+}, configuration.cleanupInterval);
 
 
 
@@ -195,6 +188,9 @@ app.get('/:token/$', (req, res) => {
 
   connect().then((conn) => {
     connection = conn;
+
+    // cleanup old messages
+    conn.query(deleteOldEntriesSql);
 
     return conn.query('SELECT * FROM messages WHERE token = ? AND (active_until > CURRENT_TIMESTAMP() OR active_until IS NULL) LIMIT 1', token);
   }).then((rows) => {
