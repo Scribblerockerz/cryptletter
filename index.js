@@ -191,6 +191,7 @@ app.get('/:token/$', (req, res) => {
   const clientIp = getHashedIp(req, token);
 
   let connection;
+  let activeUntil;
 
   connect().then((conn) => {
     connection = conn;
@@ -211,7 +212,7 @@ app.get('/:token/$', (req, res) => {
     }
 
     let unit = message.mode === MODE_MINUTES ? 'm' : 's';
-    let activeUntil = moment(createdAt).add(delay, unit).toDate();
+    activeUntil = moment(createdAt).add(delay, unit).toDate();
 
     if (message.active_until === null) {
       connection.query('UPDATE messages SET ? WHERE token = ?', [{ active_until: activeUntil, accessable_ip: clientIp }, token]);
@@ -222,12 +223,14 @@ app.get('/:token/$', (req, res) => {
     return message;
   }).then((message) => {
 
+    activeUntil = message.active_until || activeUntil;
+
     return res.render('show.nunjucks', {
       message: message.text,
       token: message.token,
-      activeUntilTimestamp: (message.active_until*1),
-      activeUntilDate: moment(message.active_until).format('MMMM Do YYYY, h:mm:ss a'),
-      timeRemaining: moment(message.active_until).fromNow()
+      activeUntilTimestamp: (activeUntil*1),
+      activeUntilDate: moment(activeUntil).format('MMMM Do YYYY, h:mm:ss a'),
+      timeRemaining: moment(activeUntil).fromNow()
     });
 
   }).catch((error) => {

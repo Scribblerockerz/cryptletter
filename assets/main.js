@@ -54,16 +54,23 @@ var animateEncryptionOnText = function ($elem, finishCallback, delay) {
     var text = $elem.val();
     var charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-    for (var i=0; i<text.length;i++) {
-        setTimeout(function(idx) {
-            var char = text.charAt(idx);
-            if (char !== '\n') {
-                // random character
-                var randChar = charset.charAt(Math.floor(Math.random() * charset.length));
-                text = stringReplaceAt(text, idx, randChar);
-            }
-            $elem.val(text);
-        }, delay * i, i);
+    // reduce delay if message is long
+    delay = text.length >= 500 ? 0 : delay;
+
+    // skip animation if message is very long
+    if (text.length < 1000) {
+
+        for (var i=0; i<text.length;i++) {
+            setTimeout(function(idx) {
+                var char = text.charAt(idx);
+                if (char !== '\n') {
+                    // random character
+                    var randChar = charset.charAt(Math.floor(Math.random() * charset.length));
+                    text = stringReplaceAt(text, idx, randChar);
+                }
+                $elem.val(text);
+            }, delay * i, i);
+        }
     }
 
     setTimeout(finishCallback, delay * i);

@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [unreleased]
+### Changed
+- Prevent encryption animation to take too long
+
+### Fixed
+- Fix condition race for activeuntil on show message page
+
 ## [v0.0.2] - 30.09.17
 ### Added
 - Add build directory to .gitignore
