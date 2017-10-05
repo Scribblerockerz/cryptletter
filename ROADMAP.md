@@ -7,8 +7,9 @@ This is an unordered list of upcoming tasks.
 - Implement error messages on submit message
 - Refactor server code
 - Refactor client code
-- Redesign letter/page/appearance
 - Throw out jQuery
 - Add documentation
 - Add setup instructions
 - Add system requirements
+- Add theming compatiblity
+- Add custom translations / overridable text snippets
