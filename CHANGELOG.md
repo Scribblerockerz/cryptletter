@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - Fix condition race for activeuntil on show message page
+- Fix visible scrollbars if hardware mouse detected
 
 ## [v0.0.2] - 30.09.17
 ### Added
