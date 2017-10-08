@@ -1,0 +1,13 @@
+{% block header %}
+    <div class="page__header">
+        {% block header_logo %}
+            <h1 class="page__title"><a class="logo" href="/">Cryptletter</a></h1>
+        {% endblock %}
+        <div class="page__slogan">
+            {% block words_slogan %}
+                Encrypted self-destructing messages.<br>
+                Even Cruise would like to have it!
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

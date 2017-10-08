@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [unreleased]
 ### Added
 - Add cleanup call on every request and by configured interval
+- Add template inheritance for theming
 
 ### Changed
 - Prevent encryption animation to take too long

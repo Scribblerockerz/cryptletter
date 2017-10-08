@@ -40,7 +40,9 @@
   },
   "bin": "index.js",
   "pkg": {
-    "scripts": [],
+    "scripts": [
+      "src/**/*"
+    ],
     "assets": [
       "parameters.json",
       "views/**/*",

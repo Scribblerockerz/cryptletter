@@ -43,6 +43,30 @@ Retain control over the data which is send out, and prevent living-security-issu
 Requirements: mysql
 ...
 
+## Changing Templates
+All templates are rendered with [nunjucks](https://mozilla.github.io/nunjucks/). So they can be easily extended. Messages can be also changed this way.
+<small>_You should change as less as possible to preserve update compatibility._</small>
+
+###### 1. Create a theme
+Create your "theme" directory and reference it in the `parameters.json`.
+  ```json
+  {
+    "app": {
+      "themePath": "./theme"
+    }
+  }
+  ```
+###### 2. Override existing once
+Place templates with the same name to override it's parent. If you want to extend only some blocks, declare a `parent:` extend:
+```nunjucks
+{% extends 'parent:404.njk' %}
+
+{% block words_not_found_message %}
+    <h2>404</h2>
+    <p>Message not found</p>
+{% endblock %}
+```
+
 ## Build
 
 Build your own executable version with [pkg](https://www.npmjs.com/package/pkg).

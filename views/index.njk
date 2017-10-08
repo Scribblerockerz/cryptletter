@@ -1,4 +1,4 @@
-{% extends 'layout.nunjucks' %}
+{% extends 'layout.njk' %}
 
 {% block classes %}page page--homepage{% endblock %}
 
@@ -12,11 +12,11 @@
                     class="input input--textarea input--drag-down"
                     autocomplete="off"
                     autofocus="autofocus"
-                >{{ "Dear John Doe,\n\nhere is the password you requested:\n\np4ssw0rd\n\nThis message will be available for 15min after you open it,\nso please store this password securely on a post-it near your computer.\n\nJust kidding!" }}</textarea>
+                >{% block words_message_input_placeholder %}{{"Dear John Doe,\n\nhere is the password you requested:\n\np4ssw0rd\n\nThis message will be available for 15min after you open it,\nso please store this password securely on a post-it near your computer.\n\nJust kidding!"}}{% endblock %}</textarea>
             </div>
             <div class="letter__footer letter__footer--separator">
                 <div class="u--danger">
-                    PS: This message destroys itself in about
+                    {% block words_before_encryption_availability_note %}PS: This message destroys itself in about{% endblock %}
 
                     <select id="delay" name="delay">
                       {% for minutes, label in delays %}
@@ -31,13 +31,15 @@
                 <input type="text" class="input input--url-holder js--select-text" id="url" readonly="readonly">
             </div>
             <div class="letter__footer">
-                This url is available for about <span id="selected-delay">15</span>min<br>
-                <strong>after</strong> someone visits it for the first time.
+                {% block words_after_encryption_availability_note %}
+                    This url is available for about <span id="selected-delay">15</span>min<br>
+                    <strong>after</strong> someone visits it for the first time.
+                {% endblock %}
             </div>
         </div>
     </div>
 
     <div class="u--center">
-        <button class="btn btn--primary js--encrypt-message">Encrypt message</button>
+        <button class="btn btn--primary js--encrypt-message">{% block words_encrypt_message_button %}Encrypt message{% endblock %}</button>
     </div>
 {% endblock %}

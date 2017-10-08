@@ -1,0 +1,14 @@
+{% extends 'layout.njk' %}
+
+{% block body %}
+    <div class="page page--unavailable">
+        {% include "partials/header.njk" %}
+
+        <div class="page__container">
+            {% block words_not_found_message %}
+                <h2>Looks like this message is no longer available...</h2>
+                <p>Hmm, maybe there was no message at all.</p>
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

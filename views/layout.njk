@@ -3,15 +3,15 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Secure password sharing | Cryptletter{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <script src="/initial.js"></script>
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <script src="/initial.js"></script>
+        {% block stylesheets %}{% endblock %}
     </head>
     <body class="is--not-ready">
         {% block body %}
         <div class="{% block classes %}page{% endblock %}">
             <div class="page__container">
-                {% include "partials/header.nunjucks" %}
+                {% include "partials/header.njk" %}
                 {% block content %}{% endblock %}
             </div>
         </div>

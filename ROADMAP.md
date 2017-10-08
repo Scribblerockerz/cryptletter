@@ -11,5 +11,4 @@ This is an unordered list of upcoming tasks.
 - Add documentation
 - Add setup instructions
 - Add system requirements
-- Add theming compatiblity
-- Add custom translations / overridable text snippets
+- Add custom public assets directory

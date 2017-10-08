@@ -8,6 +8,7 @@ const randomstring = require("randomstring");
 const md5 = require('md5');
 const moment = require('moment');
 
+const NunjucksThemeLoader = require('./src/nunjucks-theme-loader');
 
 
 // Load configuration file
@@ -72,14 +73,29 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')))
 
-// View engine configuration
-nunjucks.configure(path.join(__dirname, 'views'), {
-    autoescape: true,
-    express: app
+// List of view directories
+var themes = [path.join(__dirname, 'views')];
+
+// Load theme directory from the configuration
+if (configuration.app.themePath) {
+    var themePath = path.join(process.cwd(), configuration.app.themePath);
+    if (fs.existsSync(themePath)) {
+        themes.unshift(themePath);
+    }
+}
+
+var TemplateLoader = new NunjucksThemeLoader(themes, {
+    watch: false,
+    noCache: false
 });
 
-app.set('view engine', 'nunjucks');
-app.set('views', path.join(__dirname, 'views'));
+var env = new nunjucks.Environment(TemplateLoader, {
+    autoescape: true
+});
+
+env.express(app);
+
+app.set('view engine', 'njk');
 
 
 
@@ -108,7 +124,7 @@ const getHashedIp = (req, token) => {
 //-----------------------------------------------------------------------------
 
 app.get('/', (req, res) => {
-  res.render('index.nunjucks', { delays: delays});
+  res.render('index', { delays: delays});
 });
 
 
@@ -117,7 +133,7 @@ app.get('/', (req, res) => {
 //-----------------------------------------------------------------------------
 
 app.get('/styleguide', (req, res) => {
-  res.render('styleguide.nunjucks');
+  res.render('styleguide');
 });
 
 
@@ -221,7 +237,7 @@ app.get('/:token/$', (req, res) => {
 
     activeUntil = message.active_until || activeUntil;
 
-    return res.render('show.nunjucks', {
+    return res.render('show', {
       message: message.text,
       token: message.token,
       activeUntilTimestamp: (activeUntil*1),
