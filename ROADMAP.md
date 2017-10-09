@@ -11,4 +11,3 @@ This is an unordered list of upcoming tasks.
 - Add documentation
 - Add setup instructions
 - Add system requirements
-- Add custom public assets directory

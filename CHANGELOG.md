@@ -8,9 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Add cleanup call on every request and by configured interval
 - Add template inheritance for theming
+- Add "assets" configuration for custom public assets
 
 ### Changed
 - Prevent encryption animation to take too long
+- Change "themePath" configuration to "templates"
 
 ### Removed
 - Remove legacy appearance.css

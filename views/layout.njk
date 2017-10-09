@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Secure password sharing | Cryptletter{% endblock %}</title>
-        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-        <script src="/initial.js"></script>
-        {% block stylesheets %}{% endblock %}
-    </head>
+    {% block head %}
+      <head>
+          <meta charset="UTF-8" />
+          <title>{% block title %}Secure password sharing | Cryptletter{% endblock %}</title>
+          <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+          <script src="/initial.js"></script>
+          {% block stylesheets %}{% endblock %}
+      </head>
+    {% endblock %}
     <body class="is--not-ready">
         {% block body %}
         <div class="{% block classes %}page{% endblock %}">

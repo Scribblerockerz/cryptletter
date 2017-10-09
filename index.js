@@ -73,12 +73,20 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')))
 
+// Add custom assets directory
+if (configuration.app.assets) {
+    var assetsPath = path.join(process.cwd(), configuration.app.assets);
+    if (fs.existsSync(assetsPath)) {
+        app.use(express.static(assetsPath));
+    }
+}
+
 // List of view directories
 var themes = [path.join(__dirname, 'views')];
 
 // Load theme directory from the configuration
-if (configuration.app.themePath) {
-    var themePath = path.join(process.cwd(), configuration.app.themePath);
+if (configuration.app.templates) {
+    var themePath = path.join(process.cwd(), configuration.app.templates);
     if (fs.existsSync(themePath)) {
         themes.unshift(themePath);
     }

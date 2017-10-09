@@ -48,11 +48,12 @@ All templates are rendered with [nunjucks](https://mozilla.github.io/nunjucks/).
 <small>_You should change as less as possible to preserve update compatibility._</small>
 
 ###### 1. Create a theme
-Create your "theme" directory and reference it in the `parameters.json`.
+Create your `templates` directory and reference it in the `parameters.json`. Add an `assets` directory if you want to add custom css/images as well.
   ```json
   {
     "app": {
-      "themePath": "./theme"
+      "templates": "./child-views",
+      "assets": "./custom-public-assets"
     }
   }
   ```
