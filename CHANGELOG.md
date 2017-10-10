@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [unreleased]
 ### Added
 - Add noscript notice
+- Add error message if service is unreachable
 
 ## [v0.0.3] - 09.10.17
 ### Added

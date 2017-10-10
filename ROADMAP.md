@@ -3,7 +3,6 @@ This is an unordered list of upcoming tasks.
 
 ---
 
-- Implement error messages on submit message
 - Refactor server code
 - Refactor client code
 - Throw out jQuery

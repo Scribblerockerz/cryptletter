@@ -127,7 +127,8 @@ $(document).ready(function () {
                     $urlField.select();
                     $encryptButton.fadeOut(300);
                 }
-                // TODO: implement error output
+            }).fail(function () {
+                $('#error').slideDown(300);
             });
         });
     });
@@ -177,7 +178,8 @@ $(document).ready(function () {
             success: function () {
               location.reload();
             }
-            // TODO: implement error output
+          }).fail(function () {
+              $('#error').slideDown(300);
           });
         }
     });

@@ -55,6 +55,7 @@
         <div class="{% block classes %}page{% endblock %}">
             <div class="page__container">
                 {% include "partials/header.njk" %}
+                {% include "partials/errors.njk" %}
                 {% block content %}{% endblock %}
             </div>
         </div>
