@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Add noscript notice
 - Add error message if service is unreachable
 
+### Changed
+- Update requirements in readme.md
+
 ## [v0.0.3] - 09.10.17
 ### Added
 - Add cleanup call on every request and by configured interval

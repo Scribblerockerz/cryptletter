@@ -1,8 +1,7 @@
-# Cryptletter
-
-Self-hosted micro-service for encrypted self-destructing messages.
-
----
+<p align="center">
+<img src="https://user-images.githubusercontent.com/1336156/31407710-267e2124-ae06-11e7-8a48-4e7dc3547422.png" />
+<br>
+</p>
 
 ## Introduction
 
@@ -38,10 +37,9 @@ Retain control over the data which is send out, and prevent living-security-issu
 - Run `./cryptletter-linux ./path/to/your/parameters.json`
 
 
-## Setup
+## Requirements
+MySQL database.
 
-Requirements: mysql
-...
 
 ## Changing Templates
 All templates are rendered with [nunjucks](https://mozilla.github.io/nunjucks/). So they can be easily extended. Messages can be also changed this way.
@@ -73,5 +71,3 @@ Place templates with the same name to override it's parent. If you want to exten
 Build your own executable version with [pkg](https://www.npmjs.com/package/pkg).
 
 Install `pkg` globally and run `npm run build`.
-
-**...WIP...**
