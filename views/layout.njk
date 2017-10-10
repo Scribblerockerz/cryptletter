@@ -6,10 +6,51 @@
           <title>{% block title %}Secure password sharing | Cryptletter{% endblock %}</title>
           <link rel="icon" type="image/x-icon" href="/favicon.ico" />
           <script src="/initial.js"></script>
-          {% block stylesheets %}{% endblock %}
+          {% block stylesheets %}
+            <style>
+              .noscript-message {
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  right: 0;
+                  bottom: 0;
+                  background-color: #595E68;
+                  color: #fff;
+                  font-family: 'Courier New';
+                  font-size: 18px;
+                  line-height: 1.5em;
+                  padding-top: 45vh;
+                  -webkit-font-smoothing: antialiased;
+                  -moz-osx-font-smoothing: grayscale;
+                  text-align: center;
+                  vertical-align: middle;
+              }
+
+              .noscript-message h1,
+              .noscript-message p {
+                max-width: 500px;
+                margin: auto;
+              }
+
+              .noscript-message h1 {
+                font-family: Georgia;
+                font-weight: normal;
+                margin-bottom: .5em;
+                font-size: 1.6em;
+              }
+            </style>
+          {% endblock %}
       </head>
     {% endblock %}
     <body class="is--not-ready">
+        {% block noscript %}
+          <noscript>
+            <div class="noscript-message">
+              <h1>This service requires Javascript</h1>
+              <p>Please use a browser which supports Javascript or enable it and reload this page.</p>
+            </div>
+          </noscript>
+        {% endblock%}
         {% block body %}
         <div class="{% block classes %}page{% endblock %}">
             <div class="page__container">
