@@ -34,8 +34,34 @@ Retain control over the data which is send out, and prevent living-security-issu
 
 - Download the latest executable for your platform from [releases](https://github.com/Scribblerockerz/cryptletter/releases).
 - Copy the `parameters.json` form the project and configure it properly.
-- Run `./cryptletter-linux ./path/to/your/parameters.json`
+- Run `./cryptletter-linux ./path/to/your/parameters.json &` to run it in the background
 
+## Upgrade Guide (linux + wget)
+
+Kill process and backup the current executable:
+```bash
+
+killall -9 cryptletter-linux
+
+mv ./cryptletter-linux cryptletter-linux_old
+
+```
+
+Download the latest linux executable:
+
+```bash
+
+wget `wget -qO- https://api.github.com/repos/Scribblerockerz/cryptletter/releases/latest | grep -E -o 'https://[^"]+?cryptletter-linux'` && chmod +x ./cryptletter-linux
+
+```
+
+Run:
+
+```bash
+
+./cryptletter-linux parameters.json &
+
+```
 
 ## Requirements
 MySQL database.
