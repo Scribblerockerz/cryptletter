@@ -10,6 +10,8 @@ const moment = require('moment');
 const deepExtend = require('deep-extend');
 
 const NunjucksThemeLoader = require('./src/nunjucks-theme-loader');
+const isDev = process.env.NODE_ENV === 'dev';
+
 
 
 // Load configuration file
@@ -172,7 +174,7 @@ app.post('/', (req, res) => {
   }).then(() => {
     return res.json({ success: true, token: token });
   }).catch(() => {
-    console.error(error);
+    isDev && console.error(error);
     return res.json({ success: false });
   });
 });
@@ -195,7 +197,7 @@ app.delete('/:token/$', (req, res) => {
   }).then((success) => {
     return res.json({ success: success });
   }).catch((error) => {
-    console.error(error);
+    isDev && console.error(error);
     return res.json({ success: false, error: 'Not found' });
   });
 })
@@ -258,7 +260,7 @@ app.get('/:token/$', (req, res) => {
 
   }).catch((error) => {
     connection && connection.end();
-    console.error(error);
+    isDev && console.error(error);
     return res.render('404');
   });
 });

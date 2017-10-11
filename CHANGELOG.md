@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [unreleased]
 ### Changed
-- Merge configuration with default parameter
+- Merge configuration with default parameter #4
+- Prevent logging in production #5
 
 ## [v1.0.0] - 10.10.17
 ### Added
