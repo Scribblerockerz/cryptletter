@@ -7,6 +7,7 @@ const mysql = require('promise-mysql');
 const randomstring = require("randomstring");
 const md5 = require('md5');
 const moment = require('moment');
+const deepExtend = require('deep-extend');
 
 const NunjucksThemeLoader = require('./src/nunjucks-theme-loader');
 
@@ -14,13 +15,15 @@ const NunjucksThemeLoader = require('./src/nunjucks-theme-loader');
 // Load configuration file
 //-----------------------------------------------------------------------------
 
-let configurationFile = './parameters.json';
+let defaultConfiguration = require('./parameters.json');
+let localConfiguration = {};
 
 if (process.argv[2]) {
-  configurationFile = path.join(process.cwd(), process.argv[2]);
+  let configurationFile = path.join(process.cwd(), process.argv[2]);
+  localConfiguration = require(configurationFile);
 }
 
-const configuration = require(configurationFile);
+const configuration = deepExtend(defaultConfiguration, localConfiguration);
 
 
 
@@ -52,7 +55,7 @@ connect().then((conn) => {
 // Cleanup old entries from the cli
 //-----------------------------------------------------------------------------
 
-const deleteOldEntriesSql = 'DELETE FROM messages WHERE active_until IS NOT NULL AND active_until < CURRENT_TIMESTAMP() OR created_at < DATE_SUB(NOW(), INTERVAL 1 MONTH)';
+const deleteOldEntriesSql = 'DELETE FROM messages WHERE (active_until IS NOT NULL AND active_until < CURRENT_TIMESTAMP()) OR (created_at < DATE_SUB(NOW(), INTERVAL 1 MONTH))';
 
 setTimeout(function () {
     connect().then((conn) => {
@@ -60,7 +63,7 @@ setTimeout(function () {
       conn.query(deleteOldEntriesSql);
       conn.end();
     });
-}, configuration.cleanupInterval);
+}, configuration.app.cleanupInterval);
 
 
 
@@ -74,7 +77,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')))
 
 // Add custom assets directory
-if (configuration.app.assets) {
+if (configuration.app && configuration.app.assets) {
     var assetsPath = path.join(process.cwd(), configuration.app.assets);
     if (fs.existsSync(assetsPath)) {
         app.use(express.static(assetsPath));
@@ -85,7 +88,7 @@ if (configuration.app.assets) {
 var themes = [path.join(__dirname, 'views')];
 
 // Load theme directory from the configuration
-if (configuration.app.templates) {
+if (configuration.app && configuration.app.templates) {
     var themePath = path.join(process.cwd(), configuration.app.templates);
     if (fs.existsSync(themePath)) {
         themes.unshift(themePath);
