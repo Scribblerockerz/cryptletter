@@ -12,6 +12,10 @@ Usually an email inbox of a regular user contains more plaintext passwords than 
 
 Retain control over the data which is send out, and prevent living-security-issues laying around in the users inbox.
 
+## Demo
+
+![Screen capture of the application](https://user-images.githubusercontent.com/1336156/32858885-31374bc8-ca4d-11e7-9b1a-b4a67769a241.gif)
+
 ## Features
 
 - **Self-hosted**  
