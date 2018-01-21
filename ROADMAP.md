@@ -3,7 +3,8 @@ This is an unordered list of upcoming tasks.
 
 ---
 
-- Add gif demonstration of the service
 - Refactor server code
 - Refactor client code
-- Throw out jQuery
+- Add docker support (via docker-compose)
+- Add language options to time formatting #7
+

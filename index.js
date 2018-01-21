@@ -131,6 +131,8 @@ const getHashedIp = (req, token) => {
   return md5(ip + token);
 }
 
+// Configure moment's locale
+moment.locale(configuration.app.momentLocale);
 
 
 // Homepage
@@ -254,7 +256,7 @@ app.get('/:token/$', (req, res) => {
       message: message.text,
       token: message.token,
       activeUntilTimestamp: (activeUntil*1),
-      activeUntilDate: moment(activeUntil).format('MMMM Do YYYY, h:mm:ss a'),
+      activeUntilDate: moment(activeUntil).format(configuration.app.activeUntilDateFormat), //'MMMM Do YYYY, h:mm:ss a'
       timeRemaining: moment(activeUntil).fromNow()
     });
 

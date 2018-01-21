@@ -11,6 +11,8 @@
   "app": {
     "cleanupInterval": 300000,
     "templates": "./child-views",
-    "assets": "./custom-public-assets"
+    "assets": "./custom-public-assets",
+    "momentLocale": "en",
+    "activeUntilDateFormat": "MMMM Do YYYY, h:mm:ss a"
   }
 }
