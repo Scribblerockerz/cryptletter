@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [unreleased]
 ### Added
 - Add a gif demonstration
+- Add language options to time formatting #7
+
+### Fixed
+- Fix relative activeUntil date #8
 
 ## [v1.1.0] - 11.10.17
 ### Added

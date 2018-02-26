@@ -239,7 +239,7 @@ app.get('/:token/$', (req, res) => {
     }
 
     let unit = message.mode === MODE_MINUTES ? 'm' : 's';
-    activeUntil = moment(createdAt).add(delay, unit).toDate();
+    activeUntil = moment().add(delay, unit).toDate();
 
     if (message.active_until === null) {
       connection.query('UPDATE messages SET ? WHERE token = ?', [{ active_until: activeUntil, accessable_ip: clientIp }, token]);
