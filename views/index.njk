@@ -28,7 +28,7 @@
         </div>
         <div class="js--stage-url" style="display: none;">
             <div class="letter__body">
-                <input type="text" class="input input--url-holder js--select-text" id="url" readonly="readonly">
+                <textarea class="input input--textarea input--url-holder js--select-text" id="url" readonly="readonly" rows="{% block words_after_encryption_result_num_rows %}6{% endblock %}"></textarea>
             </div>
             <div class="letter__footer">
                 {% block words_after_encryption_availability_note %}
@@ -38,6 +38,10 @@
             </div>
         </div>
     </div>
+
+    <script id="template-result-format" type="text/template">{% block words_after_encryption_result_format %}The following link will be available for %minutes% min AFTER you visit it for the first time:
+
+%url%{% endblock %}</script>
 
     <div class="u--center">
         <button class="btn btn--primary js--encrypt-message">{% block words_encrypt_message_button %}Encrypt message{% endblock %}</button>

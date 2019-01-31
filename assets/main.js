@@ -111,17 +111,18 @@ $(document).ready(function () {
         var $urlField = $('#url');
         var $formStage = $('.js--stage-form');
         var $linkStage = $('.js--stage-url');
+        var template = $('#template-result-format').html();
 
         var encryptedMessage = AES.encrypt($messageField.val().trim(), secret).toString();
         var delay = $('#delay').val();
-
 
         $('#selected-delay').text(delay);
 
         animateEncryptionOnText($messageField, function () {
             $.post('/', { message: encryptedMessage, delay: delay }, function (res) {
                 if (res.success && res.token) {
-                    $urlField.val(getSecretUrl(res.token, secret));
+                    var secureUrl = getSecretUrl(res.token, secret);
+                    $urlField.html(template.replace('%minutes%', delay).replace('%url%', secureUrl));
                     $formStage.slideUp(300);
                     $linkStage.slideDown(300);
                     $urlField.select();
