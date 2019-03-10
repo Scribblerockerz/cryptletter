@@ -6,10 +6,11 @@ import (
 	"github.com/jessevdk/go-flags"
 )
 
-// Configuration which is retrieved from a toml file
+// Configuration is the type of the configuration structure
 type Configuration struct {
 	Server   server
 	Database database
+	App      app
 }
 
 type server struct {
@@ -45,17 +46,33 @@ func ParseArguments() CliOptions {
 	return opts
 }
 
+// Config will contain the assembled configuration from file and acli arguments
+var Config Configuration
+
+// DefaultConfiguration will contain just the defaults
+var DefaultConfiguration = NewConfiguration()
+
+// NewConfiguration will generate a fresh configuration with defaults
+func NewConfiguration() Configuration {
+	cfg := Configuration{}
+
+	cfg.Server.Port = 8080
+	cfg.App.TemplatesDir = "./src/templates"
+
+	return cfg
+}
+
 // AssembleConfiguration will collect and merge configuration from different sources
 func AssembleConfiguration() Configuration {
+	Config = NewConfiguration()
 	opts := ParseArguments()
-	var config Configuration
 
 	if opts.ConfigFile != "" {
-		_, err := toml.DecodeFile(opts.ConfigFile, &config)
+		_, err := toml.DecodeFile(opts.ConfigFile, &Config)
 		if err != nil {
 			panic(err)
 		}
 	}
 
-	return config
+	return Config
 }

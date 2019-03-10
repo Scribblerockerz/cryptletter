@@ -1,1 +1,3 @@
 bin/
+template-override/
+*.local.*
