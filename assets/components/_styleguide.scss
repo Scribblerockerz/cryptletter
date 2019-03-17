@@ -1,0 +1,49 @@
+.styleguide {
+    margin-top: 120px;
+  }
+  
+  .styleguide__section {
+    max-width: 800px;
+    margin: auto;
+    margin-bottom: 120px;
+  }
+  
+  .styleguide__headline {
+    font-family: Georgia;
+    font-size: 24px;
+    color: #fff;
+    padding-bottom: 7px;
+    border-bottom: 2px solid #717886;
+    margin-bottom: 40px;
+  
+    small {
+      color: #9ca1ad;
+      margin-left: 5px;
+      font-size: 18px;
+    }
+  }
+  
+  .styleguide__description {
+    color: #fff;
+    margin-bottom: 40px;
+  }
+  
+  .styleguide__headline + .styleguide__description {
+    margin-top: -40px;
+  }
+  
+  .styleguide__block {
+    margin-bottom: 30px;
+  }
+  
+  [data-styg-desc] {
+    &::before {
+      content: attr(data-styg-desc);
+      position: absolute;
+      transform: translateX(calc(-100% + -10px));
+      color: #8c95a7;
+      font-size: 16px;
+      font-family: 'Courier New';
+    }
+  }
+  

@@ -1,0 +1,54 @@
+.page {
+    margin-bottom: 70px;
+  }
+  
+  .page--homepage {}
+  .page--show {}
+  
+  .page__container {
+    margin: auto;
+    max-width: 840px;
+    padding: 0 20px;
+  }
+  
+  .page__header {
+    text-align: center;
+    line-height: 1.2em;
+    margin: 70px auto;
+  }
+  
+  
+  .page--unavailable {
+    .page__header {
+      position: absolute;
+      bottom: 70px;
+      margin: 0 auto;
+      width: 100%;
+    }
+  
+    .logo {
+      opacity: .1;
+      transition: opacity .2s ease-in-out;
+      background-size: 140px;
+  
+      &:hover,
+      &:focus {
+        opacity: 1;
+      }
+    }
+  
+    .page__slogan {
+      display: none;
+    }
+  
+    .page__container {
+      max-width: 540px;
+      width: 100%;
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+  }
+  

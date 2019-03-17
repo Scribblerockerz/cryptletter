@@ -25,8 +25,9 @@ type database struct {
 }
 
 type app struct {
-	TemplatesDir string
-	AssetsDir    string
+	TemplatesDir             string
+	AssetsDir                string
+	DefaultTTLForNewMessages int64
 }
 
 // CliOptions of the possible cli arguments
@@ -58,6 +59,8 @@ func NewConfiguration() Configuration {
 
 	cfg.Server.Port = 8080
 	cfg.App.TemplatesDir = "./src/templates"
+	cfg.App.AssetsDir = "public"
+	cfg.App.DefaultTTLForNewMessages = 43830
 
 	return cfg
 }

@@ -1,0 +1,42 @@
+body {
+    background-color: #595E68;
+  
+    &::after {
+      transition: opacity .2s ease-in-out;
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #595E68;
+      z-index: 999999;
+      display: none;
+    }
+  
+    > * {
+      opacity: 1;
+    }
+  
+    &.is--ready {
+      > * {
+        transition: opacity .2s ease-in-out;
+      }
+  
+      &::after {
+        opacity: 0;
+      }
+    }
+  
+    &.is--not-ready {
+      > * {
+        opacity: 0;
+      }
+  
+      &::after {
+        opacity: 1;
+        display: block;
+      }
+    }
+  }
+  

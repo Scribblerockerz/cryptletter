@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -17,6 +16,8 @@ type Route struct {
 
 // Routes slice
 type Routes []Route
+
+const staticDirPathPrefix = "/static/"
 
 // NewRouter factory
 func NewRouter() *mux.Router {
@@ -36,8 +37,12 @@ func NewRouter() *mux.Router {
 	}
 
 	router.NotFoundHandler = Logger(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, "Nothing here: 404")
+		NotFound(w, r)
 	}), "404")
+
+	router.
+		PathPrefix(staticDirPathPrefix).
+		Handler(http.StripPrefix(staticDirPathPrefix, http.FileServer(http.Dir(Config.App.AssetsDir))))
 
 	return router
 }
@@ -47,7 +52,25 @@ var routes = Routes{
 		Name:        "Index",
 		Method:      "GET",
 		Pattern:     "/",
-		HandlerFunc: Index,
+		HandlerFunc: IndexAction,
+	},
+	Route{
+		Name:        "Styleguide",
+		Method:      "GET",
+		Pattern:     "/styleguide",
+		HandlerFunc: StyleguideAction,
+	},
+	Route{
+		Name:        "NewMessage",
+		Method:      "POST",
+		Pattern:     "/",
+		HandlerFunc: NewMessageAction,
+	},
+	Route{
+		Name:        "ShowMessage",
+		Method:      "GET",
+		Pattern:     "/{token}/",
+		HandlerFunc: ShowAction,
 	},
 	// Route{
 	// 	Name:        "ListTodos",

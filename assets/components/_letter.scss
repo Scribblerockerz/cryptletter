@@ -1,0 +1,40 @@
+.letter {
+    position: relative;
+    background-color: #fff;
+    color: #000;
+    border-radius: 4px;
+    padding: 30px 50px;
+  }
+  
+  .letter--striped {
+    background-image: url('images/stripe.svg');
+    background-position: right top;
+    background-repeat: repeat-y;
+    background-size: 20px;
+  }
+  
+  .letter--spaced {
+    margin-bottom: 40px;
+  }
+  
+  .letter__header {
+    position: absolute;
+    top: 20px;
+    right: 50px;
+    left: 50px;
+    text-align: right;
+  }
+  
+  .letter__body {
+    padding: 20px 0;
+  }
+  
+  .letter__footer {
+    padding-top: 30px;
+  }
+  
+  .letter__footer--separator {
+    border-top: 2px solid #efefef;
+    margin-top: 10px;
+  }
+  
