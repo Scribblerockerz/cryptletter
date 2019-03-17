@@ -27,7 +27,7 @@ func NewRouter() *mux.Router {
 		var handler http.Handler
 
 		handler = route.HandlerFunc
-		handler = Logger(handler, route.Name)
+		handler = HTTPLogger(handler, route.Name)
 
 		router.
 			Methods(route.Method).
@@ -36,7 +36,7 @@ func NewRouter() *mux.Router {
 			Handler(handler)
 	}
 
-	router.NotFoundHandler = Logger(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	router.NotFoundHandler = HTTPLogger(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		NotFound(w, r)
 	}), "404")
 

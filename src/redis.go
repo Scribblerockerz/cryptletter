@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/go-redis/redis"
 )
 
@@ -16,8 +14,8 @@ func ConnectRedisClient(o *redis.Options) {
 	if err != nil {
 		panic(err)
 	} else if pong == "PONG" {
-		fmt.Println("Successfuly established connection to redis")
+		LogInfo("Successfuly established connection to redis")
 	} else {
-		fmt.Println("Connection to redis failed. Pong not received.")
+		LogWarning("Connection to redis failed. Pong not received.")
 	}
 }

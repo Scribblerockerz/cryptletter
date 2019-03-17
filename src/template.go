@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"path/filepath"
 	"sort"
@@ -41,8 +40,6 @@ func RegisterPartials() {
 	templateDir := Config.App.TemplatesDir
 	fallbackDir := DefaultConfiguration.App.TemplatesDir
 
-	fmt.Println("Register partials initialzied")
-
 	var partialList []string
 
 	if templateDir != fallbackDir {
@@ -55,11 +52,11 @@ func RegisterPartials() {
 	}
 
 	for _, partialName := range partialList {
-		fmt.Printf("Regist partial %s\n", partialName)
+		LogDebug(fmt.Sprintf("Regist partial %s", partialName))
 
 		bytes, err := ioutil.ReadFile(resolveTemplatePath(partialName)) // just pass the file name
 		if err != nil {
-			fmt.Print(err)
+			LogError(err)
 		}
 		partialContent := string(bytes)
 		raymond.RegisterPartial(partialName, partialContent)
@@ -67,26 +64,26 @@ func RegisterPartials() {
 }
 
 func registerPartialsInPath(path string) {
-	fmt.Printf("Scan direcotry %s\n", path)
+	LogDebug(fmt.Sprintf("Register partials in path: %s", path))
 
 	files, err := ioutil.ReadDir(path)
 	if err != nil {
-		log.Fatal(err)
+		LogFatal(err)
 	}
 
 	for _, f := range files {
-		fmt.Printf("%s %t\n", f.Name(), f.IsDir())
+		LogDebug(fmt.Sprintf("%s %t", f.Name(), f.IsDir()))
 	}
 }
 
 func scanPartialsInPath(path string, prefix string) []string {
-	fmt.Printf("Scan direcotry %s\n", path)
+	LogDebug(fmt.Sprintf("Scan direcotry: %s", path))
 
 	var filePaths []string
 
 	files, err := ioutil.ReadDir(path)
 	if err != nil {
-		log.Fatal(err)
+		LogFatal(err)
 	}
 
 	for _, f := range files {
