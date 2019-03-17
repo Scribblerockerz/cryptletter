@@ -72,6 +72,12 @@ var routes = Routes{
 		Pattern:     "/{token}/",
 		HandlerFunc: ShowAction,
 	},
+	Route{
+		Name:        "DeleteMessage",
+		Method:      "DELETE",
+		Pattern:     "/{token}/",
+		HandlerFunc: DeleteMessageAction,
+	},
 	// Route{
 	// 	Name:        "ListTodos",
 	// 	Method:      "GET",

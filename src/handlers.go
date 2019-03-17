@@ -70,39 +70,17 @@ func ShowAction(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	duration, err := RedisClient.TTL(loadedMessage.Token).Result()
+	if err != nil {
+		panic(err)
+	}
+
 	fmt.Fprintf(w, RenderLayout("show.hbs", map[string]string{
 		"message":              loadedMessage.Content,
-		"activeUntilTimestamp": strconv.FormatInt(time.Now().Local().Add(time.Minute*time.Duration(15)).Unix()*1000, 10),
+		"activeUntilTimestamp": strconv.FormatInt(time.Now().Local().Add(duration).Unix()*1000, 10),
 		"token":                vars["token"],
+		"durationString":       duration.String(),
 	}))
-
-	// val, err := RedisClient.Get(vars["token"]).Result()
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	// fmt.Printf(val)
-	// return
-
-	// loadedMessage := &Message{}
-	// err = json.Unmarshal([]byte(val), loadedMessage)
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	// fmt.Println(vars["token"], time.Now().Local().Add(time.Second*time.Duration(15)).Unix())
-
-	// if false {
-	// 	NotFound(w, r)
-	// 	return
-	// }
-
-	// result := RenderLayout("show.hbs", map[string]string{
-	// 	"message":              "Hello World",
-	// 	"activeUntilTimestamp": strconv.FormatInt(time.Now().Local().Add(time.Minute*time.Duration(15)).Unix()*1000, 10),
-	// 	"token":                vars["token"],
-	// })
-	// fmt.Fprintf(w, result)
 }
 
 // NotFound handles a single message
@@ -116,6 +94,48 @@ func StyleguideAction(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, result)
 }
 
+// DeleteMessageAction will delete a message
+func DeleteMessageAction(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	vars := mux.Vars(r)
+
+	hasResults, err1 := RedisClient.Exists(vars["token"]).Result()
+	if err1 != nil {
+		panic(err1)
+	}
+
+	// Key not found
+	if hasResults == 0 {
+		w.Write([]byte("{}"))
+		return
+	}
+
+	result, err := RedisClient.Get(vars["token"]).Result()
+	if err != nil {
+		panic(err)
+	}
+
+	loadedMessage := &Message{}
+	err = json.Unmarshal([]byte(result), loadedMessage)
+	if err != nil {
+		panic(err)
+	}
+
+	visitorHash := getHashedIP(r, loadedMessage.Token)
+
+	// First time somone access this message, update message with new expire date
+
+	if loadedMessage.AccessableIP == visitorHash {
+
+		err = RedisClient.Del(loadedMessage.Token).Err()
+		if err != nil {
+			fmt.Printf("An error accoured %s", err)
+		}
+	}
+
+	w.Write([]byte("{}"))
+}
+
 // NewMessageAction will handle new messages
 func NewMessageAction(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
@@ -123,7 +143,7 @@ func NewMessageAction(w http.ResponseWriter, r *http.Request) {
 
 	message := Message{
 		Content:   r.FormValue("message"),
-		Lifetime:  delay * 60,
+		Lifetime:  delay,
 		Token:     generateToken(),
 		CreatedAt: time.Now(),
 	}

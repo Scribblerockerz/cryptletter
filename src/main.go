@@ -1,11 +1,9 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
-	"time"
 
 	"github.com/go-redis/redis"
 )
@@ -32,52 +30,6 @@ func main() {
 
 	fmt.Printf("Serving taskronaut api on http://localhost:%s\n", port)
 	log.Fatal(http.ListenAndServe(":"+port, router))
-}
-
-// Message asd
-type Message struct {
-	Content      string
-	Token        string
-	CreatedAt    time.Time
-	Lifetime     int64
-	AccessableIP string
-}
-
-func testRedisConnection() {
-	client := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
-		Password: "",
-		DB:       0,
-	})
-	pong, err := client.Ping().Result()
-	fmt.Println(pong, err)
-
-	msg := Message{
-		Content:   "Hello World",
-		Token:     "123456",
-		CreatedAt: time.Now(),
-	}
-
-	bytes, err := json.Marshal(&msg)
-	if err != nil {
-		panic(err)
-	}
-
-	statement := client.Set("test", string(bytes), 0)
-	fmt.Println(statement)
-
-	val, err := client.Get("test").Result()
-	if err != nil {
-		panic(err)
-	}
-
-	loadedMessage := &Message{}
-	err = json.Unmarshal([]byte(val), loadedMessage)
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println("test", loadedMessage.Content)
 }
 
 /*
