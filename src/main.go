@@ -4,17 +4,11 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-
-	"github.com/aymerick/raymond"
 )
 
 func main() {
 	AssembleConfiguration()
-	prepareTemplates()
-
-	// TODO: implement dynamic partial handling
-	// - scan template dir for all sub dirs and register them as partials
-	// - scan fallback dir and register all missing / not declared templates
+	RegisterPartials()
 
 	// TODO: intergrate redis server
 	// - connect to server
@@ -28,8 +22,4 @@ func main() {
 
 	fmt.Printf("Serving taskronaut api on http://localhost:%s\n", port)
 	log.Fatal(http.ListenAndServe(":"+port, router))
-}
-
-func prepareTemplates() {
-	raymond.RegisterPartial("foo", "<strong>FOO</strong>")
 }
