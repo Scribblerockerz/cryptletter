@@ -58,7 +58,7 @@ func NewConfiguration() Configuration {
 	cfg := Configuration{}
 
 	cfg.Server.Port = 8080
-	cfg.App.TemplatesDir = "./src/templates"
+	cfg.App.TemplatesDir = "./theme/templates"
 	cfg.App.AssetsDir = "public"
 	cfg.App.DefaultTTLForNewMessages = 43830
 

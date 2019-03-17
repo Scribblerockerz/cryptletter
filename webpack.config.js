@@ -3,8 +3,8 @@ var webpack = require('webpack');
 
 module.exports = {
     entry: {
-        bundle: './assets/main.js',
-        initial: './assets/initial.scss'
+        bundle: './theme/assets/main.js',
+        initial: './theme/assets/initial.scss'
     },
     output: {
         filename: '[name].js',

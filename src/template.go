@@ -42,12 +42,17 @@ func RegisterPartials() {
 	fallbackDir := DefaultConfiguration.App.TemplatesDir
 
 	fmt.Println("Register partials initialzied")
-	//raymond.RegisterPartial("foo", "<strong>FOO</strong>")
 
-	templateDirPartials := scanPartialsInPath(templateDir, "")
-	fallbackDirPartials := scanPartialsInPath(fallbackDir, "")
+	var partialList []string
 
-	partialList := mergeUniqueSlices(templateDirPartials, fallbackDirPartials)
+	if templateDir != fallbackDir {
+		templateDirPartials := scanPartialsInPath(templateDir, "")
+		fallbackDirPartials := scanPartialsInPath(fallbackDir, "")
+
+		partialList = mergeUniqueSlices(templateDirPartials, fallbackDirPartials)
+	} else {
+		partialList = scanPartialsInPath(fallbackDir, "")
+	}
 
 	for _, partialName := range partialList {
 		fmt.Printf("Regist partial %s\n", partialName)
