@@ -77,12 +77,16 @@ var animateEncryptionOnText = function($elem, finishCallback, delay) {
 var checkRemainingTime = function(subjectSelector) {
     const timestamp = document.querySelector(subjectSelector).dataset.availableUntil;
     if (!timestamp) return false;
-    const activeUntil = new Date(timestamp);
+
+    const activeUntil = new Date(parseInt(timestamp));
     activeUntil &&
         setInterval(() => {
             if (activeUntil < new Date()) {
                 const $page = document.querySelector('.page');
-                $page.parentNode.removeChild($page);
+
+                while ($page.hasChildNodes()) {
+                    $page.removeChild($page.lastChild);
+                }
             }
         }, 1000);
 };
@@ -188,8 +192,6 @@ function slideDown(el) {
         const secret = window.location.hash.substr(2);
         const message = document.getElementById('encrypted-message').innerHTML;
 
-        console.log(document.getElementById('encrypted-message'));
-
         const encryptedMessage = AES.decrypt(message, secret).toString(encodingUTF8);
         if (encryptedMessage) {
             document.getElementById('message').innerText = encryptedMessage;
@@ -204,21 +206,25 @@ function slideDown(el) {
                 const $el = e.target;
                 const mode = $el.dataset.view;
 
-                // TODO: better implementation of toggle filter
-                //     $('body').on('click', '.js--toggle-stage', function () {
-                //        var $el = $(this);
-                //        var mode = $el.data('view');
+                document.querySelectorAll('[data-view]').forEach(node => {
+                    const attribute = node.attributes['data-view'];
 
-                //         $('[data-view]')
-                //             .hide()
-                //             .filter('[data-view!="' + mode + '"]')
-                //             .show();
+                    if (attribute && attribute.nodeValue !== mode) {
+                        node.style.display = 'inline-block';
+                    } else {
+                        node.style.display = 'none';
+                    }
+                });
 
-                //         $('[data-stage]')
-                //             .hide()
-                //             .filter('[data-stage="' + mode + '"]')
-                //             .show();
-                //     });
+                document.querySelectorAll('[data-stage]').forEach(node => {
+                    const attribute = node.attributes['data-stage'];
+
+                    if (attribute && attribute.nodeValue === mode) {
+                        node.style.display = 'block';
+                    } else {
+                        node.style.display = 'none';
+                    }
+                });
             });
         });
     }
@@ -238,6 +244,7 @@ function slideDown(el) {
                     .catch(() => {
                         // TODO: implement slideDown
                         // document.getElementById('error').slideDown(300);
+                        slideDown(document.getElementById('error'));
                     });
             }
         });

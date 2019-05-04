@@ -7,7 +7,6 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"strconv"
 	"strings"
@@ -78,7 +77,7 @@ func ShowAction(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintf(w, RenderLayout("show.hbs", map[string]string{
 		"message":              loadedMessage.Content,
-		"activeUntilTimestamp": strconv.FormatInt(time.Now().Local().Add(duration).Unix()*1000, 10),
+		"activeUntilTimestamp": strconv.FormatInt(time.Now().Add(duration).Unix()*1000, 10),
 		"token":                vars["token"],
 		"durationString":       duration.String(),
 	}))
@@ -138,17 +137,20 @@ func DeleteMessageAction(w http.ResponseWriter, r *http.Request) {
 }
 
 type requestMessageType struct {
-	Delay   int64
+	Delay   int64 `json:",string"`
 	Message string
 }
 
 // NewMessageAction will handle new messages
 func NewMessageAction(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
-	body, _ := ioutil.ReadAll(r.Body)
-
+	decoder := json.NewDecoder(r.Body)
 	requestMessage := requestMessageType{}
-	json.Unmarshal(body, &requestMessage)
+
+	err := decoder.Decode(&requestMessage)
+	if err != nil {
+		panic(err)
+	}
 
 	message := Message{
 		Content:   requestMessage.Message,
@@ -156,8 +158,6 @@ func NewMessageAction(w http.ResponseWriter, r *http.Request) {
 		Token:     generateToken(),
 		CreatedAt: time.Now(),
 	}
-
-	fmt.Println(message)
 
 	bytes, err := json.Marshal(&message)
 	if err != nil {

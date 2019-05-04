@@ -28,7 +28,7 @@
     },
     "scripts": {
         "build": "webpack --config webpack.config.js",
-        "watch": "NODE_ENV=developent webpack -w --config webpack.config.js"
+        "dev": "NODE_ENV=developent webpack -w --config webpack.config.js"
     },
     "bin": "index.js",
     "pkg": {
