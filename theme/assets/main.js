@@ -101,7 +101,7 @@ var checkRemainingTime = function(subjectSelector) {
  * @param {*} selector
  * @param {*} remainingMs
  */
-var msToReadableDuration = function(remainingMs) {
+var msToReadableDuration = function(remainingMs, skipSeconds = false) {
     if (remainingMs <= 0) return null;
 
     const s = remainingMs / 1000;
@@ -119,7 +119,7 @@ var msToReadableDuration = function(remainingMs) {
     Math.floor(d) > 0 && parts.push(`${days}d`);
     Math.floor(h) > 0 && parts.push(`${hours}h`);
     Math.floor(m) > 0 && parts.push(`${minutes}min`);
-    s < 60 && s >= 0 && parts.push(`${seconds}s`);
+    (skipSeconds && s > 60) || (s >= 0 && parts.push(`${seconds}s`));
 
     return parts.join(' ');
 };
@@ -196,7 +196,7 @@ function slideDown(el) {
             const encryptedMessage = AES.encrypt($messageField.value.trim(), secret).toString();
             const delay = parseInt(document.getElementById('delay').value);
 
-            const readableDuration = msToReadableDuration(delay * 60 * 1000);
+            const readableDuration = msToReadableDuration(delay * 60 * 1000, true);
 
             document.getElementById('selected-delay').innerText = readableDuration;
 
