@@ -15,7 +15,6 @@ var generateSecretKey = function() {
         seed = crypto.getRandomValues(new Uint8Array(2048 / 8)).toString();
     }
 
-    // TODO: implement sha512
     return sha512(seed).toString();
 };
 
@@ -79,16 +78,50 @@ var checkRemainingTime = function(subjectSelector) {
     if (!timestamp) return false;
 
     const activeUntil = new Date(parseInt(timestamp));
-    activeUntil &&
-        setInterval(() => {
-            if (activeUntil < new Date()) {
-                const $page = document.querySelector('.page');
+    const timeCheck = () => {
+        const remainingMs = activeUntil - new Date();
+        if (remainingMs <= 0) {
+            const $page = document.querySelector('.page');
 
-                while ($page.hasChildNodes()) {
-                    $page.removeChild($page.lastChild);
-                }
+            while ($page.hasChildNodes()) {
+                $page.removeChild($page.lastChild);
             }
-        }, 1000);
+        } else if (remainingMs > 0) {
+            document.querySelector('#remaining-time').innerText = msToReadableDuration(remainingMs);
+        }
+
+        return true;
+    };
+    activeUntil && timeCheck() && setInterval(timeCheck, 1000);
+};
+
+/**
+ * Transform miliseconds to a readable string
+ *
+ * @param {*} selector
+ * @param {*} remainingMs
+ */
+var msToReadableDuration = function(remainingMs) {
+    if (remainingMs <= 0) return null;
+
+    const s = remainingMs / 1000;
+    const m = s / 60;
+    const h = m / 60;
+    const d = h / 24;
+
+    const seconds = Math.floor(s % 60);
+    const minutes = Math.floor(m % 60);
+    const hours = Math.floor(h % 60);
+    const days = Math.floor(d);
+
+    const parts = [];
+
+    Math.floor(d) > 0 && parts.push(`${days}d`);
+    Math.floor(h) > 0 && parts.push(`${hours}h`);
+    Math.floor(m) > 0 && parts.push(`${minutes}min`);
+    s < 60 && s >= 0 && parts.push(`${seconds}s`);
+
+    return parts.join(' ');
 };
 
 // TODO: implement fetch polyfil
@@ -161,15 +194,20 @@ function slideDown(el) {
             const template = document.getElementById('template-result-format').innerHTML;
 
             const encryptedMessage = AES.encrypt($messageField.value.trim(), secret).toString();
-            const delay = document.getElementById('delay').value;
-            document.getElementById('selected-delay').innerText = delay;
+            const delay = parseInt(document.getElementById('delay').value);
+
+            const readableDuration = msToReadableDuration(delay * 60 * 1000);
+
+            document.getElementById('selected-delay').innerText = readableDuration;
 
             animateEncryptionOnText($messageField, function() {
                 postData('/', { message: encryptedMessage, delay: delay })
                     .then(res => {
                         if (res.token) {
                             var secureUrl = getSecretUrl(res.token, secret);
-                            $urlField.innerHTML = template.replace('{minutes}', delay).replace('{url}', secureUrl);
+                            $urlField.innerHTML = template
+                                .replace('{duration}', readableDuration)
+                                .replace('{url}', secureUrl);
                             // TODO: implement slideUp
                             slideUp($formStage);
                             // TODO: implement slideDown

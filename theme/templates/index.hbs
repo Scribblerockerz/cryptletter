@@ -39,11 +39,10 @@ Just kidding!</textarea>
             <div class="js--stage-url" style="display: none;">
                 <div class="letter__body">
                     <textarea class="input input--textarea input--url-holder js--select-text" id="url"
-                        readonly="readonly"
-                        rows="{% block words_after_encryption_result_num_rows %}6{% endblock %}"></textarea>
+                        readonly="readonly" rows="6"></textarea>
                 </div>
                 <div class="letter__footer">
-                    This url is available for about <span id="selected-delay">15</span>min<br>
+                    This url is available for about <span id="selected-delay">...</span><br>
                     <strong>after</strong> someone visits it for the first time.
                 </div>
             </div>
@@ -55,9 +54,9 @@ Just kidding!</textarea>
     </div>
     {{> "partials/foot.hbs" }}
 
-    <script type="text/template" id="template-result-format">The following link will be available for {minutes} min AFTER you visit it for the first time:
+    <script type="text/template" id="template-result-format">The following link will be available for {duration} AFTER you visit it for the first time:
 
-    {url}</script>
+{url}</script>
 </body>
 
 </html>

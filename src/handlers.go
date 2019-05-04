@@ -79,7 +79,6 @@ func ShowAction(w http.ResponseWriter, r *http.Request) {
 		"message":              loadedMessage.Content,
 		"activeUntilTimestamp": strconv.FormatInt(time.Now().Add(duration).Unix()*1000, 10),
 		"token":                vars["token"],
-		"durationString":       duration.String(),
 	}))
 }
 
@@ -137,7 +136,7 @@ func DeleteMessageAction(w http.ResponseWriter, r *http.Request) {
 }
 
 type requestMessageType struct {
-	Delay   int64 `json:",string"`
+	Delay   int64 //`json:",string"`
 	Message string
 }
 
