@@ -1,32 +1,31 @@
-require('./appearance.scss');
+// require('./appearance.scss');
+import './appearance.scss';
 
-var AES = require("crypto-js/aes");
-var encodingUTF8 = require("crypto-js/enc-utf8");
-var sha512 = require("crypto-js/sha256");
-
-var $ = require('jquery');
+import AES from 'crypto-js/aes';
+import encodingUTF8 from 'crypto-js/enc-utf8';
+import sha512 from 'crypto-js/sha512';
 
 /**
  * Generate secret key
  */
-var generateSecretKey = function () {
+var generateSecretKey = function() {
     var crypto = window.crypto || window.msCrypto;
     var seed = Math.random();
-
     if (crypto) {
         seed = crypto.getRandomValues(new Uint8Array(2048 / 8)).toString();
     }
 
+    // TODO: implement sha512
     return sha512(seed).toString();
 };
 
 /**
  * Get secret url by token, secret
  */
-var getSecretUrl = function (token, secret) {
-    return window.location.href.replace(/\/+$/, '')
-            + '/' + token + '/#/' + secret;
-}
+var getSecretUrl = function(token, secret) {
+    const baseUrl = window.location.href.replace(/\/+$/, '');
+    return `${baseUrl}/${token}/#/${secret}`;
+};
 
 /**
  * Helper function for replacing strings at index
@@ -36,7 +35,7 @@ var getSecretUrl = function (token, secret) {
  * @param chr
  * @returns {*}
  */
-var stringReplaceAt = function (str, index, chr) {
+var stringReplaceAt = function(str, index, chr) {
     if (index > str.length - 1) return str;
     return str.substr(0, index) + chr + str.substr(index + 1);
 };
@@ -48,145 +47,210 @@ var stringReplaceAt = function (str, index, chr) {
  * @param finishCallback
  * @param delay
  */
-var animateEncryptionOnText = function ($elem, finishCallback, delay) {
+var animateEncryptionOnText = function($elem, finishCallback, delay) {
     delay = delay || 5;
-
-    var text = $elem.val();
+    var text = $elem.value;
     var charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
     // reduce delay if message is long
     delay = text.length >= 500 ? 0 : delay;
-
     // skip animation if message is very long
     if (text.length < 1000) {
-
-        for (var i=0; i<text.length;i++) {
-            setTimeout(function(idx) {
-                var char = text.charAt(idx);
-                if (char !== '\n') {
-                    // random character
-                    var randChar = charset.charAt(Math.floor(Math.random() * charset.length));
-                    text = stringReplaceAt(text, idx, randChar);
-                }
-                $elem.val(text);
-            }, delay * i, i);
+        for (var i = 0; i < text.length; i++) {
+            setTimeout(
+                function(idx) {
+                    var char = text.charAt(idx);
+                    if (char !== '\n') {
+                        // random character
+                        var randChar = charset.charAt(Math.floor(Math.random() * charset.length));
+                        text = stringReplaceAt(text, idx, randChar);
+                    }
+                    $elem.value = text;
+                },
+                delay * i,
+                i,
+            );
         }
     }
-
     setTimeout(finishCallback, delay * i);
 };
 
 var checkRemainingTime = function(subjectSelector) {
-    var timestamp = $(subjectSelector).data('available-until');
+    const timestamp = document.querySelector(subjectSelector).dataset.availableUntil;
+    if (!timestamp) return false;
+    const activeUntil = new Date(timestamp);
+    activeUntil &&
+        setInterval(() => {
+            if (activeUntil < new Date()) {
+                const $page = document.querySelector('.page');
+                $page.parentNode.removeChild($page);
+            }
+        }, 1000);
+};
 
-    if (!timestamp) { return false; }
-
-    var activeUntil = new Date(timestamp);
-    activeUntil && setInterval(function () {
-        if (activeUntil < new Date()) {
-          $('.page').remove();
-          location.reload();
-        }
-    }, 1000);
+// TODO: implement fetch polyfil
+// Implementation: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+function postData(url = '', data = {}) {
+    // Default options are marked with *
+    return fetch(url, {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, cors, *same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+            'Content-Type': 'application/json',
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: 'follow', // manual, *follow, error
+        referrer: 'no-referrer', // no-referrer, *client
+        body: JSON.stringify(data), // body data type must match "Content-Type" header
+    }).then(response => response.json()); // parses JSON response into native Javascript objects
 }
 
-$(document).ready(function () {
+// Delete Data
+function deleteData(url = '') {
+    // Default options are marked with *
+    return fetch(url, {
+        method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, cors, *same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        redirect: 'follow', // manual, *follow, error
+        referrer: 'no-referrer', // no-referrer, *client
+        // body: '', // body data type must match "Content-Type" header
+    }).then(response => response.json()); // parses JSON response into native Javascript objects
+}
 
+function fadeOut(el) {
+    el.style.display = 'none';
+}
+
+function fadeIn(el) {
+    el.style.display = '';
+}
+
+function slideUp(el) {
+    el.style.display = 'none';
+}
+
+function slideDown(el) {
+    el.style.display = '';
+}
+
+(function() {
     var secret = generateSecretKey();
 
-    // Select all text inside read only container
-    $('body').on('focus', '.js--select-text', function (e) {
-        $(this).select();
-    });
-
     // Encrypt page
-    $('body').on('click', '.js--encrypt-message', function (e) {
+    document.querySelectorAll('.js--encrypt-message').forEach(node => {
+        node.addEventListener('click', function(e) {
+            const $encryptButton = e.target;
 
-        var $encryptButton = $(this);
+            // disable button while processing
+            $encryptButton.disabled = true;
 
-        // disable button while processing
-        $encryptButton.attr('disabled', 'disabled');
+            const $messageField = document.getElementById('message');
+            const $urlField = document.getElementById('url');
+            const $formStage = document.querySelector('.js--stage-form');
+            const $linkStage = document.querySelector('.js--stage-url');
+            const template = document.getElementById('template-result-format').innerHTML;
 
-        var $messageField = $('#message');
-        var $urlField = $('#url');
-        var $formStage = $('.js--stage-form');
-        var $linkStage = $('.js--stage-url');
-        var template = $('#template-result-format').html();
+            const encryptedMessage = AES.encrypt($messageField.value.trim(), secret).toString();
+            const delay = document.getElementById('delay').value;
+            document.getElementById('selected-delay').innerText = delay;
 
-        var encryptedMessage = AES.encrypt($messageField.val().trim(), secret).toString();
-        var delay = $('#delay').val();
-
-        $('#selected-delay').text(delay);
-
-        animateEncryptionOnText($messageField, function () {
-            $.post('/', { message: encryptedMessage, delay: delay }, function (res) {
-                if (res.token) {
-                    var secureUrl = getSecretUrl(res.token, secret);
-                    $urlField.html(template.replace('{minutes}', delay).replace('{url}', secureUrl));
-                    $formStage.slideUp(300);
-                    $linkStage.slideDown(300);
-                    $urlField.select();
-                    $encryptButton.fadeOut(300);
-                }
-            }).fail(function () {
-                $('#error').slideDown(300);
+            animateEncryptionOnText($messageField, function() {
+                postData('/', { message: encryptedMessage, delay: delay })
+                    .then(res => {
+                        if (res.token) {
+                            var secureUrl = getSecretUrl(res.token, secret);
+                            $urlField.innerHTML = template.replace('{minutes}', delay).replace('{url}', secureUrl);
+                            // TODO: implement slideUp
+                            slideUp($formStage);
+                            // TODO: implement slideDown
+                            slideDown($linkStage);
+                            $urlField.select();
+                            // TODO: implement fadeOut
+                            fadeOut($encryptButton);
+                        }
+                    })
+                    .catch(function() {
+                        // TODO: implement slideDown by class
+                        slideDown(document.getElementById('error'));
+                    });
             });
         });
     });
 
+    // Decrypt message
+    if (document.querySelector('.page--show')) {
+        const secret = window.location.hash.substr(2);
+        const message = document.getElementById('encrypted-message').innerHTML;
 
-    // Decrypt
-    if ($('.page--show').length) {
-        var secret = window.location.hash.substr(2);
-        var message = $('#encrypted-message').html();
+        console.log(document.getElementById('encrypted-message'));
 
-        var encryptedMessage = AES.decrypt(message, secret).toString(encodingUTF8);
+        const encryptedMessage = AES.decrypt(message, secret).toString(encodingUTF8);
         if (encryptedMessage) {
-            $('#message').text(encryptedMessage);
-            $('#raw-message').val(encryptedMessage);
+            document.getElementById('message').innerText = encryptedMessage;
+            document.getElementById('raw-message').innerHTML = encryptedMessage;
         }
 
         checkRemainingTime('#letter');
 
         //--- Stages switching
+        document.querySelectorAll('.js--toggle-stage').forEach(node => {
+            node.addEventListener('click', function(e) {
+                const $el = e.target;
+                const mode = $el.dataset.view;
 
-        $('body').on('click', '.js--toggle-stage', function () {
-           var $el = $(this);
-           var mode = $el.data('view');
+                // TODO: better implementation of toggle filter
+                //     $('body').on('click', '.js--toggle-stage', function () {
+                //        var $el = $(this);
+                //        var mode = $el.data('view');
 
-            $('[data-view]')
-                .hide()
-                .filter('[data-view!="' + mode + '"]')
-                .show();
+                //         $('[data-view]')
+                //             .hide()
+                //             .filter('[data-view!="' + mode + '"]')
+                //             .show();
 
-            $('[data-stage]')
-                .hide()
-                .filter('[data-stage="' + mode + '"]')
-                .show();
+                //         $('[data-stage]')
+                //             .hide()
+                //             .filter('[data-stage="' + mode + '"]')
+                //             .show();
+                //     });
+            });
         });
     }
 
-    // Handle destroy button
-    $('body').on('click', '.js--destroy-message', function (e) {
+    // Destroy message
+    document.querySelectorAll('.js--destroy-message').forEach(node => {
+        node.addEventListener('click', function(e) {
+            const $destroyButton = e.target;
+            $destroyButton.disabled = true;
+            const actionUrl = $destroyButton.dataset.action;
 
-        var $destroyButton = $(this).attr('disabled', 'disabled');
-        var actionUrl = $destroyButton.data('action');
-
-        if (actionUrl) {
-          $.ajax({
-            url: actionUrl,
-            type: 'DELETE',
-            success: function () {
-              location.reload();
+            if (actionUrl) {
+                deleteData(actionUrl)
+                    .then(() => {
+                        window.location.reload();
+                    })
+                    .catch(() => {
+                        // TODO: implement slideDown
+                        // document.getElementById('error').slideDown(300);
+                    });
             }
-          }).fail(function () {
-              $('#error').slideDown(300);
-          });
-        }
+        });
     });
 
-    // application is finsihed loading
-    $('body')
-        .addClass('is--ready')
-        .removeClass('is--not-ready');
-});
+    // Select all text inside read only container
+    document.querySelectorAll('.js--select-text').forEach(node => {
+        node.addEventListener('focus', function(e) {
+            e.target.select();
+        });
+    });
+
+    const $body = document.getElementsByTagName('body')[0];
+    $body.classList.add('is--ready');
+    $body.classList.remove('is--not-ready');
+})();

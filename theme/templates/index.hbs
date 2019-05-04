@@ -1,21 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 {{> "partials/head.hbs" }}
-<body class="page page--homepage">
+
+<body class="page page--homepage is--not-ready">
     <div class="page__container">
         {{> "partials/header.hbs" }}
         {{> "partials/errors.hbs" }}
-        
+
         <div class="letter letter--striped letter--spaced">
             <div class="js--stage-form">
                 <div class="letter__body">
-                    <textarea
-                        id="message"
-                        rows="10"
-                        class="input input--textarea input--drag-down"
-                        autocomplete="off"
-                        autofocus="autofocus"
-                    >Dear John Doe,
+                    <textarea id="message" rows="10" class="input input--textarea input--drag-down" autocomplete="off"
+                        autofocus="autofocus">Dear John Doe,
 
 here is the password you requested:
 
@@ -42,7 +38,9 @@ Just kidding!</textarea>
             </div>
             <div class="js--stage-url" style="display: none;">
                 <div class="letter__body">
-                    <textarea class="input input--textarea input--url-holder js--select-text" id="url" readonly="readonly" rows="{% block words_after_encryption_result_num_rows %}6{% endblock %}"></textarea>
+                    <textarea class="input input--textarea input--url-holder js--select-text" id="url"
+                        readonly="readonly"
+                        rows="{% block words_after_encryption_result_num_rows %}6{% endblock %}"></textarea>
                 </div>
                 <div class="letter__footer">
                     This url is available for about <span id="selected-delay">15</span>min<br>
@@ -57,8 +55,9 @@ Just kidding!</textarea>
     </div>
     {{> "partials/foot.hbs" }}
 
-    <script type="text/template" id="template-result-format">The following link will be available for {minutes} min AFTER you visit it for the first time: 
-    
+    <script type="text/template" id="template-result-format">The following link will be available for {minutes} min AFTER you visit it for the first time:
+
     {url}</script>
 </body>
+
 </html>

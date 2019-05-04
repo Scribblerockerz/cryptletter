@@ -7,6 +7,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"strconv"
 	"strings"
@@ -136,14 +137,22 @@ func DeleteMessageAction(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("{}"))
 }
 
+type requestMessageType struct {
+	Delay   int64
+	Message string
+}
+
 // NewMessageAction will handle new messages
 func NewMessageAction(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
-	delay, _ := strconv.ParseInt(r.FormValue("delay"), 10, 64)
+	body, _ := ioutil.ReadAll(r.Body)
+
+	requestMessage := requestMessageType{}
+	json.Unmarshal(body, &requestMessage)
 
 	message := Message{
-		Content:   r.FormValue("message"),
-		Lifetime:  delay,
+		Content:   requestMessage.Message,
+		Lifetime:  requestMessage.Delay,
 		Token:     generateToken(),
 		CreatedAt: time.Now(),
 	}

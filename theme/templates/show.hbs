@@ -1,37 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 {{> "partials/head.hbs" }}
-<body class="page page--show">
+
+<body class="page page--show is--not-ready">
     <div class="page__container">
         {{> "partials/header.hbs" }}
         {{> "partials/errors.hbs" }}
-        
-        <script type="text/data" id="encrypted-message">{{ message }}</script>
 
-        <div id="letter" class="letter letter--striped letter--spaced"  data-available-until="{{ activeUntilTimestamp }}">
+        <script type="text/template" id="encrypted-message">{{ message }}</script>
+
+        <div id="letter" class="letter letter--striped letter--spaced"
+            data-available-until="{{ activeUntilTimestamp }}">
             <div class="js--stage-form">
                 <div class="letter__header">
-                    <button class="btn btn--nano js--toggle-stage" data-view="raw" style="display: inline-block;">view raw</button>
+                    <button class="btn btn--nano js--toggle-stage" data-view="raw" style="display: inline-block;">view
+                        raw</button>
                     <button class="btn btn--nano js--toggle-stage" data-view="text">view text</button>
                 </div>
-                <pre class="letter__body" data-stage="text" style="display: block;"><code id="message">Encrypting message, please wait ...</code></pre>
+                <pre class="letter__body" data-stage="text"
+                    style="display: block;"><code id="message">Encrypting message, please wait ...</code></pre>
                 <div class="letter__body" data-stage="raw">
-                    <textarea class="input input--textarea input--raw js--select-text" id="raw-message" readonly rows="10"></textarea>
+                    <textarea class="input input--textarea input--raw js--select-text" id="raw-message" readonly
+                        rows="10"></textarea>
                 </div>
                 <div class="letter__footer">
                     <div class="u--danger">
-                        PS: This message destroys itself after {{ durationString }} <span title="{{ activeUntilDate }}">{{ timeRemaining }}</span>
+                        PS: This message destroys itself after {{ durationString }} <span
+                            title="{{ activeUntilDate }}">{{ timeRemaining }}</span>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="u--center">
-            <button class="btn btn--primary js--destroy-message" data-action="/{{ token }}/">I'm done, destroy message</button>
+            <button class="btn btn--primary js--destroy-message" data-action="/{{ token }}/">
+                I'm done, destroy message
+            </button>
         </div>
     </div>
     {{> "partials/foot.hbs" }}
 </body>
+
 </html>
-
-

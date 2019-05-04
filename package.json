@@ -1,45 +1,48 @@
 {
-  "name": "cryptletter",
-  "version": "1.1.3",
-  "description": "Self-hosted micro-service for encrypted self-destructing messages",
-  "main": "index.js",
-  "author": "Johannes Schröder <contact@scribblerockerz.com>",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Scribblerockerz/cryptletter.git"
-  },
-  "devDependencies": {
-    "jquery": "^3.3.1",
-    "crypto-js": "^3.1.9-1",
-    "autoprefixer": "^7.2.6",
-    "css-loader": "^0.28.10",
-    "file-loader": "^1.1.11",
-    "image-webpack-loader": "^4.6.0",
-    "node-sass": "^4.11.0",
-    "postcss-loader": "^2.1.1",
-    "sass-loader": "^6.0.7",
-    "style-loader": "^0.18.2",
-    "uglifyjs-webpack-plugin": "^0.4.6",
-    "url-loader": "^1.1.2",
-    "webpack": "^3.11.0"
-  },
-  "scripts": {
-    "build": "webpack"
-  },
-  "bin": "index.js",
-  "pkg": {
-    "scripts": [
-      "src/**/*"
-    ],
-    "assets": [
-      "parameters.json",
-      "views/**/*",
-      "public/**/*"
+    "name": "cryptletter",
+    "version": "1.1.3",
+    "description": "Self-hosted micro-service for encrypted self-destructing messages",
+    "main": "index.js",
+    "author": "Johannes Schröder <contact@scribblerockerz.com>",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Scribblerockerz/cryptletter.git"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.4.0",
+        "@babel/preset-env": "^7.4.2",
+        "autoprefixer": "^7.2.6",
+        "babel-loader": "^8.0.5",
+        "crypto-js": "^3.1.9-1",
+        "css-loader": "^2.1.1",
+        "file-loader": "^1.1.11",
+        "image-webpack-loader": "^4.6.0",
+        "node-sass": "^4.11.0",
+        "postcss-loader": "^2.1.1",
+        "sass-loader": "^6.0.7",
+        "style-loader": "^0.18.2",
+        "url-loader": "^1.1.2",
+        "webpack": "^4.29.6",
+        "webpack-cli": "^3.3.0"
+    },
+    "scripts": {
+        "build": "webpack --config webpack.config.js",
+        "watch": "NODE_ENV=developent webpack -w --config webpack.config.js"
+    },
+    "bin": "index.js",
+    "pkg": {
+        "scripts": [
+            "src/**/*"
+        ],
+        "assets": [
+            "parameters.json",
+            "views/**/*",
+            "public/**/*"
+        ]
+    },
+    "browserslist": [
+        "> 1%",
+        "last 2 versions"
     ]
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions"
-  ]
 }
