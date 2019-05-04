@@ -4,8 +4,8 @@ import (
 	"os"
 
 	"github.com/BurntSushi/toml"
-
 	"github.com/jessevdk/go-flags"
+	"github.com/kelseyhightower/envconfig"
 )
 
 // Configuration is the type of the configuration structure
@@ -82,11 +82,18 @@ func AssembleConfiguration() Configuration {
 	Config = NewConfiguration()
 	opts := ParseArguments()
 
+	// Upgrade configuration with toml configuration file provided as cli-args
 	if opts.ConfigFile != "" {
 		_, err := toml.DecodeFile(opts.ConfigFile, &Config)
 		if err != nil {
 			LogFatal(err)
 		}
+	}
+
+	// Upgrade configuration with evironment variables
+	err := envconfig.Process("app", &Config)
+	if err != nil {
+		panic(err)
 	}
 
 	Config.Debug.LogLevel = len(opts.Verbose)
