@@ -13,28 +13,11 @@
             <div class="js--stage-form">
                 <div class="letter__body">
                     <textarea id="message" rows="10" class="input input--textarea input--drag-down" autocomplete="off"
-                        autofocus="autofocus">Dear John Doe,
-
-here is the password you requested:
-
-p4ssw0rd
-
-This message will be available for 15min after you open it,
-so please store this password securely on a post-it near your computer.
-
-Just kidding!</textarea>
+                        autofocus="autofocus">{{> "text/index--message-intro.hbs"}}</textarea>
                 </div>
                 <div class="letter__footer letter__footer--separator">
                     <div class="u--danger">
-                        PS: This message destroys itself in about
-
-                        <select id="delay" name="delay">
-                            <option value="15">15min</option>
-                            <option value="30">30min</option>
-                            <option value="60">1h</option>
-                            <option value="120">2h</option>
-                            <option value="1440">24h</option>
-                        </select>
+                        {{> "text/index--message-lifetime-hint.hbs"}}
                     </div>
                 </div>
             </div>
@@ -44,21 +27,18 @@ Just kidding!</textarea>
                         readonly="readonly" rows="6"></textarea>
                 </div>
                 <div class="letter__footer">
-                    This url is available for about <span id="selected-delay">...</span><br>
-                    <strong>after</strong> someone visits it for the first time.
+                    {{> "text/index--message-lifetime-hint-after.hbs"}}
                 </div>
             </div>
         </div>
 
         <div class="u--center">
-            <button class="btn btn--primary js--encrypt-message">Encrypt message</button>
+            <button class="btn btn--primary js--encrypt-message">{{> "text/index--button-encrypt.hbs"}}</button>
         </div>
     </div>
     {{> "partials/foot.hbs" }}
 
-    <script type="text/template" id="template-result-format">The following link will be available for {duration} AFTER you visit it for the first time:
-
-{url}</script>
+    <script type="text/template" id="template-result-format">{{> "text/index--result-template.hbs"}}</script>
 </body>
 
 </html>

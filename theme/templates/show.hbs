@@ -20,14 +20,14 @@
                     <button class="btn btn--nano js--toggle-stage" data-view="text">view text</button>
                 </div>
                 <pre class="letter__body" data-stage="text"
-                    style="display: block;"><code id="message">Encrypting message, please wait ...</code></pre>
+                    style="display: block;"><code id="message">{{> "text/show--decryption-pending.hbs"}}</code></pre>
                 <div class="letter__body" data-stage="raw">
                     <textarea class="input input--textarea input--raw js--select-text" id="raw-message" readonly
                         rows="10"></textarea>
                 </div>
                 <div class="letter__footer">
                     <div class="u--danger">
-                        PS: This message destroys itself after <span id="remaining-time">...</span>
+                        {{> "text/show--message-lifetime-hint.hbs"}}
                     </div>
                 </div>
             </div>
@@ -35,7 +35,7 @@
 
         <div class="u--center">
             <button class="btn btn--primary js--destroy-message" data-action="/{{ token }}/">
-                I'm done, destroy message
+                {{> "text/show--button-destroy.hbs"}}
             </button>
         </div>
     </div>
