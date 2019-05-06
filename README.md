@@ -63,11 +63,32 @@ This microservice should be run via docker. If you prefer to run it standalone, 
 
 
 ## Changing Templates
-You can override some template files by placing them in the same structure as the original and reference the your new template dir in configuration `APP_TEMPLATESDIR`.
-<small>_You should change as less as possible to preserve update compatibility._</small>
 
-###### 1. Create a theme
-TBD.
+The application can be modified by replacing templates and adding custom stylesheets.
+
+##### Template override
+
+Add a new template directory and configure it with the env variable `APP_APP_TEMPLATESDIR` or in the toml file.
+```toml
+[app]
+templatesDir = "./my-theme/template-override"
+
+```
+Place all the templates in the same structure to be overwriten.
+
+##### Additional Assets
+
+Add a new assets directory and configure it with the env variable `APP_APP_ASSETSDIR` or in the toml file.
+```toml
+[app]
+assetsDir = "./my-theme/assets"
+```
+
+All the assets will be mounted under `/static/`. Default assets are served under `/s/`.
+
+```html
+<link rel="stylesheet" href="/static/custom-theme.css">
+```
 
 
 ## Build

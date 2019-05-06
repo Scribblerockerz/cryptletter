@@ -17,6 +17,7 @@ type Route struct {
 // Routes slice
 type Routes []Route
 
+const defaultStaticDirPathPrefix = "/s/"
 const staticDirPathPrefix = "/static/"
 
 // NewRouter factory
@@ -39,6 +40,10 @@ func NewRouter() *mux.Router {
 	router.NotFoundHandler = HTTPLogger(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		NotFound(w, r)
 	}), "404")
+
+	router.
+		PathPrefix(defaultStaticDirPathPrefix).
+		Handler(http.StripPrefix(defaultStaticDirPathPrefix, http.FileServer(http.Dir(DefaultConfiguration.App.AssetsDir))))
 
 	router.
 		PathPrefix(staticDirPathPrefix).
