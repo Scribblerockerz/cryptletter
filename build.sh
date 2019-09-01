@@ -10,7 +10,7 @@ echo "Successfully build executable to ./bin/cryptletter"
 npm run build 2>&1 1>/dev/null && \
 echo "Successfully build assets to ./public"
 
-docker build -t scribblerockerz/cryptletter . 2>&1 1>/dev/null && \
+docker build -t scribblerockerz/cryptletter:$(git tag -l --points-at HEAD) . 2>&1 1>/dev/null && \
 echo "Successfully build docker image for scribblerockerz/cryptletter"
 
 docker push scribblerockerz/cryptletter && \
