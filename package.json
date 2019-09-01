@@ -10,21 +10,21 @@
         "url": "https://github.com/Scribblerockerz/cryptletter.git"
     },
     "devDependencies": {
-        "@babel/core": "^7.4.0",
-        "@babel/preset-env": "^7.4.2",
+        "@babel/core": "^7.5.5",
+        "@babel/preset-env": "^7.5.5",
         "autoprefixer": "^7.2.6",
-        "babel-loader": "^8.0.5",
+        "babel-loader": "^8.0.6",
         "crypto-js": "^3.1.9-1",
         "css-loader": "^2.1.1",
         "file-loader": "^1.1.11",
         "image-webpack-loader": "^4.6.0",
-        "node-sass": "^4.11.0",
+        "node-sass": "^4.12.0",
         "postcss-loader": "^2.1.1",
         "sass-loader": "^6.0.7",
         "style-loader": "^0.18.2",
         "url-loader": "^1.1.2",
-        "webpack": "^4.29.6",
-        "webpack-cli": "^3.3.0"
+        "webpack": "^4.39.3",
+        "webpack-cli": "^3.3.7"
     },
     "scripts": {
         "build": "webpack --config webpack.config.js",
