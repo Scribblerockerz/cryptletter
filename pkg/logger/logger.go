@@ -1,10 +1,12 @@
-package main
+package logger
 
 import (
 	"fmt"
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/spf13/viper"
 )
 
 // HTTPLogger is logging values
@@ -42,28 +44,29 @@ func LogFatal(err error) {
 
 // LogError will output information on info verbosity level
 func LogError(message error) {
-	if Config.Debug.LogLevel >= LogLevelError {
+	if viper.GetInt("app.log_level") >= LogLevelError {
 		log.Println(message)
 	}
 }
 
 // LogWarning will output information on info verbosity level
 func LogWarning(message string) {
-	if Config.Debug.LogLevel >= LogLevelWarning {
+	if viper.GetInt("app.log_level") >= LogLevelWarning {
 		log.Println(message)
 	}
 }
 
 // LogInfo will output information on info verbosity level
 func LogInfo(message string) {
-	if Config.Debug.LogLevel >= LogLevelInfo {
+	if viper.GetInt("app.log_level") >= LogLevelInfo {
 		log.Println(message)
 	}
 }
 
 // LogDebug will output information on info verbosity level
 func LogDebug(message string) {
-	if Config.Debug.LogLevel >= LogLevelDebug {
+	if viper.GetInt("app.log_level") >= LogLevelDebug {
 		fmt.Println(message)
 	}
 }
+

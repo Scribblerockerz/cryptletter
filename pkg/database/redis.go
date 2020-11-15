@@ -1,6 +1,7 @@
-package main
+package database
 
 import (
+	"github.com/Scribblerockerz/cryptletter/pkg/logger"
 	"time"
 
 	"github.com/go-redis/redis"
@@ -21,14 +22,14 @@ func connectWithRedis(o *redis.Options, waitDuration time.Duration, maxRetries i
 	pong, err := RedisClient.Ping().Result()
 
 	if err != nil && maxRetries > 0 {
-		LogWarning("Connection to redis failed. Retry...")
+		logger.LogWarning("Connection to redis failed. Retry...")
 		time.Sleep(waitDuration)
 		connectWithRedis(o, waitDuration, maxRetries-1)
 	} else if err != nil {
 		panic(err)
 	} else if pong == "PONG" {
-		LogInfo("Successfuly established connection to redis")
+		logger.LogInfo("Successfully established connection to redis")
 	} else {
-		LogWarning("Connection to redis failed. Pong not received.")
+		logger.LogWarning("Connection to redis failed. Pong not received.")
 	}
 }

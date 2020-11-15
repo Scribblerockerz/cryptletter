@@ -2,3 +2,6 @@ bin/
 node_modules/
 template-override/
 *.local.*
+.idea
+cryptletter.yaml
+vendor

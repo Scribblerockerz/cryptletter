@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"crypto/md5"
@@ -7,24 +7,28 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"github.com/Scribblerockerz/cryptletter/pkg/database"
+	"github.com/Scribblerockerz/cryptletter/pkg/message"
+	"github.com/Scribblerockerz/cryptletter/pkg/template"
 	"net/http"
 	"strconv"
 	"strings"
 	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/spf13/viper"
 )
 
 // IndexAction handles the homepage
 func IndexAction(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, RenderLayout("index.hbs", map[string]string{}))
+	fmt.Fprintf(w, template.RenderLayout("index.hbs", map[string]string{}))
 }
 
 // ShowAction handles a single message
 func ShowAction(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	hasResults, err1 := RedisClient.Exists(vars["token"]).Result()
+	hasResults, err1 := database.RedisClient.Exists(vars["token"]).Result()
 	if err1 != nil {
 		panic(err1)
 	}
@@ -35,12 +39,12 @@ func ShowAction(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result, err := RedisClient.Get(vars["token"]).Result()
+	result, err := database.RedisClient.Get(vars["token"]).Result()
 	if err != nil {
 		panic(err)
 	}
 
-	loadedMessage := &Message{}
+	loadedMessage := &message.Message{}
 	err = json.Unmarshal([]byte(result), loadedMessage)
 	if err != nil {
 		panic(err)
@@ -57,7 +61,7 @@ func ShowAction(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
-		err = RedisClient.Set(loadedMessage.Token, string(bytes), time.Duration(loadedMessage.Lifetime)*time.Minute).Err()
+		err = database.RedisClient.Set(loadedMessage.Token, string(bytes), time.Duration(loadedMessage.Lifetime)*time.Minute).Err()
 		if err != nil {
 			fmt.Printf("An error accoured %s", err)
 		}
@@ -70,12 +74,12 @@ func ShowAction(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	duration, err := RedisClient.TTL(loadedMessage.Token).Result()
+	duration, err := database.RedisClient.TTL(loadedMessage.Token).Result()
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Fprintf(w, RenderLayout("show.hbs", map[string]string{
+	fmt.Fprintf(w, template.RenderLayout("show.hbs", map[string]string{
 		"message":              loadedMessage.Content,
 		"activeUntilTimestamp": strconv.FormatInt(time.Now().Add(duration).Unix()*1000, 10),
 		"token":                vars["token"],
@@ -84,12 +88,12 @@ func ShowAction(w http.ResponseWriter, r *http.Request) {
 
 // NotFound handles a single message
 func NotFound(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, RenderLayout("404.hbs", map[string]string{}))
+	fmt.Fprintf(w, template.RenderLayout("404.hbs", map[string]string{}))
 }
 
 // StyleguideAction displayes all used elements
 func StyleguideAction(w http.ResponseWriter, r *http.Request) {
-	result := RenderLayout("styleguide.hbs", map[string]string{})
+	result := template.RenderLayout("styleguide.hbs", map[string]string{})
 	fmt.Fprintf(w, result)
 }
 
@@ -98,7 +102,7 @@ func DeleteMessageAction(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	vars := mux.Vars(r)
 
-	hasResults, err1 := RedisClient.Exists(vars["token"]).Result()
+	hasResults, err1 := database.RedisClient.Exists(vars["token"]).Result()
 	if err1 != nil {
 		panic(err1)
 	}
@@ -109,12 +113,12 @@ func DeleteMessageAction(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result, err := RedisClient.Get(vars["token"]).Result()
+	result, err := database.RedisClient.Get(vars["token"]).Result()
 	if err != nil {
 		panic(err)
 	}
 
-	loadedMessage := &Message{}
+	loadedMessage := &message.Message{}
 	err = json.Unmarshal([]byte(result), loadedMessage)
 	if err != nil {
 		panic(err)
@@ -126,7 +130,7 @@ func DeleteMessageAction(w http.ResponseWriter, r *http.Request) {
 
 	if loadedMessage.AccessableIP == visitorHash {
 
-		err = RedisClient.Del(loadedMessage.Token).Err()
+		err = database.RedisClient.Del(loadedMessage.Token).Err()
 		if err != nil {
 			fmt.Printf("An error accoured %s", err)
 		}
@@ -151,7 +155,7 @@ func NewMessageAction(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	message := Message{
+	message := message.Message{
 		Content:   requestMessage.Message,
 		Lifetime:  requestMessage.Delay,
 		Token:     generateToken(),
@@ -163,7 +167,7 @@ func NewMessageAction(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	err = RedisClient.Set(message.Token, string(bytes), time.Duration(Config.App.DefaultTTLForNewMessages)*time.Minute).Err()
+	err = database.RedisClient.Set(message.Token, string(bytes), time.Duration(viper.GetInt32("app.default_message_ttl"))*time.Minute).Err()
 	if err != nil {
 		fmt.Printf("An error accoured %s", err)
 	}

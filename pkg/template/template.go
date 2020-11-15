@@ -1,7 +1,8 @@
-package main
+package template
 
 import (
 	"fmt"
+	"github.com/Scribblerockerz/cryptletter/pkg/logger"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -22,8 +23,8 @@ func RenderLayout(path string, ctx map[string]string) string {
 }
 
 func resolveTemplatePath(path string) string {
-	templateDir := Config.App.TemplatesDir
-	fallbackDir := DefaultConfiguration.App.TemplatesDir
+	templateDir := "./web/theme/templates" //main.Config.App.TemplatesDir
+	fallbackDir := "./web/theme/templates" //main.DefaultConfiguration.App.TemplatesDir
 
 	if _, err := os.Stat(templateDir + "/" + path); err == nil {
 		return templateDir + "/" + path
@@ -37,8 +38,8 @@ func resolveTemplatePath(path string) string {
 
 // RegisterPartials will scan the template dir and the provided over-ride dir
 func RegisterPartials() {
-	templateDir := Config.App.TemplatesDir
-	fallbackDir := DefaultConfiguration.App.TemplatesDir
+	templateDir := "./web/theme/templates" //main.Config.App.TemplatesDir
+	fallbackDir := "./web/theme/templates" //main.DefaultConfiguration.App.TemplatesDir
 
 	var partialList []string
 
@@ -52,11 +53,11 @@ func RegisterPartials() {
 	}
 
 	for _, partialName := range partialList {
-		LogDebug(fmt.Sprintf("Regist partial %s", partialName))
+		logger.LogDebug(fmt.Sprintf("Regist partial %s", partialName))
 
 		bytes, err := ioutil.ReadFile(resolveTemplatePath(partialName)) // just pass the file name
 		if err != nil {
-			LogError(err)
+			logger.LogError(err)
 		}
 		partialContent := string(bytes)
 		raymond.RegisterPartial(partialName, partialContent)
@@ -64,26 +65,26 @@ func RegisterPartials() {
 }
 
 func registerPartialsInPath(path string) {
-	LogDebug(fmt.Sprintf("Register partials in path: %s", path))
+	logger.LogDebug(fmt.Sprintf("Register partials in path: %s", path))
 
 	files, err := ioutil.ReadDir(path)
 	if err != nil {
-		LogFatal(err)
+		logger.LogFatal(err)
 	}
 
 	for _, f := range files {
-		LogDebug(fmt.Sprintf("%s %t", f.Name(), f.IsDir()))
+		logger.LogDebug(fmt.Sprintf("%s %t", f.Name(), f.IsDir()))
 	}
 }
 
 func scanPartialsInPath(path string, prefix string) []string {
-	LogDebug(fmt.Sprintf("Scan direcotry: %s", path))
+	logger.LogDebug(fmt.Sprintf("Scan direcotry: %s", path))
 
 	var filePaths []string
 
 	files, err := ioutil.ReadDir(path)
 	if err != nil {
-		LogFatal(err)
+		logger.LogFatal(err)
 	}
 
 	for _, f := range files {
