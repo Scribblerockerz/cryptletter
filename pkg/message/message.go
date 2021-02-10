@@ -10,5 +10,5 @@ type Message struct {
 	Token        string
 	CreatedAt    time.Time
 	Lifetime     int64
-	AccessableIP string
+	AccessibleIP string
 }

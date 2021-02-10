@@ -5,7 +5,6 @@ import (
 	"github.com/Scribblerockerz/cryptletter/pkg/database"
 	"github.com/Scribblerockerz/cryptletter/pkg/logger"
 	"github.com/Scribblerockerz/cryptletter/pkg/router"
-	"github.com/Scribblerockerz/cryptletter/pkg/template"
 	"github.com/go-redis/redis"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -25,14 +24,6 @@ func NewCmd() *cobra.Command {
 
 func runCmd() func(cmd *cobra.Command, args []string) {
 	return func(cmd *cobra.Command, args []string) {
-
-		fmt.Println("Run cmd: serve")
-
-
-		// Assemble configuration
-
-		// Register partials for templating?
-		template.RegisterPartials()
 
 		// Connect to redis
 		database.ConnectRedisClient(&redis.Options{

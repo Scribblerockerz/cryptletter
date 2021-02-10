@@ -65,12 +65,12 @@ var routes = Routes{
 		Pattern:     "/",
 		HandlerFunc: handler.IndexAction,
 	},
-	Route{
-		Name:        "Styleguide",
-		Method:      "GET",
-		Pattern:     "/styleguide",
-		HandlerFunc: handler.StyleguideAction,
-	},
+	//Route{
+	//	Name:        "Styleguide",
+	//	Method:      "GET",
+	//	Pattern:     "/styleguide",
+	//	HandlerFunc: handler.StyleguideAction,
+	//},
 	Route{
 		Name:        "NewMessage",
 		Method:      "POST",
