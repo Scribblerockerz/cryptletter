@@ -1,48 +1,48 @@
 {
-    "name": "cryptletter",
-    "version": "2.0.1",
-    "description": "Self-hosted micro-service for encrypted self-destructing messages",
-    "main": "index.js",
-    "author": "Johannes Schröder <contact@scribblerockerz.com>",
-    "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/Scribblerockerz/cryptletter.git"
+    "name": "web",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "serve": "vue-cli-service serve",
+        "build": "vue-cli-service build",
+        "lint": "vue-cli-service lint"
+    },
+    "dependencies": {
+        "core-js": "^3.6.5",
+        "vue": "^3.0.0",
+        "vue-i18n": "^8.22.4"
     },
     "devDependencies": {
-        "@babel/core": "^7.5.5",
-        "@babel/preset-env": "^7.5.5",
-        "autoprefixer": "^7.2.6",
-        "babel-loader": "^8.0.6",
-        "crypto-js": "^3.1.9-1",
-        "css-loader": "^2.1.1",
-        "file-loader": "^1.1.11",
-        "image-webpack-loader": "^4.6.0",
-        "node-sass": "^4.14.1",
-        "postcss-loader": "^2.1.1",
-        "sass-loader": "^6.0.7",
-        "style-loader": "^0.18.2",
-        "url-loader": "^1.1.2",
-        "webpack": "^4.39.3",
-        "webpack-cli": "^3.3.7"
+        "@vue/cli-plugin-babel": "~4.5.0",
+        "@vue/cli-plugin-eslint": "~4.5.0",
+        "@vue/cli-service": "~4.5.0",
+        "@vue/compiler-sfc": "^3.0.0",
+        "babel-eslint": "^10.1.0",
+        "eslint": "^7.19.0",
+        "eslint-config-airbnb": "^18.2.1",
+        "eslint-config-prettier": "^7.2.0",
+        "eslint-plugin-prettier": "^3.3.1",
+        "eslint-plugin-vue": "^7.0.0-0",
+        "prettier": "^2.2.1"
     },
-    "scripts": {
-        "build": "webpack --config webpack.config.js",
-        "dev": "NODE_ENV=developent webpack -w --config webpack.config.js"
-    },
-    "bin": "index.js",
-    "pkg": {
-        "scripts": [
-            "src/**/*"
+    "eslintConfig": {
+        "root": true,
+        "env": {
+            "node": true
+        },
+        "extends": [
+            "eslint:recommended",
+            "plugin:vue/vue3-essential",
+            "plugin:prettier/recommended"
         ],
-        "assets": [
-            "parameters.json",
-            "views/**/*",
-            "public/**/*"
-        ]
+        "parserOptions": {
+            "parser": "babel-eslint"
+        },
+        "rules": {}
     },
     "browserslist": [
         "> 1%",
-        "last 2 versions"
+        "last 2 versions",
+        "not dead"
     ]
 }

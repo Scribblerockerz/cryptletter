@@ -2,62 +2,61 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     box-sizing: border-box;
-  }
-  
-  body {
-    font-family: "Courier New";
+}
+
+body {
+    font-family: "Courier New",  serif;
     font-size: 16px;
     line-height: 1.5em;
     color: #fff;
     background-color: #595E68;
     padding: 0;
     margin: 0;
-  }
-  
-  h1,
-  h2,
-  h3 {
-    font-family: Georgia;
+}
+
+h1,
+h2,
+h3 {
+    font-family: Georgia, serif;
     font-weight: 400;
-  }
-  
-  a {
+}
+
+a {
     color: inherit;
-  
-    &:hover {
-      text-decoration: none;
-    }
-  }
-  
-  mark {
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+mark {
     background-color: rgba(255, 255, 165, 0.9);
-  }
-  
-  pre,
-  code {
+}
+
+pre,
+code {
     width: 100%;
     display: block;
-    font-family: 'Courier New';
+    font-family: 'Courier New', serif;
     overflow: hidden;
     white-space: pre-line;
-  }
-  
-  ::selection {
+}
+
+::selection {
     background: rgba(158,220,252,0.32); /* WebKit/Blink Browsers */
-  }
-  ::-moz-selection {
+}
+::-moz-selection {
     background: rgba(158,220,252,0.32); /* Gecko Browsers */
-  }
-  
-  .logo {
-    background-image: url('images/logo.svg');
+}
+
+.logo {
+    background-image: url('./logo.svg');
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 180px 46px;
     font-size: 0;
-  
+
     width: 180px;
     height: 46px;
     display: inline-block;
-  }
-  
+}
