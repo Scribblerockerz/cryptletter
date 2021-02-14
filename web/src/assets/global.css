@@ -60,3 +60,14 @@ code {
     height: 46px;
     display: inline-block;
 }
+
+/* Utilities
+ * ----------------------- */
+
+.u--danger {
+    color: #DA4646;
+}
+
+.u--center {
+    text-align: center;
+}

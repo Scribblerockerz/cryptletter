@@ -1,0 +1,5 @@
+{
+    "slogan": "Encrypted self-destructing messages.\nEven Cruise would like to have it!",
+    "messagePlaceholder": "Enter your corresponding message here.\n\nThe message is transmitted encrypted and can only be accessed once after creation.",
+    "lifetimeHint": "PS: This message destroys itself in about {selectDuration}"
+}

@@ -5,8 +5,7 @@
                 <a class="logo" href="/">Cryptletter</a>
             </h1>
             <div class="page__slogan">
-                Encrypted self-destructing messages.<br />
-                Even Cruise would like to have it!
+                {{ $t("slogan") }}
             </div>
         </div>
         <div class="page__container"><slot /></div>
@@ -28,6 +27,10 @@ export default {
     text-align: center;
     line-height: 1.2em;
     margin: 70px auto;
+}
+
+.page__slogan {
+    white-space: pre;
 }
 
 .page__container {
