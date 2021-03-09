@@ -1,7 +1,15 @@
 <template>
     <Page>
         <Letter striped spaced foot-separator>
+            <template v-slot:header>
+                <Button nano>view raw</Button>
+                <Button nano>view text</Button>
+            </template>
             <TextareaField :placeholder="$t('messagePlaceholder')" />
+            <!--            <pre-->
+            <!--                style="display: block"-->
+            <!--            ><code id="message">Decrypting message, please wait ...</code></pre>-->
+
             <template v-slot:footer>
                 <i18n-t keypath="lifetimeHint" tag="span">
                     <template #selectDuration>
@@ -29,7 +37,7 @@ import TextareaField from "../components/TextareaField";
 import Button from "../components/Button";
 
 export default {
-    name: "LetterNew",
+    name: "LetterShow",
     components: {
         Button,
         TextareaField,
