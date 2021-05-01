@@ -1,31 +1,48 @@
 <template>
-    <Page>
+    <Page :is-unavailable="isMissing" v-if="!isPending && isMissing">
+        <h2>{{ t("missingMessageHeadline") }}</h2>
+        <p>{{ t("missingMessageText") }}</p>
+    </Page>
+    <Page v-if="!isPending && !isMissing">
         <Letter striped spaced foot-separator>
             <template v-slot:header>
-                <Button nano>view raw</Button>
-                <Button nano>view text</Button>
+                <Button v-if="!showRaw" nano @click="toggleMode">
+                    view raw
+                </Button>
+                <Button v-else nano @click="toggleMode">view text</Button>
             </template>
-            <TextareaField :placeholder="$t('messagePlaceholder')" />
-            <!--            <pre-->
-            <!--                style="display: block"-->
-            <!--            ><code id="message">Decrypting message, please wait ...</code></pre>-->
+            <TextareaField
+                v-if="showRaw"
+                :modelValue="message"
+                readonly
+                raw
+                focus-selection
+                :rows="10"
+                :placeholder="
+                    isPending ? t('decryptingMessage') : t('messageEmpty')
+                "
+            />
+            <pre
+                v-else
+            ><code id="message">{{ isPending ? t('decryptingMessage') : message ? message : t('messageEmpty') }}</code></pre>
 
             <template v-slot:footer>
-                <i18n-t keypath="lifetimeHint" tag="span">
-                    <template #selectDuration>
-                        <select id="delay" name="delay">
-                            <option value="15">15min</option>
-                            <option value="30">30min</option>
-                            <option value="60">1h</option>
-                            <option value="120">2h</option>
-                            <option value="1440">24h</option>
-                        </select>
-                    </template>
-                </i18n-t>
+                <div class="u--danger">
+                    {{
+                        t("estimatedLifetimeHint", {
+                            duration: readableDuration,
+                        })
+                    }}
+                </div>
             </template>
         </Letter>
         <div class="u--center">
-            <Button primary>{{ $t("encryptMessageLabel") }}</Button>
+            <Button
+                :disabled="isDestroyPending"
+                primary
+                @click="destroyMessage"
+                >{{ t("destroyMessageLabel") }}</Button
+            >
         </div>
     </Page>
 </template>
@@ -35,6 +52,9 @@ import Page from "../components/Page";
 import Letter from "../components/Letter";
 import TextareaField from "../components/TextareaField";
 import Button from "../components/Button";
+import { useI18n } from "vue-i18n";
+import { ref } from "@vue/reactivity";
+import useMessage from "../services/useMessage";
 
 export default {
     name: "LetterShow",
@@ -43,6 +63,39 @@ export default {
         TextareaField,
         Letter,
         Page,
+    },
+    props: {
+        messageId: String,
+    },
+    setup(props) {
+        const { t } = useI18n();
+
+        const showRaw = ref(false);
+        const toggleMode = () => {
+            showRaw.value = !showRaw.value;
+        };
+
+        const {
+            message,
+            isPending,
+            isDestroyPending,
+            isMissing,
+            readableDuration,
+            destroyMessage,
+        } = useMessage(props.messageId);
+
+        return {
+            message,
+            isPending,
+            isDestroyPending,
+            isMissing,
+            readableDuration,
+            showRaw,
+
+            t,
+            toggleMode,
+            destroyMessage,
+        };
     },
 };
 </script>

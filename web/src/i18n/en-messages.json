@@ -2,5 +2,13 @@
     "slogan": "Encrypted self-destructing messages.\nEven Cruise would like to have it!",
     "messagePlaceholder": "Enter your corresponding message here.\n\nThe message is transmitted encrypted and can only be accessed once after creation.",
     "lifetimeHint": "PS: This message destroys itself in about {selectDuration}",
-    "encryptMessageLabel": "Encrypt message"
+    "lifetimeHintAfter": "PS: This message destroys itself after {duration}",
+    "estimatedLifetimeHint": "PS: This message destroys itself in about {duration}",
+    "encryptMessageLabel": "Encrypt message",
+    "destroyMessageLabel": "I'm done, destroy message",
+    "messageResult": "The following link will be available for {duration} AFTER you visit it for the first time:\n\n\n{url}\n",
+    "messageEmpty": "Looks like there was no message provided.",
+    "decryptingMessage": "Decrypting message, please wait ...",
+    "missingMessageHeadline": "Looks like this message is no longer available...",
+    "missingMessageText": "Hmm, maybe there was no message at all."
 }

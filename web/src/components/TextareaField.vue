@@ -12,6 +12,7 @@
         }"
         class="input input--textarea"
         autocomplete="off"
+        @focus="(e) => focusSelection && e.target.select()"
         @input="handleInput"
     />
 </template>
@@ -22,7 +23,7 @@ export default {
     props: {
         modelValue: {
             type: String,
-            required: true,
+            default: null,
         },
         placeholder: {
             type: String,
@@ -51,6 +52,10 @@ export default {
         },
         // TODO: refactor name
         urlHolder: {
+            type: Boolean,
+            default: false,
+        },
+        focusSelection: {
             type: Boolean,
             default: false,
         },
