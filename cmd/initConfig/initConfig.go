@@ -26,6 +26,7 @@ func runCmd() func(cmd *cobra.Command, args []string) {
 		viper.SetDefault("redis.database", 0)
 		viper.SetDefault("app.default_message_ttl", 43830) // in minutes
 		viper.SetDefault("app.log_level", 4) // in minutes
+		viper.SetDefault("app.env", "prod") // in minutes
 		viper.SetDefault("app.server.port", 8080) // in minutes
 
 		err := viper.SafeWriteConfig()

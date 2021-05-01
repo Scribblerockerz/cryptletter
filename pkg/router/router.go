@@ -3,6 +3,7 @@ package router
 import (
 	"github.com/Scribblerockerz/cryptletter/pkg/handler"
 	"github.com/Scribblerockerz/cryptletter/pkg/logger"
+	"github.com/spf13/viper"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -19,7 +20,7 @@ type Route struct {
 // Routes slice
 type Routes []Route
 
-const defaultStaticDirPathPrefix = "/s/"
+const defaultStaticDirPathPrefix = "/"
 const staticDirPathPrefix = "/static/"
 const defaultAssetDir = "web/public"
 const assetDir = "web/public"
@@ -27,15 +28,19 @@ const assetDir = "web/public"
 // NewRouter factory
 func NewRouter() *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
+
 	for _, route := range routes {
 
 		var h http.Handler
 
 		h = route.HandlerFunc
+		if viper.GetString("app.env") == "dev" {
+			h = handler.DecorateCORSHeadersHandler(h)
+		}
 		h = logger.HTTPLogger(h, route.Name)
 
 		router.
-			Methods(route.Method).
+			Methods(http.MethodOptions, route.Method).
 			Path(route.Pattern).
 			Name(route.Name).
 			Handler(h)
@@ -55,16 +60,20 @@ func NewRouter() *mux.Router {
 		PathPrefix(staticDirPathPrefix).
 		Handler(http.StripPrefix(staticDirPathPrefix, http.FileServer(http.Dir(assetDir))))
 
+	if viper.GetString("app.env") == "dev" {
+		router.Use(mux.CORSMethodMiddleware(router))
+	}
+
 	return router
 }
 
 var routes = Routes{
-	Route{
-		Name:        "Index",
-		Method:      "GET",
-		Pattern:     "/",
-		HandlerFunc: handler.IndexAction,
-	},
+	//Route{
+	//	Name:        "Index",
+	//	Method:      "GET",
+	//	Pattern:     "/api/",
+	//	HandlerFunc: handler.IndexAction,
+	//},
 	//Route{
 	//	Name:        "Styleguide",
 	//	Method:      "GET",
@@ -74,19 +83,19 @@ var routes = Routes{
 	Route{
 		Name:        "NewMessage",
 		Method:      "POST",
-		Pattern:     "/",
+		Pattern:     "/api/",
 		HandlerFunc: handler.NewMessageAction,
 	},
 	Route{
 		Name:        "ShowMessage",
 		Method:      "GET",
-		Pattern:     "/{token}/",
+		Pattern:     "/api/{token}/",
 		HandlerFunc: handler.ShowAction,
 	},
 	Route{
 		Name:        "DeleteMessage",
 		Method:      "DELETE",
-		Pattern:     "/{token}/",
+		Pattern:     "/api/{token}/",
 		HandlerFunc: handler.DeleteMessageAction,
 	},
 }

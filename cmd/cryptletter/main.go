@@ -33,8 +33,9 @@ func runCmd() func(cmd *cobra.Command, args []string) {
 		})
 
 		port := viper.GetString("app.server.port")
+		env := viper.GetString("app.env")
 
-		logger.LogInfo(fmt.Sprintf("Serving cryptletter on http://localhost:%s\n", port))
+		logger.LogInfo(fmt.Sprintf("Serving cryptletter on http://localhost:%s in %s environment\n", port, env))
 		logger.LogFatal(http.ListenAndServe(":"+port, router.NewRouter()))
 	}
 }
