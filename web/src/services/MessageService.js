@@ -3,7 +3,7 @@ import AES from 'crypto-js/aes';
 import encodingUTF8 from 'crypto-js/enc-utf8';
 import { generateSecretKey } from './utils';
 
-const BASE_URL = process.env.VUE_APP_API_BASE_URL;
+const BASE_URL = process.env.VUE_APP_API_BASE_URL || '';
 
 class MessageService {
     #secret;
