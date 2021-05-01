@@ -5,6 +5,7 @@ import (
 	"github.com/Scribblerockerz/cryptletter/cmd/cryptletter"
 	"github.com/Scribblerockerz/cryptletter/cmd/initConfig"
 	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -53,6 +54,8 @@ func initializeConfiguration() {
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
+	// replaces APP__ENV to app.env
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "__"))
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
