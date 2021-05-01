@@ -41,3 +41,62 @@ export function msToReadableDuration(remainingMs, skipSeconds = false) {
 
     return parts.join(' ');
 }
+
+/**
+ * Helper function for replacing strings at index
+ *
+ * @param str
+ * @param index
+ * @param chr
+ * @returns {*}
+ */
+function stringReplaceAt(str, index, chr) {
+    if (index > str.length - 1) return str;
+    return str.substr(0, index) + chr + str.substr(index + 1);
+}
+
+/**
+ * Eyecandy — can be removed
+ *
+ * @param $elem
+ * @param finishCallback
+ * @param delay
+ */
+export async function animateEncryptionOnText(
+    text,
+    runtimeCallback,
+    delay = 5
+) {
+    return new Promise((resolve) => {
+        // skip animation if message is very long
+        if (text.length >= 1000) {
+            resolve();
+        }
+
+        const charset =
+            'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+        // reduce delay if message is long
+        delay = text.length >= 500 ? 0 : delay;
+
+        for (var i = 0; i < text.length; i++) {
+            setTimeout(
+                function (idx) {
+                    var char = text.charAt(idx);
+                    if (char !== '\n') {
+                        // random character
+                        var randChar = charset.charAt(
+                            Math.floor(Math.random() * charset.length)
+                        );
+                        text = stringReplaceAt(text, idx, randChar);
+                    }
+                    runtimeCallback(text);
+                },
+                delay * i,
+                i
+            );
+        }
+
+        setTimeout(resolve, delay * i);
+    });
+}

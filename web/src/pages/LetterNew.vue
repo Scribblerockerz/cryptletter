@@ -53,7 +53,10 @@ import TextareaField from "../components/TextareaField";
 import Button from "../components/Button";
 import { ref, computed } from "@vue/reactivity";
 import MessaageService from "../services/MessageService";
-import { msToReadableDuration } from "../services/utils";
+import {
+    animateEncryptionOnText,
+    msToReadableDuration,
+} from "../services/utils";
 import { useI18n } from "vue-i18n";
 
 export default {
@@ -86,7 +89,13 @@ export default {
         async function submit() {
             const d = parseInt(delay.value);
             isPending.value = true;
-            url.value = await MessaageService.publish(message.value, d);
+            const rawMessage = message.value;
+
+            await animateEncryptionOnText(message.value, (nextText) => {
+                message.value = nextText;
+            });
+
+            url.value = await MessaageService.publish(rawMessage, d);
             durationInWords.value = msToReadableDuration(d * 60 * 1000, true);
             isSubmitted.value = true;
             setTimeout(() => {
