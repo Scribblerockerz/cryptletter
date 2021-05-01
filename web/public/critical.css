@@ -2,7 +2,7 @@ body {
     background-color: #595e68;
 }
 
-body::after {
+body::before {
     transition: opacity 0.2s ease-in-out;
     content: "";
     position: absolute;
@@ -23,7 +23,7 @@ body.is--ready > * {
     transition: opacity 0.2s ease-in-out;
 }
 
-body.is--ready::after {
+body.is--ready::before {
     opacity: 0;
 }
 
@@ -31,14 +31,21 @@ body.is--not-ready > * {
     opacity: 0;
 }
 
-body.is--not-ready::after {
+body.is--not-ready::before {
     opacity: 1;
     display: block;
 }
 
+body.is--not-ready > noscript {
+    opacity: 1;
+    display: block;
+    position: relative;
+    z-index: 9999999;
+}
+
 .noscript-message {
     width: 80%;
-    font-family: "Courier New",  serif;
+    font-family: "Courier New", serif;
     font-size: 16px;
     line-height: 1.5em;
     color: #fff;
