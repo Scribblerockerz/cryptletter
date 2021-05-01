@@ -1,15 +1,14 @@
 <template>
-    <Page :is-unavailable="isMissing" v-if="!isPending && isMissing">
+    <Page v-if="!isPending && isMissing" :is-unavailable="isMissing">
         <h2>{{ t("missingMessageHeadline") }}</h2>
         <p>{{ t("missingMessageText") }}</p>
     </Page>
     <Page v-if="!isPending && !isMissing">
         <Letter striped spaced foot-separator>
             <template v-slot:header>
-                <Button v-if="!showRaw" nano @click="toggleMode">
-                    view raw
+                <Button nano @click="toggleMode">
+                    {{ showRaw ? t("viewRawLabel") : t("viewTextLabel") }}
                 </Button>
-                <Button v-else nano @click="toggleMode">view text</Button>
             </template>
             <TextareaField
                 v-if="showRaw"

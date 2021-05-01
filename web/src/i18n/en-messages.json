@@ -10,5 +10,7 @@
     "messageEmpty": "Looks like there was no message provided.",
     "decryptingMessage": "Decrypting message, please wait ...",
     "missingMessageHeadline": "Looks like this message is no longer available...",
-    "missingMessageText": "Hmm, maybe there was no message at all."
+    "missingMessageText": "Hmm, maybe there was no message at all.",
+    "viewRawLabel": "view raw",
+    "viewTextLabel": "view text"
 }
