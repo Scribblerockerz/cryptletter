@@ -3,6 +3,7 @@ package router
 import (
 	"github.com/Scribblerockerz/cryptletter/pkg/handler"
 	"github.com/Scribblerockerz/cryptletter/pkg/logger"
+	"github.com/Scribblerockerz/cryptletter/web"
 	"github.com/spf13/viper"
 	"net/http"
 
@@ -51,14 +52,18 @@ func NewRouter() *mux.Router {
 	}), "404")
 
 	// Handle static assets
+	//router.
+	//	PathPrefix(defaultStaticDirPathPrefix).
+	//	Handler(http.StripPrefix(defaultStaticDirPathPrefix, http.FileServer(http.Dir(defaultAssetDir))))
 	router.
 		PathPrefix(defaultStaticDirPathPrefix).
-		Handler(http.StripPrefix(defaultStaticDirPathPrefix, http.FileServer(http.Dir(defaultAssetDir))))
+		Handler(web.AssetHandler(defaultStaticDirPathPrefix, "dist/"))
 
-	// Override default assets by placing them into the second dir
-	router.
-		PathPrefix(staticDirPathPrefix).
-		Handler(http.StripPrefix(staticDirPathPrefix, http.FileServer(http.Dir(assetDir))))
+
+	//// Override default assets by placing them into the second dir
+	//router.
+	//	PathPrefix(staticDirPathPrefix).
+	//	Handler(http.StripPrefix(staticDirPathPrefix, http.FileServer(http.Dir(assetDir))))
 
 	if viper.GetString("app.env") == "dev" {
 		router.Use(mux.CORSMethodMiddleware(router))
