@@ -7,9 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 
 ### Added
+- add env var configuration
+- add yml configuration
+- embed frontend assets into the executable
 - add license
 
 ### Changed
+- update readme to reflect usage
+- restructure project setup
+- migrate frontend code to vue3 application
 - update node dependencies
 
 ## [2.0.1] - 2019-09-01
