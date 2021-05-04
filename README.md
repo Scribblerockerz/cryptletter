@@ -48,49 +48,70 @@ services:
             - '6379:6379'
     app:
         image: 'scribblerockerz/cryptletter:latest'
-        command: './cryptletter -vvv'
+        command: './cryptletter'
         ports:
             - '8080:8080'
         links:
             - redis
         environment:
-            - 'APP_DATABASE_ADDRESS=redis:6379'
+            - 'REDIS__ADDRESS=redis:6379'
+            - 'APP__LOG_LEVEL=4
 ```
-
 
 ## Requirements
-This microservice should be run via docker. If you prefer to run it standalone, check the releases page for the latest executable.
+This microservice requires redis to work and can be run via docker or standalone executable.
 
+## Configuration
 
-## Changing Templates
+Configuration can be provided via configuration yaml or env variables.
 
-The application can be modified by replacing templates and adding custom stylesheets.
+You can run `cryptletter config:init` to generate a fresh `cryptletter.yml` in your working directory.
+You can also specify the config file by providing it as an argument to the executable:
 
-##### Template override
-
-Add a new template directory and configure it with the env variable `APP_APP_TEMPLATESDIR` or in the toml file.
-```toml
-[app]
-templatesDir = "./my-theme/template-override"
-
-```
-Place all the templates in the same structure to be overwriten.
-
-##### Additional Assets
-
-Add a new assets directory and configure it with the env variable `APP_APP_ASSETSDIR` or in the toml file.
-```toml
-[app]
-assetsDir = "./my-theme/assets"
+```bash
+$ cryptletter --config ../your/own/path/you-name-it.yml
 ```
 
-All the assets will be mounted under `/static/`. Default assets are served under `/s/`.
 
-```html
-<link rel="stylesheet" href="/static/custom-theme.css">
+```yml
+# cryptletter.yml
+app:
+  default_message_ttl: 43830
+  log_level: 4
+  env: dev
+  server:
+    port: 8080
+  additional:
+    css: './web/example/additional.css'
+    js: './web/example/custom.js'
+redis:
+  address: 127.0.0.1:6379
+  database: 0
+  password: ""
 ```
 
+Environment variables can be used with `__` as the replacement for dot notation.
+
+```
+$ APP__LOG_LEVEL=0 cryptletter
+```
+
+
+## Customization
+
+This microservice is designed to work as it is. It comes with an embedded version of the frontend app (thanks to [go:embed](https://golang.org/pkg/embed/)).
+
+It's possible to insert some css to adjust the appearance of the app, and override/translate the wording via a js configuration.
+```yml
+# cryptletter.yml
+app:
+  additional:
+    css: './your/own/additional.css'
+    js: './your/own/custom.js'
+```
+
+Further customization require a full build, since the assets are embedded into the executable for ease of use.
 
 ## Build
 
-Run `./build.sh` and get your executable.
+Run `./build.sh` and get your executable (you may adjust the docker build push destination).
