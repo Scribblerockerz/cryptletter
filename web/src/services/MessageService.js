@@ -52,8 +52,6 @@ class MessageService {
                     delay: delayInMinutes,
                     creationRestrictionPassword,
                 });
-
-                // TODO: implement 3rd try catch error case
             } else {
                 throw err;
             }

@@ -63,7 +63,7 @@ export default function useMessage(messageId = null) {
         try {
             await MessageService.destory(messageId);
         } catch (err) {
-            // TODO: show error
+            // noop
         }
         remainingTimeInterval && clearInterval(remainingTimeInterval);
         message.value = null;

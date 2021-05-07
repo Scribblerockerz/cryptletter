@@ -8,15 +8,22 @@
                 {{ t("slogan") }}
             </div>
         </div>
-        <div class="page__container"><slot /></div>
+        <div class="page__container">
+            <Toaster />
+            <slot />
+        </div>
     </div>
 </template>
 
 <script>
 import { useI18n } from "vue-i18n";
+import Toaster from "./Toaster";
 
 export default {
     name: "Page",
+    components: {
+        Toaster,
+    },
     props: {
         isUnavailable: {
             type: Boolean,

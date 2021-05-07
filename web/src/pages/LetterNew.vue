@@ -58,6 +58,7 @@ import {
     msToReadableDuration,
 } from "../services/utils";
 import { useI18n } from "vue-i18n";
+import useToaster from "../services/useToaster";
 
 export default {
     name: "LetterNew",
@@ -69,6 +70,7 @@ export default {
     },
     setup() {
         const { t } = useI18n();
+        const { addToast } = useToaster();
 
         const message = ref("");
         const delay = ref(15);
@@ -95,7 +97,14 @@ export default {
                 message.value = nextText;
             });
 
-            url.value = await MessaageService.publish(rawMessage, d);
+            try {
+                url.value = await MessaageService.publish(rawMessage, d);
+            } catch (err) {
+                addToast(t("errors.publishing_failed"), "error");
+                isPending.value = false;
+                return;
+            }
+
             durationInWords.value = msToReadableDuration(d * 60 * 1000, true);
             isSubmitted.value = true;
             setTimeout(() => {

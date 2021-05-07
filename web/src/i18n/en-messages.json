@@ -19,5 +19,8 @@
         "passwordLabel": "Password",
         "confirmLabel": "Confirm",
         "cancelLabel": "Cancel"
+    },
+    "errors": {
+        "publishing_failed": "We were unable to issue your cryptletter"
     }
 }
