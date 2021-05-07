@@ -51,19 +51,9 @@ func NewRouter() *mux.Router {
 		handler.NotFound(w, r)
 	}), "404")
 
-	// Handle static assets
-	//router.
-	//	PathPrefix(defaultStaticDirPathPrefix).
-	//	Handler(http.StripPrefix(defaultStaticDirPathPrefix, http.FileServer(http.Dir(defaultAssetDir))))
 	router.
 		PathPrefix(defaultStaticDirPathPrefix).
 		Handler(web.AssetHandler(defaultStaticDirPathPrefix, "dist/"))
-
-
-	//// Override default assets by placing them into the second dir
-	//router.
-	//	PathPrefix(staticDirPathPrefix).
-	//	Handler(http.StripPrefix(staticDirPathPrefix, http.FileServer(http.Dir(assetDir))))
 
 	if viper.GetString("app.env") == "dev" {
 		router.Use(mux.CORSMethodMiddleware(router))
