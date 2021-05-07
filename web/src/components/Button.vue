@@ -1,5 +1,6 @@
 <template>
     <button
+        :type="type"
         :disabled="disabled"
         :class="{
             'btn--primary': primary,
@@ -26,6 +27,10 @@ export default {
         disabled: {
             type: Boolean,
             default: false,
+        },
+        type: {
+            type: String,
+            default: "button",
         },
     },
 };

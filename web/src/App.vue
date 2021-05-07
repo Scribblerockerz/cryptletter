@@ -1,6 +1,7 @@
 <template>
     <LetterShow v-if="messageId" :message-id="messageId" />
     <LetterNew v-else />
+    <PasswordPrompt />
 </template>
 
 <script>
@@ -9,6 +10,7 @@ import "./assets/global.css";
 
 import LetterNew from "./pages/LetterNew";
 import LetterShow from "./pages/LetterShow";
+import PasswordPrompt from "./pages/PasswordPrompt";
 
 import useMessageIdentifier from "./services/useMessageIdentifier";
 
@@ -18,6 +20,7 @@ export default {
     components: {
         LetterNew,
         LetterShow,
+        PasswordPrompt,
     },
 
     setup() {

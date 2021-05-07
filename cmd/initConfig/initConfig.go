@@ -28,6 +28,7 @@ func runCmd() func(cmd *cobra.Command, args []string) {
 		viper.SetDefault("app.log_level", 4) // in minutes
 		viper.SetDefault("app.env", "prod") // in minutes
 		viper.SetDefault("app.server.port", 8080) // in minutes
+		viper.SetDefault("app.creation_protection_password", "")
 
 		err := viper.SafeWriteConfig()
 

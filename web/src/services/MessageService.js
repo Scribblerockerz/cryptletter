@@ -2,6 +2,7 @@ import axios from 'axios';
 import AES from 'crypto-js/aes';
 import encodingUTF8 from 'crypto-js/enc-utf8';
 import { generateSecretKey } from './utils';
+import { requestPasswordPrompt } from '../pages/PasswordPrompt';
 
 const BASE_URL = process.env.VUE_APP_API_BASE_URL || '';
 
@@ -35,10 +36,28 @@ class MessageService {
             this.#secret
         ).toString();
 
-        const res = await axios.post(`${BASE_URL}/api/`, {
-            message: encryptedMessage,
-            delay: delayInMinutes,
-        });
+        let res;
+
+        try {
+            res = await axios.post(`${BASE_URL}/api/`, {
+                message: encryptedMessage,
+                delay: delayInMinutes,
+            });
+        } catch (err) {
+            if (err.response?.status === 401) {
+                const creationRestrictionPassword = await requestPasswordPrompt();
+
+                res = await axios.post(`${BASE_URL}/api/`, {
+                    message: encryptedMessage,
+                    delay: delayInMinutes,
+                    creationRestrictionPassword,
+                });
+
+                // TODO: implement 3rd try catch error case
+            } else {
+                throw err;
+            }
+        }
 
         const secureUrl = this.getSecretUrl(res.data.token, this.#secret);
 

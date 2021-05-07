@@ -143,6 +143,7 @@ func DeleteMessageAction(w http.ResponseWriter, r *http.Request) {
 type requestMessageType struct {
 	Delay   int64 //`json:",string"`
 	Message string
+	CreationRestrictionPassword string //`json:",string"`
 }
 
 // NewMessageAction will handle new messages
@@ -154,6 +155,14 @@ func NewMessageAction(w http.ResponseWriter, r *http.Request) {
 	err := decoder.Decode(&requestMessage)
 	if err != nil {
 		panic(err)
+	}
+
+	passwordProtection := viper.GetString("app.creation_protection_password")
+
+	// Restrict letter creation with a password
+	if requestMessage.CreationRestrictionPassword != passwordProtection {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
 	}
 
 	newMessage := message.Message{
