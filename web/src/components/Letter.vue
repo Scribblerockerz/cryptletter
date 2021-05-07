@@ -1,22 +1,29 @@
 <template>
     <div
         :class="{
-            'letter--striped': striped,
             'letter--spaced': spaced,
         }"
         class="letter"
     >
-        <div v-if="$slots.header" class="letter__header">
-            <slot name="header" />
-        </div>
-        <div class="letter__body"><slot /></div>
         <div
-            v-if="$slots.footer"
-            :class="{ 'letter__footer--separator': footSeparator }"
-            class="letter__footer"
+            :class="{
+                'letter__main--striped': striped,
+            }"
+            class="letter__main"
         >
-            <slot name="footer" />
+            <div v-if="$slots.header" class="letter__header">
+                <slot name="header" />
+            </div>
+            <div class="letter__body"><slot /></div>
+            <div
+                v-if="$slots.footer"
+                :class="{ 'letter__footer--separator': footSeparator }"
+                class="letter__footer"
+            >
+                <slot name="footer" />
+            </div>
         </div>
+        <slot name="attachment" />
     </div>
 </template>
 
@@ -41,7 +48,13 @@ export default {
 </script>
 
 <style scoped>
-.letter {
+/* .letter {
+} */
+.letter--spaced {
+    margin-bottom: 40px;
+}
+
+.letter__main {
     position: relative;
     background-color: #fff;
     color: #000;
@@ -49,15 +62,11 @@ export default {
     padding: 30px 50px;
 }
 
-.letter--striped {
+.letter__main--striped {
     background-image: url("../assets/stripe.svg");
     background-position: right top;
     background-repeat: repeat-y;
     background-size: 20px;
-}
-
-.letter--spaced {
-    margin-bottom: 40px;
 }
 
 .letter__header {

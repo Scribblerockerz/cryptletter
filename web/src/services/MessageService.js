@@ -25,6 +25,10 @@ class MessageService {
         this.#secret = secret;
     }
 
+    getSecret() {
+        return this.#secret;
+    }
+
     /**
      *
      * @param {string} message

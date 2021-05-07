@@ -1,6 +1,9 @@
 <template>
     <Page>
         <Letter striped spaced foot-separator>
+            <template v-slot:header>
+                <Button nano @click="selectFiles">attachments</Button>
+            </template>
             <TextareaField
                 v-show="!isSubmitted"
                 v-model="message"
@@ -37,6 +40,9 @@
                     </template>
                 </i18n-t>
             </template>
+            <template v-slot:attachment>
+                <AttachmentList :files="files" @removeFile="removeFile" />
+            </template>
         </Letter>
         <div v-if="!isSubmitted" class="u--center">
             <Button :disabled="isPending" primary @click="submit">{{
@@ -52,13 +58,15 @@ import Letter from "../components/Letter";
 import TextareaField from "../components/TextareaField";
 import Button from "../components/Button";
 import { ref, computed } from "@vue/reactivity";
-import MessaageService from "../services/MessageService";
+import MessageService from "../services/MessageService";
 import {
     animateEncryptionOnText,
     msToReadableDuration,
 } from "../services/utils";
 import { useI18n } from "vue-i18n";
 import useToaster from "../services/useToaster";
+import AttachmentList from "../components/AttachmentList";
+import useAttachments from "../services/useAttachments";
 
 export default {
     name: "LetterNew",
@@ -67,10 +75,14 @@ export default {
         TextareaField,
         Letter,
         Page,
+        AttachmentList,
     },
     setup() {
         const { t } = useI18n();
         const { addToast } = useToaster();
+        const { files, selectFiles, removeFile } = useAttachments(
+            MessageService.getSecret()
+        );
 
         const message = ref("");
         const delay = ref(15);
@@ -97,8 +109,14 @@ export default {
                 message.value = nextText;
             });
 
+            // TODO: File encryption upload
+            // - publish message as usually, flag for attachments [add empty shells with id's for file uploads], incomplete
+            // - retrieve message token/info from response
+            // - upload files per ajax and reference them on the actual message itslef, mark message as complete!
+            // - display url as usually
+
             try {
-                url.value = await MessaageService.publish(rawMessage, d);
+                url.value = await MessageService.publish(rawMessage, d);
             } catch (err) {
                 addToast(t("errors.publishing_failed"), "error");
                 isPending.value = false;
@@ -121,8 +139,11 @@ export default {
             durationInWords,
             resultMessage,
             resultInput,
+            files,
 
             submit,
+            selectFiles,
+            removeFile,
             t,
         };
     },
