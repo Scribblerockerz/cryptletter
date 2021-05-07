@@ -5,3 +5,8 @@ services:
         image: "redis:alpine"
         ports:
             - "6379:6379"
+    storage:
+        image: "minio/minio"
+        ports:
+            - "9000:9000"
+        command: server /data
