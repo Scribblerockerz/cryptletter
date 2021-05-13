@@ -11,4 +11,13 @@ type Message struct {
 	CreatedAt    time.Time
 	Lifetime     int64
 	AccessibleIP string
+	Attachments  []Attachment
+}
+
+// Attachment is a core type
+type Attachment struct {
+	Name     string
+	MimeType string
+	Token    string
+	HostType string
 }

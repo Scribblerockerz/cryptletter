@@ -23,6 +23,18 @@ func IndexAction(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Serve static public order")
 }
 
+type responseAttachmentType struct {
+	Name     string `json:"name"`
+	MimeType string `json:"mimeType"`
+}
+
+type responseMessageType struct {
+	Message              string                   `json:"message"`
+	ActiveUntilTimestamp string                   `json:"activeUntilTimestamp"`
+	Token                string                   `json:"token"`
+	Attachments          []responseAttachmentType `json:"attachments"`
+}
+
 // ShowAction handles a single message
 func ShowAction(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
@@ -80,10 +92,19 @@ func ShowAction(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	res, err := json.Marshal(map[string]string{
-		"message":              loadedMessage.Content,
-		"activeUntilTimestamp": strconv.FormatInt(time.Now().Add(duration).Unix()*1000, 10),
-		"token":                vars["token"],
+	var responseAttachments []responseAttachmentType
+	for _, attachment := range loadedMessage.Attachments {
+		responseAttachments = append(responseAttachments, responseAttachmentType{
+			Name:     attachment.Name,
+			MimeType: attachment.MimeType,
+		})
+	}
+
+	res, err := json.Marshal(responseMessageType{
+		Message:              loadedMessage.Content,
+		ActiveUntilTimestamp: strconv.FormatInt(time.Now().Add(duration).Unix()*1000, 10),
+		Token:                vars["token"],
+		Attachments:          responseAttachments,
 	})
 
 	if err != nil {
@@ -140,10 +161,16 @@ func DeleteMessageAction(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("{}"))
 }
 
+type requestAttachmentType struct {
+	Name     string
+	MimeType string
+}
+
 type requestMessageType struct {
-	Delay   int64 //`json:",string"`
-	Message string
+	Delay                       int64 //`json:",string"`
+	Message                     string
 	CreationRestrictionPassword string //`json:",string"`
+	Attachments                 []requestAttachmentType
 }
 
 // NewMessageAction will handle new messages
@@ -165,11 +192,21 @@ func NewMessageAction(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var newAttachments []message.Attachment
+
+	for _, requestAttachment := range requestMessage.Attachments {
+		newAttachments = append(newAttachments, message.Attachment{
+			Name:     requestAttachment.Name,
+			MimeType: requestAttachment.MimeType,
+		})
+	}
+
 	newMessage := message.Message{
-		Content:   requestMessage.Message,
-		Lifetime:  requestMessage.Delay,
-		Token:     generateToken(),
-		CreatedAt: time.Now(),
+		Content:     requestMessage.Message,
+		Lifetime:    requestMessage.Delay,
+		Token:       generateToken(),
+		CreatedAt:   time.Now(),
+		Attachments: newAttachments,
 	}
 
 	bytes, err := json.Marshal(&newMessage)

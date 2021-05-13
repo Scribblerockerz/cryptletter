@@ -33,27 +33,34 @@ class MessageService {
      *
      * @param {string} message
      * @param {number} delayInMinutes
+     * @param {Array} files
      */
-    async publish(message, delayInMinutes) {
+    async publish(message, delayInMinutes, files = []) {
         const encryptedMessage = AES.encrypt(
             message.trim(),
             this.#secret
         ).toString();
 
         let res;
+        const payload = {
+            message: encryptedMessage,
+            delay: delayInMinutes,
+            attachments: files.map((file) => {
+                return {
+                    name: file.encryptedName,
+                    mimeType: file.encryptedMimeType,
+                };
+            }),
+        };
 
         try {
-            res = await axios.post(`${BASE_URL}/api/`, {
-                message: encryptedMessage,
-                delay: delayInMinutes,
-            });
+            res = await axios.post(`${BASE_URL}/api/`, payload);
         } catch (err) {
             if (err.response?.status === 401) {
                 const creationRestrictionPassword = await requestPasswordPrompt();
 
                 res = await axios.post(`${BASE_URL}/api/`, {
-                    message: encryptedMessage,
-                    delay: delayInMinutes,
+                    ...payload,
                     creationRestrictionPassword,
                 });
             } else {

@@ -116,7 +116,11 @@ export default {
             // - display url as usually
 
             try {
-                url.value = await MessageService.publish(rawMessage, d);
+                url.value = await MessageService.publish(
+                    rawMessage,
+                    d,
+                    files.value
+                );
             } catch (err) {
                 addToast(t("errors.publishing_failed"), "error");
                 isPending.value = false;
