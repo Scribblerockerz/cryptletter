@@ -13,6 +13,9 @@
     "missingMessageText": "Hmm, maybe there was no message at all.",
     "viewRawLabel": "view raw",
     "viewTextLabel": "view text",
+    "addAttachmentsLabel": "attachments",
+    "deleteAttachmentLabel": "delete",
+    "downloadAttachmentLabel": "download",
     "passwordProtection": {
         "headline": "Postage Stamp Protection",
         "description": "This instance requires a password to issue a cryptletter.",

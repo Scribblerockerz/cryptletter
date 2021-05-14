@@ -1,6 +1,11 @@
 <template>
     <div v-if="files.length" class="attachment-list">
-        <div v-for="(file, i) in files" :key="i" class="attachment-list__file">
+        <button
+            v-for="(file, i) in files"
+            :key="i"
+            class="attachment-list__file"
+            @click="triggerAction(file)"
+        >
             <FileIcon :mimeType="file.mimeType" />
             <div class="attachment-list__file-info">
                 <span class="attachment-list__file-name">{{ file.name }}</span>
@@ -8,26 +13,25 @@
                     {{ humanFileSize(file.size, true) }}
                 </div>
             </div>
-            <Button v-if="file.token" nano @click="$emit('downloadFile', file)">
-                {{ t("downloadAttachmentLabel") }}
-            </Button>
-            <Button v-else nano @click="$emit('removeFile', file)">
-                {{ t("deleteAttachmentLabel") }}
-            </Button>
-        </div>
+            <div class="attachment-list__action-label">
+                {{
+                    file.token
+                        ? t("downloadAttachmentLabel")
+                        : t("deleteAttachmentLabel")
+                }}
+            </div>
+        </button>
     </div>
 </template>
 
 <script>
 import { humanFileSize } from "../services/utils";
-import Button from "./Button";
 import FileIcon from "./FileIcon";
 import { useI18n } from "vue-i18n";
 
 export default {
     name: "AttachmentList",
     components: {
-        Button,
         FileIcon,
     },
     props: {
@@ -37,12 +41,23 @@ export default {
         },
     },
     emits: ["removeFile"],
-    setup() {
+    setup(props, { emit }) {
         const { t } = useI18n();
 
+        const triggerAction = (file) => {
+            console.log("trigger action", file);
+            if (file.token) {
+                emit("downloadFile", file);
+                return;
+            }
+
+            emit("removeFile", file);
+        };
+
         return {
-            humanFileSize,
             t,
+            humanFileSize,
+            triggerAction,
         };
     },
 };
@@ -98,13 +113,22 @@ export default {
 }
 
 .attachment-list__file {
-    color: #000;
+    width: 100%;
+    border: 0;
+    background-color: transparent;
+    color: #707d8c;
     padding: 10px 0;
     display: grid;
     grid-template-columns: auto 1fr auto;
     gap: 10px;
     align-items: center;
     line-height: 1;
+    text-align: left;
+    cursor: pointer;
+}
+
+.attachment-list__file:hover {
+    color: #000;
 }
 
 .attachment-list__file + .attachment-list__file {
@@ -124,5 +148,16 @@ export default {
     opacity: 0.5;
     font-size: 0.8em;
     margin-top: 5px;
+}
+
+.attachment-list__action-label {
+    border: 1px solid transparent;
+    text-transform: uppercase;
+    padding: 2px 4px;
+    font-size: 10px;
+}
+
+.attachment-list__file:hover .attachment-list__action-label {
+    border-color: currentColor;
 }
 </style>
