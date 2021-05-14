@@ -2,7 +2,9 @@
     <Page>
         <Letter striped spaced foot-separator>
             <template v-slot:header>
-                <Button nano @click="selectFiles">attachments</Button>
+                <Button v-if="!isSubmitted" nano @click="selectFiles">
+                    {{ t("addAttachmentsLabel") }}
+                </Button>
             </template>
             <TextareaField
                 v-show="!isSubmitted"
@@ -66,7 +68,7 @@ import {
 import { useI18n } from "vue-i18n";
 import useToaster from "../services/useToaster";
 import AttachmentList from "../components/AttachmentList";
-import useAttachments from "../services/useAttachments";
+import { useAttachmentsWriter } from "../services/useAttachments";
 
 export default {
     name: "LetterNew",
@@ -80,7 +82,7 @@ export default {
     setup() {
         const { t } = useI18n();
         const { addToast } = useToaster();
-        const { files, selectFiles, removeFile } = useAttachments(
+        const { files, selectFiles, removeFile } = useAttachmentsWriter(
             MessageService.getSecret()
         );
 

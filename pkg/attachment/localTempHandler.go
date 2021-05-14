@@ -1,9 +1,8 @@
-package handler
+package attachment
 
 import (
 	"errors"
 	"fmt"
-	"github.com/Scribblerockerz/cryptletter/pkg/attachment"
 	"io/ioutil"
 	"os"
 )
@@ -51,6 +50,6 @@ func (l localTempHandler) Delete(identifier string) error {
 	return nil
 }
 
-func NewLocalTempHandler() attachment.Handler {
+func NewLocalTempHandler() Handler {
 	return &localTempHandler{}
 }

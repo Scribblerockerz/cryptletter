@@ -7,6 +7,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"github.com/Scribblerockerz/cryptletter/pkg/attachment"
 	"github.com/Scribblerockerz/cryptletter/pkg/database"
 	"github.com/Scribblerockerz/cryptletter/pkg/logger"
 	"github.com/Scribblerockerz/cryptletter/pkg/message"
@@ -53,6 +54,7 @@ type responseAttachmentType struct {
 	Token    string `json:"token"`
 	Name     string `json:"name"`
 	MimeType string `json:"mimeType"`
+	Size     string `json:"size"`
 }
 
 type responseMessageType struct {
@@ -104,11 +106,12 @@ func ShowAction(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var responseAttachments []responseAttachmentType
-	for _, attachment := range loadedMessage.Attachments {
+	for _, att := range loadedMessage.Attachments {
 		responseAttachments = append(responseAttachments, responseAttachmentType{
-			Token:    attachment.Token,
-			Name:     attachment.Name,
-			MimeType: attachment.MimeType,
+			Token:    att.Token,
+			Name:     att.Name,
+			MimeType: att.MimeType,
+			Size:     att.Size,
 		})
 	}
 
@@ -146,15 +149,15 @@ func GetAttachmentAction(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	attachmentHandler := NewLocalTempHandler()
+	attachmentHandler := attachment.NewLocalTempHandler()
 	var data string
 
-	for _, attachment := range loadedMessage.Attachments {
-		if attachment.Token != vars["attachmentToken"] {
+	for _, att := range loadedMessage.Attachments {
+		if att.Token != vars["attachmentToken"] {
 			continue
 		}
 
-		data, err = attachmentHandler.Get(attachment.FileID)
+		data, err = attachmentHandler.Get(att.FileID)
 		if err != nil {
 			logger.LogError(err)
 			NotFound(w, r)
@@ -185,10 +188,10 @@ func DeleteMessageAction(w http.ResponseWriter, r *http.Request) {
 
 	if loadedMessage.AccessibleIP == visitorHash {
 
-		for _, attachment := range loadedMessage.Attachments {
+		for _, att := range loadedMessage.Attachments {
 			// TODO: determine the type of the handler based on attachment.HostType
-			attachmentHandler := NewLocalTempHandler()
-			attachmentHandler.Delete(attachment.FileID)
+			attachmentHandler := attachment.NewLocalTempHandler()
+			attachmentHandler.Delete(att.FileID)
 		}
 
 		err = database.RedisClient.Del(loadedMessage.Token).Err()
@@ -203,6 +206,7 @@ func DeleteMessageAction(w http.ResponseWriter, r *http.Request) {
 type requestAttachmentType struct {
 	Name     string
 	MimeType string
+	Size     string
 	Data     string
 }
 
@@ -232,7 +236,7 @@ func NewMessageAction(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	attachmentHandler := NewLocalTempHandler()
+	attachmentHandler := attachment.NewLocalTempHandler()
 
 	var newAttachments []message.Attachment
 
@@ -243,12 +247,13 @@ func NewMessageAction(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
-		fmt.Printf("Stored new file %s at %s\n", requestAttachment.Name, fileID)
+		fmt.Printf("Stored new file %s at %s - %d\n", requestAttachment.Name, fileID, requestAttachment.Size)
 
 		newAttachments = append(newAttachments, message.Attachment{
 			Token:    generateToken(),
 			Name:     requestAttachment.Name,
 			MimeType: requestAttachment.MimeType,
+			Size:     requestAttachment.Size,
 			FileID:   fileID,
 		})
 	}

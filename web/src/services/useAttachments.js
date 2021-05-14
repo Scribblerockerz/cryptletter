@@ -16,7 +16,7 @@ function createFileInput() {
     return node;
 }
 
-export default function useAttachments(encryptionKey) {
+export function useAttachmentsWriter(encryptionKey) {
     const $fileInput = createFileInput();
 
     const files = ref([]);
@@ -35,7 +35,7 @@ export default function useAttachments(encryptionKey) {
         });
 
         // Reset actual file input
-        $fileInput.value.value = '';
+        $fileInput.value = '';
     });
 
     // Trigger file selection
@@ -70,6 +70,9 @@ export function useAttachmentsReader(
                 mimeType: decryptString(
                     encryptedAttachment.mimeType,
                     encryptionKey
+                ),
+                size: parseInt(
+                    decryptString(encryptedAttachment.size, encryptionKey)
                 ),
                 token: encryptedAttachment.token,
             };

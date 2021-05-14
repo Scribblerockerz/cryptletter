@@ -19,6 +19,7 @@ type Attachment struct {
 	Token    string
 	Name     string
 	MimeType string
+	Size     string
 	FileID   string
 	HostType string
 }

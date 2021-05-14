@@ -50,6 +50,7 @@ class MessageService {
                 return {
                     name: file.encryptedName,
                     mimeType: file.encryptedMimeType,
+                    size: file.encryptedSize,
                     data: file.data,
                 };
             }),
@@ -82,8 +83,9 @@ class MessageService {
 
         const uint8buffer = decryptFileData(res.data, this.#secret);
 
-        // element.setAttribute('href','data:text/plain;charset=utf-8, ' + encodeURIComponent(textInput)); ??? maybe use mimeType?
-        const url = window.URL.createObjectURL(new Blob([uint8buffer]));
+        const url = window.URL.createObjectURL(
+            new Blob([uint8buffer], { type: mimeType })
+        );
         const link = document.createElement('a');
         link.href = url;
         link.setAttribute('download', fileName);

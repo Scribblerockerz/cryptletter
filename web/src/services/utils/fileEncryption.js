@@ -17,26 +17,22 @@ export async function encryptFileInput(fileInput, encryptionKey) {
             // Encrypt data
             const encryptedData = encrypt(wordBuffer, encryptionKey);
 
-            console.log(humanFileSize(encryptedData.ciphertext.sigBytes, true));
-
             // Transform data to plain string (used for transfer to server)
             const encryptedDataAsString = encryptedData.toString();
-            const encryptedName = encrypt(
-                fileInput.name,
+            const encryptedName = encryptString(fileInput.name, encryptionKey);
+            const encryptedMimeType = encryptString(mimeType, encryptionKey);
+            const encryptedSize = encryptString(
+                `${fileInput.size}`,
                 encryptionKey
-            ).toString();
-            const encryptedMimeType = encrypt(
-                mimeType,
-                encryptionKey
-            ).toString();
+            );
 
             resolve({
                 name: fileInput.name,
                 encryptedName,
                 mimeType: mimeType,
                 encryptedMimeType,
-                originalSize: fileInput.size,
-                encryptedSize: encryptedData.ciphertext.sigBytes,
+                size: fileInput.size,
+                encryptedSize,
                 data: encryptedDataAsString,
             });
         };
@@ -101,6 +97,10 @@ function encrypt(data, key) {
     return CryptoJS.AES.encrypt(data, key);
 }
 
+function encryptString(data, key) {
+    return encrypt(data, key).toString();
+}
+
 function decrypt(encryptedData, key) {
     return CryptoJS.AES.decrypt(encryptedData, key);
 }
@@ -159,31 +159,6 @@ function wordArrayToUint8Array(wordArray) {
     }
 
     return result;
-}
-
-// Do I need this?
-// window.dec2bin = (dec) => (dec >>> 0).toString(2);
-
-/**
- * Copied from some dude on the internet
- *
- * @param {*} bytes
- * @param {*} si
- */
-function humanFileSize(bytes, si) {
-    let thresh = si ? 1000 : 1024;
-    if (Math.abs(bytes) < thresh) {
-        return `${bytes} B`;
-    }
-    let units = si
-        ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-        : ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
-    let u = -1;
-    do {
-        bytes /= thresh;
-        ++u;
-    } while (Math.abs(bytes) >= thresh && u < units.length - 1);
-    return `${bytes.toFixed(1)} ${units[u]}`;
 }
 
 /*
