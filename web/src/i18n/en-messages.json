@@ -16,6 +16,8 @@
     "addAttachmentsLabel": "attachments",
     "deleteAttachmentLabel": "delete",
     "downloadAttachmentLabel": "download",
+    "encryptionInProgressFileNameLabel": "Encryption in progress ...",
+    "encryptionInProgressAttachmentLabel": "please wait",
     "passwordProtection": {
         "headline": "Postage Stamp Protection",
         "description": "This instance requires a password to issue a cryptletter.",

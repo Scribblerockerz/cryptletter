@@ -1,7 +1,7 @@
 import { ref } from '@vue/reactivity';
 import { watchEffect } from '@vue/runtime-core';
 import MessageService from './MessageService';
-import { encryptFileInput, decryptString } from './utils/fileEncryption';
+import { encryptFile, decryptString } from './utils/fileEncryption';
 
 function createFileInput() {
     const node = document.createElement('input');
@@ -26,11 +26,15 @@ export function useAttachmentsWriter(encryptionKey) {
 
         const currentFileNames = files.value.map((f) => f.name);
 
-        Array.from(event.target.files).forEach(async (file) => {
+        Array.from(event.target.files).forEach((file) => {
             // Skip files with the same name
             if (currentFileNames.includes(file.name)) return;
 
-            const encryptedFile = await encryptFileInput(file, encryptionKey);
+            const encryptedFile = ref(null);
+
+            encryptFile(file, encryptionKey).then((file) => {
+                encryptedFile.value = file;
+            });
             files.value = [...files.value, encryptedFile];
         });
 
@@ -46,7 +50,7 @@ export function useAttachmentsWriter(encryptionKey) {
     // Remove file from the list of managed files
     function removeFile(file) {
         if (!file) return;
-        files.value = files.value.filter((f) => f.name !== file.name);
+        files.value = files.value.filter((f) => f.value.name !== file.name);
     }
 
     return {
@@ -65,7 +69,8 @@ export function useAttachmentsReader(
     const files = ref([]);
     watchEffect(() => {
         files.value = encryptedAttachments.value.map((encryptedAttachment) => {
-            return {
+            const file = ref(null);
+            file.value = {
                 name: decryptString(encryptedAttachment.name, encryptionKey),
                 mimeType: decryptString(
                     encryptedAttachment.mimeType,
@@ -76,7 +81,10 @@ export function useAttachmentsReader(
                 ),
                 token: encryptedAttachment.token,
             };
+            return file;
         });
+
+        console.log(files);
     });
 
     console.log(files);

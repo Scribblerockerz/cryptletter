@@ -66,6 +66,8 @@ export default {
         const iconName = computed(() => {
             const mimeType = props.mimeType;
 
+            if (!mimeType) return null;
+
             if (mimeType === "application/pdf") return "pdf";
 
             if (["text/plain", "text/markdown"].includes(mimeType))

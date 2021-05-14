@@ -103,6 +103,8 @@ export default {
         });
 
         async function submit() {
+            /* eslint-disable no-unreachable */
+
             const d = parseInt(delay.value);
             isPending.value = true;
             const rawMessage = message.value;
@@ -115,7 +117,7 @@ export default {
                 url.value = await MessageService.publish(
                     rawMessage,
                     d,
-                    files.value
+                    files.value.map((f) => f.value)
                 );
             } catch (err) {
                 addToast(t("errors.publishing_failed"), "error");

@@ -8,14 +8,24 @@
         >
             <FileIcon :mimeType="file.mimeType" />
             <div class="attachment-list__file-info">
-                <span class="attachment-list__file-name">{{ file.name }}</span>
+                <span class="attachment-list__file-name">{{
+                    !file.value
+                        ? t("encryptionInProgressFileNameLabel")
+                        : file.value.name
+                }}</span>
                 <div class="attachment-list__file-size">
-                    {{ humanFileSize(file.size, true) }}
+                    {{
+                        !file.value
+                            ? t("encryptionInProgressFileSizeLabel")
+                            : humanFileSize(file.value.size, true)
+                    }}
                 </div>
             </div>
             <div class="attachment-list__action-label">
                 {{
-                    file.token
+                    !file.value
+                        ? t("encryptionInProgressAttachmentLabel")
+                        : file.value.token
                         ? t("downloadAttachmentLabel")
                         : t("deleteAttachmentLabel")
                 }}
@@ -45,13 +55,11 @@ export default {
         const { t } = useI18n();
 
         const triggerAction = (file) => {
-            console.log("trigger action", file);
-            if (file.token) {
-                emit("downloadFile", file);
-                return;
-            }
+            if (!file.value) return;
 
-            emit("removeFile", file);
+            file.value.token
+                ? emit("downloadFile", file.value)
+                : emit("removeFile", file.value);
         };
 
         return {
