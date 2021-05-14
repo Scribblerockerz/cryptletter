@@ -109,12 +109,6 @@ export default {
                 message.value = nextText;
             });
 
-            // TODO: File encryption upload
-            // - publish message as usually, flag for attachments [add empty shells with id's for file uploads], incomplete
-            // - retrieve message token/info from response
-            // - upload files per ajax and reference them on the actual message itslef, mark message as complete!
-            // - display url as usually
-
             try {
                 url.value = await MessageService.publish(
                     rawMessage,
@@ -128,6 +122,7 @@ export default {
             }
 
             durationInWords.value = msToReadableDuration(d * 60 * 1000, true);
+            files.value = [];
             isSubmitted.value = true;
             setTimeout(() => {
                 resultInput.value.$el.focus();

@@ -18,6 +18,7 @@ export default function useMessage(messageId = null) {
     const isDestroyPending = ref(false);
     const isMissing = ref(false);
     const message = ref(null);
+    const attachments = ref([]);
     const readableDuration = ref(null);
 
     const checkRemainingTime = () => {
@@ -38,6 +39,7 @@ export default function useMessage(messageId = null) {
     MessageService.getMessageData(messageId)
         .then((data) => {
             message.value = data.message;
+            attachments.value = data.attachments;
             activeUntilTimestamp = parseInt(data.activeUntilTimestamp);
             checkRemainingTime();
             isPending.value = false;
@@ -76,6 +78,7 @@ export default function useMessage(messageId = null) {
         isDestroyPending,
         isMissing,
         message,
+        attachments,
         readableDuration,
         destroyMessage,
     };

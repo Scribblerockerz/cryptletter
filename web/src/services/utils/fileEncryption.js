@@ -1,4 +1,5 @@
 import CryptoJS from 'crypto-js';
+import encodingUTF8 from 'crypto-js/enc-utf8';
 
 export async function encryptFileInput(fileInput, encryptionKey) {
     return new Promise((resolve) => {
@@ -43,6 +44,21 @@ export async function encryptFileInput(fileInput, encryptionKey) {
     });
 }
 
+export function decryptFileData(encryptedFileData, encryptionKey) {
+    // Decrypt data
+    const decryptedData = decrypt(encryptedFileData, encryptionKey);
+
+    // Convert WordArray to Uint8Array
+    const uint8buffer = wordArrayToUint8Array(decryptedData);
+
+    return uint8buffer;
+
+    // // Create a new file from Uint8Array
+    // const fakeFile = new File([uint8buffer], 'new-file.jpg', {
+    //     type: mimeType,
+    // });
+}
+
 // function handleFile(file) {
 //     console.log(`Reading ${file.name} with size of ${file.size}`);
 //     const mimeType = file.type;
@@ -85,9 +101,13 @@ function encrypt(data, key) {
     return CryptoJS.AES.encrypt(data, key);
 }
 
-// function decrypt(encryptedData, key) {
-//     return CryptoJS.AES.decrypt(encryptedData, key);
-// }
+function decrypt(encryptedData, key) {
+    return CryptoJS.AES.decrypt(encryptedData, key);
+}
+
+export function decryptString(encryptedData, key) {
+    return decrypt(encryptedData, key).toString(encodingUTF8);
+}
 
 // function previewFile(file) {
 //     const isDataURI = typeof file == 'string';
@@ -117,29 +137,29 @@ function encrypt(data, key) {
  * Converts a cryptjs WordArray to native Uint8Array
  * https://github.com/brix/crypto-js/issues/274
  */
-// function wordArrayToUint8Array(wordArray) {
-//     const l = wordArray.sigBytes;
-//     const words = wordArray.words;
-//     const result = new Uint8Array(l);
-//     var i = 0 /*dst*/,
-//         j = 0; /*src*/
+function wordArrayToUint8Array(wordArray) {
+    const l = wordArray.sigBytes;
+    const words = wordArray.words;
+    const result = new Uint8Array(l);
+    var i = 0 /*dst*/,
+        j = 0; /*src*/
 
-//     // eslint-disable-next-line no-constant-condition
-//     while (true) {
-//         // here i is a multiple of 4
-//         if (i == l) break;
-//         var w = words[j++];
-//         result[i++] = (w & 0xff000000) >>> 24;
-//         if (i == l) break;
-//         result[i++] = (w & 0x00ff0000) >>> 16;
-//         if (i == l) break;
-//         result[i++] = (w & 0x0000ff00) >>> 8;
-//         if (i == l) break;
-//         result[i++] = w & 0x000000ff;
-//     }
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+        // here i is a multiple of 4
+        if (i == l) break;
+        var w = words[j++];
+        result[i++] = (w & 0xff000000) >>> 24;
+        if (i == l) break;
+        result[i++] = (w & 0x00ff0000) >>> 16;
+        if (i == l) break;
+        result[i++] = (w & 0x0000ff00) >>> 8;
+        if (i == l) break;
+        result[i++] = w & 0x000000ff;
+    }
 
-//     return result;
-// }
+    return result;
+}
 
 // Do I need this?
 // window.dec2bin = (dec) => (dec >>> 0).toString(2);

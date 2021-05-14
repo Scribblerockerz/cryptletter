@@ -16,8 +16,9 @@ type Message struct {
 
 // Attachment is a core type
 type Attachment struct {
+	Token    string
 	Name     string
 	MimeType string
-	Token    string
+	FileID   string
 	HostType string
 }

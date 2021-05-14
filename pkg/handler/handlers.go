@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Scribblerockerz/cryptletter/pkg/database"
+	"github.com/Scribblerockerz/cryptletter/pkg/logger"
 	"github.com/Scribblerockerz/cryptletter/pkg/message"
 	"net/http"
 	"strconv"
@@ -23,7 +24,33 @@ func IndexAction(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Serve static public order")
 }
 
+func loadMessageFromRedis(token string) (*message.Message, error) {
+	hasResults, err := database.RedisClient.Exists(token).Result()
+	if err != nil {
+		return nil, err
+	}
+
+	// Key not found
+	if hasResults == 0 {
+		return nil, nil
+	}
+
+	result, err := database.RedisClient.Get(token).Result()
+	if err != nil {
+		return nil, err
+	}
+
+	loadedMessage := &message.Message{}
+	err = json.Unmarshal([]byte(result), loadedMessage)
+	if err != nil {
+		return nil, err
+	}
+
+	return loadedMessage, nil
+}
+
 type responseAttachmentType struct {
+	Token    string `json:"token"`
 	Name     string `json:"name"`
 	MimeType string `json:"mimeType"`
 }
@@ -41,26 +68,10 @@ func ShowAction(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)
 
-	hasResults, err1 := database.RedisClient.Exists(vars["token"]).Result()
-	if err1 != nil {
-		panic(err1)
-	}
-
-	// Key not found
-	if hasResults == 0 {
+	loadedMessage, err := loadMessageFromRedis(vars["token"])
+	if err != nil || loadedMessage == nil {
 		NotFound(w, r)
 		return
-	}
-
-	result, err := database.RedisClient.Get(vars["token"]).Result()
-	if err != nil {
-		panic(err)
-	}
-
-	loadedMessage := &message.Message{}
-	err = json.Unmarshal([]byte(result), loadedMessage)
-	if err != nil {
-		panic(err)
 	}
 
 	visitorHash := getHashedIP(r, loadedMessage.Token)
@@ -95,6 +106,7 @@ func ShowAction(w http.ResponseWriter, r *http.Request) {
 	var responseAttachments []responseAttachmentType
 	for _, attachment := range loadedMessage.Attachments {
 		responseAttachments = append(responseAttachments, responseAttachmentType{
+			Token:    attachment.Token,
 			Name:     attachment.Name,
 			MimeType: attachment.MimeType,
 		})
@@ -114,6 +126,45 @@ func ShowAction(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, string(res))
 }
 
+// GetAttachmentAction handles attachment access
+func GetAttachmentAction(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/plain")
+
+	vars := mux.Vars(r)
+
+	loadedMessage, err := loadMessageFromRedis(vars["token"])
+	if err != nil || loadedMessage == nil {
+		NotFound(w, r)
+		return
+	}
+
+	visitorHash := getHashedIP(r, loadedMessage.Token)
+
+	// Is the current visitor bound with this message?
+	if loadedMessage.AccessibleIP != visitorHash {
+		NotFound(w, r)
+		return
+	}
+
+	attachmentHandler := NewLocalTempHandler()
+	var data string
+
+	for _, attachment := range loadedMessage.Attachments {
+		if attachment.Token != vars["attachmentToken"] {
+			continue
+		}
+
+		data, err = attachmentHandler.Get(attachment.FileID)
+		if err != nil {
+			logger.LogError(err)
+			NotFound(w, r)
+		}
+		break
+	}
+
+	fmt.Fprintf(w, data)
+}
+
 // NotFound handles a single message
 func NotFound(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotFound)
@@ -124,33 +175,21 @@ func DeleteMessageAction(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	vars := mux.Vars(r)
 
-	hasResults, err1 := database.RedisClient.Exists(vars["token"]).Result()
-	if err1 != nil {
-		panic(err1)
-	}
-
-	// Key not found
-	if hasResults == 0 {
+	loadedMessage, err := loadMessageFromRedis(vars["token"])
+	if err != nil || loadedMessage == nil {
 		w.Write([]byte("{}"))
 		return
 	}
 
-	result, err := database.RedisClient.Get(vars["token"]).Result()
-	if err != nil {
-		panic(err)
-	}
-
-	loadedMessage := &message.Message{}
-	err = json.Unmarshal([]byte(result), loadedMessage)
-	if err != nil {
-		panic(err)
-	}
-
 	visitorHash := getHashedIP(r, loadedMessage.Token)
 
-	// First time somone access this message, update message with new expire date
-
 	if loadedMessage.AccessibleIP == visitorHash {
+
+		for _, attachment := range loadedMessage.Attachments {
+			// TODO: determine the type of the handler based on attachment.HostType
+			attachmentHandler := NewLocalTempHandler()
+			attachmentHandler.Delete(attachment.FileID)
+		}
 
 		err = database.RedisClient.Del(loadedMessage.Token).Err()
 		if err != nil {
@@ -164,6 +203,7 @@ func DeleteMessageAction(w http.ResponseWriter, r *http.Request) {
 type requestAttachmentType struct {
 	Name     string
 	MimeType string
+	Data     string
 }
 
 type requestMessageType struct {
@@ -192,12 +232,24 @@ func NewMessageAction(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	attachmentHandler := NewLocalTempHandler()
+
 	var newAttachments []message.Attachment
 
 	for _, requestAttachment := range requestMessage.Attachments {
+		// Handle file storage based on current handler
+		fileID, err := attachmentHandler.Put(requestAttachment.Data)
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Printf("Stored new file %s at %s\n", requestAttachment.Name, fileID)
+
 		newAttachments = append(newAttachments, message.Attachment{
+			Token:    generateToken(),
 			Name:     requestAttachment.Name,
 			MimeType: requestAttachment.MimeType,
+			FileID:   fileID,
 		})
 	}
 

@@ -1,5 +1,7 @@
 import { ref } from '@vue/reactivity';
-import { encryptFileInput } from './utils/fileEncryption';
+import { watchEffect } from '@vue/runtime-core';
+import MessageService from './MessageService';
+import { encryptFileInput, decryptString } from './utils/fileEncryption';
 
 function createFileInput() {
     const node = document.createElement('input');
@@ -52,5 +54,50 @@ export default function useAttachments(encryptionKey) {
 
         selectFiles,
         removeFile,
+    };
+}
+
+export function useAttachmentsReader(
+    encryptionKey,
+    messageId,
+    encryptedAttachments
+) {
+    const files = ref([]);
+    watchEffect(() => {
+        files.value = encryptedAttachments.value.map((encryptedAttachment) => {
+            return {
+                name: decryptString(encryptedAttachment.name, encryptionKey),
+                mimeType: decryptString(
+                    encryptedAttachment.mimeType,
+                    encryptionKey
+                ),
+                token: encryptedAttachment.token,
+            };
+        });
+    });
+
+    console.log(files);
+
+    async function downloadFile(fileInfo) {
+        //
+        console.log('Download', {
+            token: messageId,
+            attachmentToken: fileInfo.token,
+        });
+
+        const file = await MessageService.downloadAttachment(
+            messageId,
+            fileInfo.token,
+            fileInfo.mimeType,
+            fileInfo.name
+        );
+
+        console.log('Actual file', file);
+    }
+
+    return {
+        files,
+
+        downloadFile,
     };
 }

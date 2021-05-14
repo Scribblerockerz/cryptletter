@@ -3,6 +3,7 @@ import AES from 'crypto-js/aes';
 import encodingUTF8 from 'crypto-js/enc-utf8';
 import { generateSecretKey } from './utils';
 import { requestPasswordPrompt } from '../pages/PasswordPrompt';
+import { decryptFileData } from './utils/fileEncryption';
 
 const BASE_URL = process.env.VUE_APP_API_BASE_URL || '';
 
@@ -49,6 +50,7 @@ class MessageService {
                 return {
                     name: file.encryptedName,
                     mimeType: file.encryptedMimeType,
+                    data: file.data,
                 };
             }),
         };
@@ -71,6 +73,23 @@ class MessageService {
         const secureUrl = this.getSecretUrl(res.data.token, this.#secret);
 
         return secureUrl;
+    }
+
+    async downloadAttachment(messageId, attachmentId, mimeType, fileName) {
+        const res = await axios.get(
+            `${BASE_URL}/api/${messageId}/attachment/${attachmentId}`
+        );
+
+        const uint8buffer = decryptFileData(res.data, this.#secret);
+
+        // element.setAttribute('href','data:text/plain;charset=utf-8, ' + encodeURIComponent(textInput)); ??? maybe use mimeType?
+        const url = window.URL.createObjectURL(new Blob([uint8buffer]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', fileName);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 
     /**

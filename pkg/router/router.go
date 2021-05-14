@@ -93,4 +93,10 @@ var routes = Routes{
 		Pattern:     "/api/{token}/",
 		HandlerFunc: handler.DeleteMessageAction,
 	},
+	Route{
+		Name:        "GetAttachment",
+		Method:      "GET",
+		Pattern:     "/api/{token}/attachment/{attachmentToken}",
+		HandlerFunc: handler.GetAttachmentAction,
+	},
 }

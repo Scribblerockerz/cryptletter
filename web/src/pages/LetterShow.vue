@@ -34,6 +34,9 @@
                     }}
                 </div>
             </template>
+            <template v-slot:attachment>
+                <AttachmentList :files="files" @downloadFile="downloadFile" />
+            </template>
         </Letter>
         <div class="u--center">
             <Button
@@ -54,6 +57,9 @@ import Button from "../components/Button";
 import { useI18n } from "vue-i18n";
 import { ref } from "@vue/reactivity";
 import useMessage from "../services/useMessage";
+import AttachmentList from "../components/AttachmentList";
+import { useAttachmentsReader } from "../services/useAttachments";
+import MessageService from "../services/MessageService";
 
 export default {
     name: "LetterShow",
@@ -62,6 +68,7 @@ export default {
         TextareaField,
         Letter,
         Page,
+        AttachmentList,
     },
     props: {
         messageId: String,
@@ -76,12 +83,19 @@ export default {
 
         const {
             message,
+            attachments,
             isPending,
             isDestroyPending,
             isMissing,
             readableDuration,
             destroyMessage,
         } = useMessage(props.messageId);
+
+        const { files, downloadFile } = useAttachmentsReader(
+            MessageService.getSecret(),
+            props.messageId,
+            attachments
+        );
 
         return {
             message,
@@ -90,10 +104,12 @@ export default {
             isMissing,
             readableDuration,
             showRaw,
+            files,
 
             t,
             toggleMode,
             destroyMessage,
+            downloadFile,
         };
     },
 };

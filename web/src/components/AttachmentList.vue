@@ -3,7 +3,12 @@
         <div v-for="(file, i) in files" :key="i" class="attachment-list__file">
             [{{ file.mimeType }}] {{ file.name }} ({{ file.encryptedSize }} /
             {{ file.originalSize }})
-            <Button nano @click="$emit('removeFile', file)">Delete</Button>
+            <Button v-if="file.token" nano @click="$emit('downloadFile', file)">
+                Download
+            </Button>
+            <Button v-else nano @click="$emit('removeFile', file)">
+                Delete
+            </Button>
         </div>
     </div>
 </template>
