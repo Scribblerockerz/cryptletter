@@ -29,23 +29,7 @@
     },
     "resolutions": {
         "ssri": "7.1.1",
-        "postcss": ">=8.2.10",
         "lodash": ">=4.17.21"
-    },
-    "eslintConfig": {
-        "root": true,
-        "env": {
-            "node": true
-        },
-        "extends": [
-            "eslint:recommended",
-            "plugin:vue/vue3-essential",
-            "plugin:prettier/recommended"
-        ],
-        "parserOptions": {
-            "parser": "babel-eslint"
-        },
-        "rules": {}
     },
     "browserslist": [
         "> 1%",
