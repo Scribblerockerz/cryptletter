@@ -6,7 +6,7 @@
             class="attachment-list__file"
             @click="triggerAction(file)"
         >
-            <FileIcon :mimeType="file.mimeType" />
+            <FileIcon :mimeType="file.value && file.value.mimeType" />
             <div class="attachment-list__file-info">
                 <span class="attachment-list__file-name">{{
                     !file.value

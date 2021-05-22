@@ -2,15 +2,13 @@ package handler
 
 import (
 	"crypto/md5"
-	"crypto/rand"
-	"crypto/sha256"
-	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"github.com/Scribblerockerz/cryptletter/pkg/attachment"
 	"github.com/Scribblerockerz/cryptletter/pkg/database"
 	"github.com/Scribblerockerz/cryptletter/pkg/logger"
 	"github.com/Scribblerockerz/cryptletter/pkg/message"
+	"github.com/Scribblerockerz/cryptletter/pkg/utils"
 	"net/http"
 	"strconv"
 	"strings"
@@ -19,11 +17,6 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/spf13/viper"
 )
-
-// IndexAction handles the homepage
-func IndexAction(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Serve static public order")
-}
 
 func loadMessageFromRedis(token string) (*message.Message, error) {
 	hasResults, err := database.RedisClient.Exists(token).Result()
@@ -88,6 +81,21 @@ func ShowAction(w http.ResponseWriter, r *http.Request) {
 		}
 
 		err = database.RedisClient.Set(loadedMessage.Token, string(bytes), time.Duration(loadedMessage.Lifetime)*time.Minute).Err()
+
+		// Determine host type from the stored attachment
+		hostType := ""
+		if len(loadedMessage.Attachments) > 0 {
+			hostType = loadedMessage.Attachments[0].HostType
+		}
+		attachmentHandler := attachment.NewAttachmentHandler(hostType)
+
+		for _, att := range loadedMessage.Attachments {
+			err2 := attachmentHandler.SetTTL(att.FileID, loadedMessage.Lifetime * 60)
+			if err2 != nil {
+				logger.LogError(err2)
+			}
+		}
+
 		if err != nil {
 			fmt.Printf("An error accoured %s", err)
 		}
@@ -149,7 +157,6 @@ func GetAttachmentAction(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	attachmentHandler := attachment.NewLocalTempHandler()
 	var data string
 
 	for _, att := range loadedMessage.Attachments {
@@ -157,6 +164,7 @@ func GetAttachmentAction(w http.ResponseWriter, r *http.Request) {
 			continue
 		}
 
+		attachmentHandler := attachment.NewAttachmentHandler(att.HostType)
 		data, err = attachmentHandler.Get(att.FileID)
 		if err != nil {
 			logger.LogError(err)
@@ -190,7 +198,7 @@ func DeleteMessageAction(w http.ResponseWriter, r *http.Request) {
 
 		for _, att := range loadedMessage.Attachments {
 			// TODO: determine the type of the handler based on attachment.HostType
-			attachmentHandler := attachment.NewLocalTempHandler()
+			attachmentHandler := attachment.NewAttachmentHandler(att.HostType)
 			attachmentHandler.Delete(att.FileID)
 		}
 
@@ -236,7 +244,8 @@ func NewMessageAction(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	attachmentHandler := attachment.NewLocalTempHandler()
+	// TODO: Only enable attachments if they are enabled by configuration at start
+	attachmentHandler := attachment.NewAttachmentHandler(viper.GetString("app.attachments.driver"))
 
 	var newAttachments []message.Attachment
 
@@ -250,7 +259,7 @@ func NewMessageAction(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("Stored new file %s at %s - %d\n", requestAttachment.Name, fileID, requestAttachment.Size)
 
 		newAttachments = append(newAttachments, message.Attachment{
-			Token:    generateToken(),
+			Token:    utils.GenerateToken(),
 			Name:     requestAttachment.Name,
 			MimeType: requestAttachment.MimeType,
 			Size:     requestAttachment.Size,
@@ -261,7 +270,7 @@ func NewMessageAction(w http.ResponseWriter, r *http.Request) {
 	newMessage := message.Message{
 		Content:     requestMessage.Message,
 		Lifetime:    requestMessage.Delay,
-		Token:       generateToken(),
+		Token:       utils.GenerateToken(),
 		CreatedAt:   time.Now(),
 		Attachments: newAttachments,
 	}
@@ -304,15 +313,7 @@ func getHashedIP(req *http.Request, token string) string {
 	return hash
 }
 
-func generateToken() string {
-	randomBytes := make([]byte, 32)
-	_, err := rand.Read(randomBytes)
-	if err != nil {
-		panic(err)
-	}
 
-	return fmt.Sprintf("%x", sha256.Sum256([]byte(base64.StdEncoding.EncodeToString(randomBytes)[:32])))
-}
 
 func DecorateCORSHeadersHandler(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

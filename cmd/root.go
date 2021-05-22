@@ -2,8 +2,10 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/Scribblerockerz/cryptletter/cmd/attachments"
 	"github.com/Scribblerockerz/cryptletter/cmd/cryptletter"
 	"github.com/Scribblerockerz/cryptletter/cmd/initConfig"
+	"github.com/Scribblerockerz/cryptletter/pkg/logger"
 	"os"
 	"strings"
 
@@ -17,7 +19,7 @@ var cfgFile string
 var rootCmd = &cobra.Command{
 	Use:   "cryptletter",
 	Short: "Encrypted self-destructing messages",
-	Long: `Cryptletter is a tiny service to exchange information securely.`,
+	Long:  `Cryptletter is a tiny service to exchange information securely.`,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -39,8 +41,9 @@ func init() {
 
 	// Add commands
 	rootCmd.AddCommand(cryptletter.NewCmd())
-	//rootCmd.AddCommand(analyzeUrl.NewCmd())
 	rootCmd.AddCommand(initConfig.NewCmd())
+	rootCmd.AddCommand(attachments.NewCleanupCmd())
+	rootCmd.AddCommand(attachments.NewDropCmd())
 }
 
 // initializeConfiguration reads in config file and ENV variables if set.
@@ -53,12 +56,12 @@ func initializeConfiguration() {
 		viper.SetConfigType("yaml")
 	}
 
-	viper.AutomaticEnv() // read in environment variables that match
-	// replaces APP__ENV to app.env
-	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "__"))
+	viper.AutomaticEnv()                                    // read in environment variables that match
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "__")) // replaces APP__ENV to app.env
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
+		logger.LogInfo(fmt.Sprintf("Using config file: %s", viper.ConfigFileUsed()))
+		viper.Set("viper.config_file", viper.ConfigFileUsed())
 	}
 }
