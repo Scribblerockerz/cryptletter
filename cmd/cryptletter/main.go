@@ -5,6 +5,7 @@ import (
 	"github.com/Scribblerockerz/cryptletter/pkg/database"
 	"github.com/Scribblerockerz/cryptletter/pkg/logger"
 	"github.com/Scribblerockerz/cryptletter/pkg/router"
+	"github.com/Scribblerockerz/cryptletter/pkg/scheduler"
 	"github.com/go-redis/redis"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -34,6 +35,11 @@ func runCmd() func(cmd *cobra.Command, args []string) {
 
 		port := viper.GetString("app.server.port")
 		env := viper.GetString("app.env")
+
+		// Scheduled cleanup of attachments
+		s := scheduler.NewScheduler()
+		s.ScheduleAttachmentCleanup()
+		s.StartAsync()
 
 		logger.LogInfo(fmt.Sprintf("Serving cryptletter on http://localhost:%s in %s environment\n", port, env))
 		logger.LogFatal(http.ListenAndServe(":"+port, router.NewRouter()))
