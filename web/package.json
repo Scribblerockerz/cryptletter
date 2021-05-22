@@ -27,6 +27,11 @@
         "eslint-plugin-vue": "^7.0.0-0",
         "prettier": "^2.2.1"
     },
+    "resolutions": {
+        "ssri": "7.1.1",
+        "postcss": ">=8.2.10",
+        "lodash": ">=4.17.21"
+    },
     "eslintConfig": {
         "root": true,
         "env": {
