@@ -86,12 +86,8 @@ export default {
     setup() {
         const { t } = useI18n();
         const { addToast } = useToaster();
-        const {
-            files,
-            selectFiles,
-            removeFile,
-            supportsAttachments,
-        } = useAttachmentsWriter(MessageService.getSecret());
+        const { files, selectFiles, removeFile, supportsAttachments } =
+            useAttachmentsWriter(MessageService.getSecret());
 
         const message = ref("");
         const delay = ref(15);
