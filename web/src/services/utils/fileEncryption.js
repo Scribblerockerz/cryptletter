@@ -8,7 +8,6 @@ export async function encryptFile(file, encryptionKey) {
         const reader = new FileReader();
         reader.onload = (e) => {
             const fileData = e.target.result;
-            console.log('onload finished', fileData);
 
             // Create a WordArray out of ArrayBuffer
             let wordBuffer = CryptoJS.lib.WordArray.create(fileData);

@@ -89,20 +89,12 @@ export function useAttachmentsReader(
     });
 
     async function downloadFile(fileInfo) {
-        //
-        console.log('Download', {
-            token: messageId,
-            attachmentToken: fileInfo.token,
-        });
-
-        const file = await MessageService.downloadAttachment(
+        await MessageService.downloadAttachment(
             messageId,
             fileInfo.token,
             fileInfo.mimeType,
             fileInfo.name
         );
-
-        console.log('Actual file', file);
     }
 
     return {
