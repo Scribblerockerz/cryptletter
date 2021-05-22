@@ -20,6 +20,8 @@ export function useAttachmentsWriter(encryptionKey) {
     const $fileInput = createFileInput();
 
     const files = ref([]);
+    const supportsAttachments =
+        window.cryptletterOptions?.supportsAttachments || false;
 
     $fileInput.addEventListener('change', (event) => {
         if (event.target.files.length === 0) return;
@@ -54,6 +56,7 @@ export function useAttachmentsWriter(encryptionKey) {
     }
 
     return {
+        supportsAttachments,
         files,
 
         selectFiles,
@@ -83,11 +86,7 @@ export function useAttachmentsReader(
             };
             return file;
         });
-
-        console.log(files);
     });
-
-    console.log(files);
 
     async function downloadFile(fileInfo) {
         //

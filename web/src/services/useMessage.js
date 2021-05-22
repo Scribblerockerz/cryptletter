@@ -39,7 +39,7 @@ export default function useMessage(messageId = null) {
     MessageService.getMessageData(messageId)
         .then((data) => {
             message.value = data.message;
-            attachments.value = data.attachments;
+            attachments.value = data.attachments || [];
             activeUntilTimestamp = parseInt(data.activeUntilTimestamp);
             checkRemainingTime();
             isPending.value = false;

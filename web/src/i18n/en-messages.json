@@ -17,6 +17,7 @@
     "deleteAttachmentLabel": "delete",
     "downloadAttachmentLabel": "download",
     "encryptionInProgressFileNameLabel": "Encryption in progress ...",
+    "encryptionInProgressFileSizeLabel": "Estimating size ...",
     "encryptionInProgressAttachmentLabel": "please wait",
     "passwordProtection": {
         "headline": "Postage Stamp Protection",

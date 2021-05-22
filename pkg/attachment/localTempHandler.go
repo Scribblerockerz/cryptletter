@@ -174,6 +174,14 @@ func (l localTempHandler) DropAll() error {
 	return l.list.Drp()
 }
 
+func (l localTempHandler) HostType() string {
+	return LocalHostType
+}
+
+const (
+	LocalHostType = "local"
+)
+
 func NewLocalTempHandler(defaultTTL int64, storagePath string) Handler {
 	return &localTempHandler{
 		list:        utils.NewDismissiveList("local-files"),

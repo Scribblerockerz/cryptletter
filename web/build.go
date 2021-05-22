@@ -3,6 +3,8 @@ package web
 import (
 	"bytes"
 	"embed"
+	"encoding/json"
+	"github.com/Scribblerockerz/cryptletter/pkg/utils"
 	"github.com/spf13/viper"
 	"io/fs"
 	"io/ioutil"
@@ -10,7 +12,6 @@ import (
 	"os"
 	"path"
 	"strings"
-	"time"
 )
 
 //go:embed dist/*
@@ -42,6 +43,10 @@ func AssetHandler(prefix, root string) http.Handler {
 	return http.StripPrefix(prefix, http.FileServer(http.FS(handler)))
 }
 
+// frontendOptions are used to provide configuration to the frontend
+type frontendOptions struct {
+	SupportsAttachments bool `json:"supportsAttachments"`
+}
 
 // injectAdditionalContent will modify file contents, and inject additional assets by configuration
 func injectAdditionalContent(file fs.File) (fs.File, error) {
@@ -60,77 +65,58 @@ func injectAdditionalContent(file fs.File) (fs.File, error) {
 	var additionalContent string
 
 	// Inject CSS
-	cssPath := viper.GetString("app.additional.css")
-	if cssPath != "" {
-		content, err := ioutil.ReadFile(cssPath)
-		if err == nil {
-			additionalContent += "<style>" + string(content) + "</style>"
-		}
-	}
+	additionalContent += getInjectableCSS()
+
+	// Inject JS Options
+	additionalContent += getInjectableOptions()
 
 	// Inject JS
-	jsPath := viper.GetString("app.additional.js")
-	if jsPath != "" {
-		content, err := ioutil.ReadFile(jsPath)
-		if err == nil {
-			additionalContent += "<script>" + string(content) + "</script>"
-		}
-	}
+	additionalContent += getInjectableJS()
 
 	content := string(contentBytes[:n1])
 
 	if additionalContent != "" {
-		content = strings.Replace(string(contentBytes[:n1]), "</head>", additionalContent + "</head>", -1)
+		content = strings.Replace(string(contentBytes[:n1]), "</head>", additionalContent+"</head>", -1)
 	}
 
-	patchedFile := inMemoryFile{
-		inMemoryFileInfo: inMemoryFileInfo{fileInfo: fileInfo, size: int64(len(content))},
-		buf: bytes.NewBufferString(content),
+	patchedFile := utils.InMemoryFile{
+		InMemoryFileInfo: utils.InMemoryFileInfo{FileInfoRef: fileInfo, FileSize: int64(len(content))},
+		Buf:              bytes.NewBufferString(content),
 	}
 
 	return patchedFile, nil
 }
 
-type inMemoryFile struct {
-	fs.File
-	inMemoryFileInfo inMemoryFileInfo // Size() will return an inaccurate value, since we modified it
-	buf *bytes.Buffer
+func getInjectableCSS() string {
+	cssPath := viper.GetString("app.additional.css")
+	if cssPath != "" {
+		content, err := ioutil.ReadFile(cssPath)
+		if err == nil {
+			return "<style>" + string(content) + "</style>"
+		}
+	}
+
+	return ""
 }
 
-func (im inMemoryFile) Stat() (fs.FileInfo, error) {
-	return im.inMemoryFileInfo, nil
+func getInjectableOptions() string {
+	jsOptions, err := json.Marshal(frontendOptions{
+		SupportsAttachments: viper.GetString("app.attachments.driver") != "",
+	})
+	if err != nil {
+		return ""
+	}
+	return "<script>window.cryptletterOptions = " + string(jsOptions) + "</script>"
 }
 
-func (im inMemoryFile) Read(b []byte) (int, error) {
-	return im.buf.Read(b)
-}
+func getInjectableJS() string {
+	jsPath := viper.GetString("app.additional.js")
+	if jsPath != "" {
+		content, err := ioutil.ReadFile(jsPath)
+		if err == nil {
+			return "<script>" + string(content) + "</script>"
+		}
+	}
 
-func (im inMemoryFile) Close() error {
-	return nil
-}
-
-type inMemoryFileInfo struct {
-	fs.FileInfo
-	fileInfo fs.FileInfo
-	size int64
-}
-
-func (fi inMemoryFileInfo) Name() string {
-	return fi.fileInfo.Name()
-}
-
-func (fi inMemoryFileInfo) Size() int64 {
-	return fi.size
-}
-
-func (fi inMemoryFileInfo) Mode() fs.FileMode {
-	return fi.fileInfo.Mode()
-}
-
-func (fi inMemoryFileInfo) ModTime() time.Time {
-	return fi.fileInfo.ModTime()
-}
-
-func (fi inMemoryFileInfo) IsDir() bool {
-	return fi.fileInfo.IsDir()
+	return ""
 }

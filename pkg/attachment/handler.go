@@ -2,16 +2,12 @@ package attachment
 
 import "github.com/spf13/viper"
 
-const (
-	LocalHostType = "local"
-)
 
 //NewAttachmentHandler will create a new handler based on the given type
 func NewAttachmentHandler(hostType string) Handler {
 
-	// TODO: Implement NoneHostType
 	if hostType == "" {
-		hostType = LocalHostType
+		return nil
 	}
 
 	if hostType != LocalHostType {

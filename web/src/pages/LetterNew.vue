@@ -2,7 +2,11 @@
     <Page>
         <Letter striped spaced foot-separator>
             <template v-slot:header>
-                <Button v-if="!isSubmitted" nano @click="selectFiles">
+                <Button
+                    v-if="!isSubmitted && supportsAttachments"
+                    nano
+                    @click="selectFiles"
+                >
                     {{ t("addAttachmentsLabel") }}
                 </Button>
             </template>
@@ -82,9 +86,12 @@ export default {
     setup() {
         const { t } = useI18n();
         const { addToast } = useToaster();
-        const { files, selectFiles, removeFile } = useAttachmentsWriter(
-            MessageService.getSecret()
-        );
+        const {
+            files,
+            selectFiles,
+            removeFile,
+            supportsAttachments,
+        } = useAttachmentsWriter(MessageService.getSecret());
 
         const message = ref("");
         const delay = ref(15);
@@ -143,6 +150,7 @@ export default {
             resultMessage,
             resultInput,
             files,
+            supportsAttachments,
 
             submit,
             selectFiles,

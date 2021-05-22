@@ -90,6 +90,11 @@ func ShowAction(w http.ResponseWriter, r *http.Request) {
 		attachmentHandler := attachment.NewAttachmentHandler(hostType)
 
 		for _, att := range loadedMessage.Attachments {
+			// No attachment handler driver was provided
+			if attachmentHandler == nil {
+				break
+			}
+
 			err2 := attachmentHandler.SetTTL(att.FileID, loadedMessage.Lifetime * 60)
 			if err2 != nil {
 				logger.LogError(err2)
@@ -143,8 +148,10 @@ func GetAttachmentAction(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)
 
+	supportsAttachments := viper.GetString("app.attachments.driver") != ""
+
 	loadedMessage, err := loadMessageFromRedis(vars["token"])
-	if err != nil || loadedMessage == nil {
+	if !supportsAttachments || err != nil || loadedMessage == nil {
 		NotFound(w, r)
 		return
 	}
@@ -165,6 +172,7 @@ func GetAttachmentAction(w http.ResponseWriter, r *http.Request) {
 		}
 
 		attachmentHandler := attachment.NewAttachmentHandler(att.HostType)
+		fmt.Println(attachmentHandler, att.HostType)
 		data, err = attachmentHandler.Get(att.FileID)
 		if err != nil {
 			logger.LogError(err)
@@ -197,7 +205,6 @@ func DeleteMessageAction(w http.ResponseWriter, r *http.Request) {
 	if loadedMessage.AccessibleIP == visitorHash {
 
 		for _, att := range loadedMessage.Attachments {
-			// TODO: determine the type of the handler based on attachment.HostType
 			attachmentHandler := attachment.NewAttachmentHandler(att.HostType)
 			attachmentHandler.Delete(att.FileID)
 		}
@@ -244,12 +251,15 @@ func NewMessageAction(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// TODO: Only enable attachments if they are enabled by configuration at start
 	attachmentHandler := attachment.NewAttachmentHandler(viper.GetString("app.attachments.driver"))
 
 	var newAttachments []message.Attachment
 
 	for _, requestAttachment := range requestMessage.Attachments {
+		if attachmentHandler == nil {
+			break
+		}
+
 		// Handle file storage based on current handler
 		fileID, err := attachmentHandler.Put(requestAttachment.Data)
 		if err != nil {
@@ -264,6 +274,7 @@ func NewMessageAction(w http.ResponseWriter, r *http.Request) {
 			MimeType: requestAttachment.MimeType,
 			Size:     requestAttachment.Size,
 			FileID:   fileID,
+			HostType: attachmentHandler.HostType(),
 		})
 	}
 
