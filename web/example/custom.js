@@ -27,6 +27,22 @@ window.cryptletterExtended = {
                 'Wenn Sie hier stattdessen eine verschlüsselte Nachricht erwarten, kontaktieren Sie bitte Ihren Ansprechpartner.',
             viewRawLabel: 'view raw',
             viewTextLabel: 'view text',
+            addAttachmentsLabel: "Anhang hinzufügen",
+            deleteAttachmentLabel: "löschen",
+            downloadAttachmentLabel: "download",
+            encryptionInProgressFileNameLabel: "Wird verschlüsselt ...",
+            encryptionInProgressFileSizeLabel: "Größe wird geschätzt ...",
+            encryptionInProgressAttachmentLabel: "Bitte warten",
+            passwordProtection: {
+                headline: "Postage Stamp Protection",
+                description: "Diese Instanz erfordert ein Passwort um einen Cryptletter zu erstellen.",
+                passwordLabel: "Passwort",
+                confirmLabel: "Bestätigen",
+                cancelLabel: "Abbrechen"
+            },
+            errors: {
+                publishing_failed: "Wir konnten leider Ihren Cryptletter nicht ausstellen."
+            }
         },
     },
 };

@@ -76,18 +76,48 @@ $ cryptletter --config ../your/own/path/you-name-it.yml
 ```yml
 # cryptletter.yml
 app:
+  # How long should the message survive, without getting opened? (minutes)
   default_message_ttl: 43830
+  # LOUDER > quieter
   log_level: 4
-  env: dev
+  # Current env, use "dev" to disable cors for local development
+  env: prod
+  
+  # Serving config
   server:
     port: 8080
+
+  # Restrict creation of new letters with a password (good enough to lockout the public)
+  creation_protection_password: ""
+    
+  # Inject custom css and custom js configuration
   additional:
     css: './web/example/additional.css'
     js: './web/example/custom.js'
+    
+  attachments:
+    # Files must be removed if the message reached it's TTL and is no longer reachable 
+    cleanup_schedule: * * * * *
+    # Supported driver: s3, local or "" to disable attachment support
+    driver: local
+    # Directory for uploaded attachments
+    storage_path: cryptletter-uploads
+
+# Redis config
 redis:
   address: 127.0.0.1:6379
   database: 0
   password: ""
+
+# S3 configuration for attachment.driver: s3
+s3:
+  access_id: minioadmin
+  access_secret: minioadmin
+  bucket_name: cryptletter-attachments
+  bucket_region: eu-central-1
+  endpoint: http://127.0.0.1:9000
+  secure: true
+
 ```
 
 Environment variables can be used with `__` as the replacement for dot notation.

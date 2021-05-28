@@ -4,6 +4,5 @@ node_modules/
 .idea
 cryptletter.yaml
 vendor
-web-old
 .DS_Store
 cryptletter-uploads

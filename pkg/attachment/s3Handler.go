@@ -177,13 +177,13 @@ func (l s3Handler) ListTimetable() ([]string, error) {
 	return l.list.All()
 }
 
-func (l s3Handler) HostType() string {
-	return S3HostType
-}
-
 const (
 	S3HostType = "s3"
 )
+
+func (l s3Handler) HostType() string {
+	return S3HostType
+}
 
 func NewS3Handler(defaultTTL int64, bucketName string, bucketRegion string, endpoint string, options *minio.Options) Handler {
 

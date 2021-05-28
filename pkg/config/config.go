@@ -42,7 +42,7 @@ func initDefaults() {
 	viper.SetDefault("app.creation_protection_password", "")
 	viper.SetDefault("app.attachments.driver", "local")
 	viper.SetDefault("app.attachments.storage_path", "cryptletter-uploads")
-	viper.SetDefault("app.attachments.cleanup_schedule", "local")
+	viper.SetDefault("app.attachments.cleanup_schedule", "* * * * *")
 
 	viper.SetDefault("s3.endpoint", "http://127.0.0.1:9000")
 	viper.SetDefault("s3.secure", true)

@@ -179,13 +179,13 @@ func (l localTempHandler) ListTimetable() ([]string, error) {
 	return l.list.All()
 }
 
-func (l localTempHandler) HostType() string {
-	return LocalHostType
-}
-
 const (
 	LocalHostType = "local"
 )
+
+func (l localTempHandler) HostType() string {
+	return LocalHostType
+}
 
 func NewLocalTempHandler(defaultTTL int64, storagePath string) Handler {
 	return &localTempHandler{
