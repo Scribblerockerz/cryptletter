@@ -40,6 +40,7 @@ func init() {
 
 	// Add commands
 	rootCmd.AddCommand(cryptletter.NewCmd())
+	rootCmd.AddCommand(cryptletter.NewVersionCmd())
 	rootCmd.AddCommand(initConfig.NewCmd())
 	rootCmd.AddCommand(attachments.NewCleanupCmd())
 	rootCmd.AddCommand(attachments.NewDropCmd())

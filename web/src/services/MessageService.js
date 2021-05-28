@@ -60,7 +60,8 @@ class MessageService {
             res = await axios.post(`${BASE_URL}/api/`, payload);
         } catch (err) {
             if (err.response?.status === 401) {
-                const creationRestrictionPassword = await requestPasswordPrompt();
+                const creationRestrictionPassword =
+                    await requestPasswordPrompt();
 
                 res = await axios.post(`${BASE_URL}/api/`, {
                     ...payload,
