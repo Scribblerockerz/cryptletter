@@ -5,12 +5,9 @@ import (
 	"github.com/Scribblerockerz/cryptletter/cmd/attachments"
 	"github.com/Scribblerockerz/cryptletter/cmd/cryptletter"
 	"github.com/Scribblerockerz/cryptletter/cmd/initConfig"
-	"github.com/Scribblerockerz/cryptletter/pkg/logger"
-	"os"
-	"strings"
-
+	"github.com/Scribblerockerz/cryptletter/pkg/config"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
+	"os"
 )
 
 var cfgFile string
@@ -32,7 +29,9 @@ func Execute() {
 }
 
 func init() {
-	cobra.OnInitialize(initializeConfiguration)
+	cobra.OnInitialize(func() {
+		config.InitConfig(cfgFile)
+	})
 
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
@@ -47,22 +46,3 @@ func init() {
 	rootCmd.AddCommand(attachments.NewListCmd())
 }
 
-// initializeConfiguration reads in config file and ENV variables if set.
-func initializeConfiguration() {
-	if cfgFile != "" {
-		viper.SetConfigFile(cfgFile)
-	} else {
-		viper.AddConfigPath(".")
-		viper.SetConfigName("cryptletter")
-		viper.SetConfigType("yaml")
-	}
-
-	viper.AutomaticEnv()                                    // read in environment variables that match
-	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "__")) // replaces APP__ENV to app.env
-
-	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		logger.LogInfo(fmt.Sprintf("Using config file: %s", viper.ConfigFileUsed()))
-		viper.Set("viper.config_file", viper.ConfigFileUsed())
-	}
-}

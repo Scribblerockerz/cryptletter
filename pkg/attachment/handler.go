@@ -13,13 +13,9 @@ func NewAttachmentHandler(hostType string) Handler {
 		return nil
 	}
 
-	viper.SetDefault("app.default_message_ttl", 43830)
 	defaultTTL := viper.GetInt64("app.default_message_ttl")
 
 	if hostType == S3HostType {
-		viper.SetDefault("s3.bucket_name", "cryptletter-attachments")
-		viper.SetDefault("s3.bucket_region", "eu-central-1")
-
 		endpoint := viper.GetString("s3.endpoint")
 		accessKeyID := viper.GetString("s3.access_id")
 		secretAccessKey := viper.GetString("s3.access_secret")
@@ -35,10 +31,9 @@ func NewAttachmentHandler(hostType string) Handler {
 	}
 
 	if hostType == LocalHostType {
-		viper.SetDefault("app.attachments.storage_path", "cryptletter-uploads")
 		localStoragePath := viper.GetString("app.attachments.storage_path")
 
-		return NewLocalTempHandler(defaultTTL, localStoragePath) // 30 days
+		return NewLocalTempHandler(defaultTTL, localStoragePath)
 	}
 
 	panic("only '" + LocalHostType + "' and '" + S3HostType + "' drivers are supported")
