@@ -174,6 +174,11 @@ func (l localTempHandler) DropAll() error {
 	return l.list.Drp()
 }
 
+//ListTimetable will list all known entries from the dismissive list
+func (l localTempHandler) ListTimetable() ([]string, error) {
+	return l.list.All()
+}
+
 func (l localTempHandler) HostType() string {
 	return LocalHostType
 }

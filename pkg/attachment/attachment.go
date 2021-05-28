@@ -8,4 +8,5 @@ type Handler interface {
 	SetTTL(identifier string, ttl int64) error
 	Cleanup() error
 	DropAll() error
+	ListTimetable() ([]string, error)
 }

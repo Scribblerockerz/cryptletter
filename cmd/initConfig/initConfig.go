@@ -36,6 +36,9 @@ func runCmd() func(cmd *cobra.Command, args []string) {
 		viper.SetDefault("s3.endpoint", "http://127.0.0.1:9000")
 		viper.SetDefault("s3.access_id", "minioadmin")
 		viper.SetDefault("s3.access_secret", "minioadmin")
+		viper.SetDefault("s3.bucket_name", "cryptletter-attachments")
+		viper.SetDefault("s3.bucket_region", "eu-central-1")
+		viper.SetDefault("s3.secure", true)
 
 
 		err := viper.SafeWriteConfig()

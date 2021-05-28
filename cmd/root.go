@@ -44,6 +44,7 @@ func init() {
 	rootCmd.AddCommand(initConfig.NewCmd())
 	rootCmd.AddCommand(attachments.NewCleanupCmd())
 	rootCmd.AddCommand(attachments.NewDropCmd())
+	rootCmd.AddCommand(attachments.NewListCmd())
 }
 
 // initializeConfiguration reads in config file and ENV variables if set.
