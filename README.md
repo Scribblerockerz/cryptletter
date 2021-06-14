@@ -55,7 +55,7 @@ services:
             - redis
         environment:
             - 'REDIS__ADDRESS=redis:6379'
-            - 'APP__LOG_LEVEL=4
+            - 'APP__LOG_LEVEL=4'
 ```
 
 ## Requirements
