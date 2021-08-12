@@ -48,7 +48,6 @@ services:
             - '6379:6379'
     app:
         image: 'scribblerockerz/cryptletter:latest'
-        command: './cryptletter'
         ports:
             - '8080:8080'
         links:
