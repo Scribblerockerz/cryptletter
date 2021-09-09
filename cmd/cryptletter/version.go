@@ -11,7 +11,7 @@ func NewVersionCmd() *cobra.Command {
 		Use:   "version",
 		Short: "executables version",
 		Run:   func(cmd *cobra.Command, args []string) {
-			fmt.Println("cryptletter version 3.1.1")
+			fmt.Println("cryptletter version 3.1.2")
 		},
 	}
 
