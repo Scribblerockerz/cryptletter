@@ -9,6 +9,8 @@ specifiers:
   '@vue/cli-plugin-eslint': ^5.0.4
   '@vue/cli-service': ^5.0.4
   '@vue/compiler-sfc': ^3.0.0
+  '@vue/reactivity': ^3.2.36
+  '@vue/runtime-core': ^3.2.36
   axios: ^0.21.2
   babel-eslint: ^10.1.0
   core-js: ^3.6.5
@@ -23,6 +25,8 @@ specifiers:
   vue-i18n: ^9.0.0-rc.6
 
 dependencies:
+  '@vue/reactivity': 3.2.36
+  '@vue/runtime-core': 3.2.36
   axios: 0.21.4
   core-js: 3.22.7
   crypto-js: 4.1.1
