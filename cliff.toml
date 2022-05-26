@@ -53,6 +53,7 @@ commit_parsers = [
     { message = "^Bump", group = "Dependencies"},
     { message = "^chore", group = "Miscellaneous Tasks"},
     { body = ".*security", group = "Security"},
+    { message = "^Release", skip = true },
     { message = ".*", group = "Other", default_scope = "other"},
 ]
 # filter out the commits that are not matched by commit parsers

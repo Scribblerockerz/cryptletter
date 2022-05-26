@@ -11,4 +11,5 @@ require (
 	github.com/minio/minio-go/v7 v7.0.10
 	github.com/spf13/cobra v1.1.1
 	github.com/spf13/viper v1.7.0
+	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
 )
