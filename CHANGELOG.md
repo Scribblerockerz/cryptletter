@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [3.1.3] - 2022-05-26
+## [3.1.4] - 2024-04-16
 
 ### Dependencies
 
@@ -16,6 +16,10 @@ All notable changes to this project will be documented in this file.
 ### Features
 
 - Add git-cliff for changelog generation
+
+### Fixes
+
+- Race condition while decoding body
 
 ### Miscellaneous Tasks
 
