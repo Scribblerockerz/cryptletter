@@ -1,18 +1,21 @@
 package handler
 
 import (
+	"bytes"
 	"crypto/md5"
 	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
+	"strconv"
+	"strings"
+	"time"
+
 	"github.com/Scribblerockerz/cryptletter/pkg/attachment"
 	"github.com/Scribblerockerz/cryptletter/pkg/database"
 	"github.com/Scribblerockerz/cryptletter/pkg/logger"
 	"github.com/Scribblerockerz/cryptletter/pkg/message"
 	"github.com/Scribblerockerz/cryptletter/pkg/utils"
-	"net/http"
-	"strconv"
-	"strings"
-	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/spf13/viper"
@@ -95,7 +98,7 @@ func ShowAction(w http.ResponseWriter, r *http.Request) {
 				break
 			}
 
-			err2 := attachmentHandler.SetTTL(att.FileID, loadedMessage.Lifetime * 60)
+			err2 := attachmentHandler.SetTTL(att.FileID, loadedMessage.Lifetime*60)
 			if err2 != nil {
 				logger.LogError(err2)
 			}
@@ -235,10 +238,18 @@ type requestMessageType struct {
 // NewMessageAction will handle new messages
 func NewMessageAction(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
-	decoder := json.NewDecoder(r.Body)
+
+	buf, err := io.ReadAll(r.Body)
+	if err != nil {
+		panic(err)
+	}
+
+	body := io.NopCloser(bytes.NewBuffer(buf))
+
+	decoder := json.NewDecoder(body)
 	requestMessage := requestMessageType{}
 
-	err := decoder.Decode(&requestMessage)
+	err = decoder.Decode(&requestMessage)
 	if err != nil {
 		panic(err)
 	}
@@ -323,8 +334,6 @@ func getHashedIP(req *http.Request, token string) string {
 
 	return hash
 }
-
-
 
 func DecorateCORSHeadersHandler(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

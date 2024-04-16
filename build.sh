@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if [ "$1" == "" ]; then
     VERSION=$(git describe --tags $(git rev-list --tags --max-count=1))
