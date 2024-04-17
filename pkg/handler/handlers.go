@@ -244,7 +244,7 @@ func NewMessageAction(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	body := io.NopCloser(bytes.NewBuffer(buf))
+	body := io.NopCloser(bytes.NewBuffer(bytes.Trim(buf, "\x00")))
 
 	decoder := json.NewDecoder(body)
 	requestMessage := requestMessageType{}
