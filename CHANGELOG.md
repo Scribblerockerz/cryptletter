@@ -2,7 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.1.5] - 2024-04-17
+
+### Fixes
+
+- Trim null bytes from receiving payload
+
 ## [3.1.4] - 2024-04-16
+
+### Fixes
+
+- Race condition while decoding body
+
+## [3.1.3] - 2022-05-26
 
 ### Dependencies
 
@@ -16,10 +28,6 @@ All notable changes to this project will be documented in this file.
 ### Features
 
 - Add git-cliff for changelog generation
-
-### Fixes
-
-- Race condition while decoding body
 
 ### Miscellaneous Tasks
 
