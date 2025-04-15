@@ -1,4 +1,3 @@
-
 # Name of this GitHub Actions workflow.
 name: Semgrep
 
@@ -9,30 +8,22 @@ on:
   workflow_dispatch: {}
   # Scan mainline branches and report all findings:
   push:
-    branches:
-        - main
-        - master
+    branches: ["main"]
   # Schedule the CI job (this method uses cron syntax):
   schedule:
-    - cron: '30 14 * * *'
-    # or whatever time works best for your team.
+    - cron: '50 14 * * *'
+    # It is recommended to change the schedule to a random time.
 
 jobs:
-  semgrep:
-    # User definable name of this GitHub Actions job.
-    name: semgrep/ci
-    # If you are self-hosting, change the following `runs-on` value:
+  semgrep-check:
     runs-on: ubuntu-latest
-
-    container:
-      # A Docker image with Semgrep installed. Do not change this.
-      image: returntocorp/semgrep
-
-    # Skip any PR created by dependabot to avoid permission issues:
-    if: (github.actor != 'dependabot[bot]')
-
     steps:
-      # Fetch project source with GitHub Actions Checkout.
-      - uses: actions/checkout@v4
-      # Run the "semgrep ci" command on the command line of the docker image.
-      - run: semgrep scan --config auto
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Semgrep
+        uses: utilitywarehouse/semgrep-rules/setup-semgrep@latest
+        with:
+          # <required> Github token used to checkout private rules
+          token: ${{ secrets.SEMGREP_RULES_READ_ONLY }}
+          # <optional> Enable verbose output to help debug rules
+          verbose: true
