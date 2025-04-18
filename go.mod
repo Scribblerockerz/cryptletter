@@ -3,9 +3,9 @@ module github.com/Scribblerockerz/cryptletter
 go 1.24.1
 
 require (
-	github.com/go-co-op/gocron v1.5.0
+	github.com/go-co-op/gocron v1.37.0
 	github.com/go-redis/redis v6.15.9+incompatible
-	github.com/google/uuid v1.2.0
+	github.com/google/uuid v1.4.0
 	github.com/gorilla/mux v1.8.0
 	github.com/minio/minio-go/v7 v7.0.10
 	github.com/spf13/cobra v1.1.1
@@ -35,9 +35,9 @@ require (
 	github.com/spf13/jwalterweatherman v1.0.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.2.0 // indirect
+	go.uber.org/atomic v1.9.0 // indirect
 	golang.org/x/crypto v0.36.0 // indirect
 	golang.org/x/net v0.37.0 // indirect
-	golang.org/x/sync v0.12.0 // indirect
 	golang.org/x/sys v0.31.0 // indirect
 	golang.org/x/text v0.23.0 // indirect
 	gopkg.in/ini.v1 v1.57.0 // indirect
