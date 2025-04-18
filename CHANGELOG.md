@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.1.6] - 2025-04-18
+
+### Dependencies
+
+- Bump golang.org/x/net from 0.37.0 to 0.38.0 ([#53](https://github.com/Scribblerockerz/cryptletter/issues/53))
+- Bump github.com/go-co-op/gocron from 1.5.0 to 1.37.0 ([#54](https://github.com/Scribblerockerz/cryptletter/issues/54))
+- Bump github.com/minio/minio-go/v7 from 7.0.10 to 7.0.90 ([#56](https://github.com/Scribblerockerz/cryptletter/issues/56))
+- Bump github.com/gorilla/mux from 1.8.0 to 1.8.1 ([#57](https://github.com/Scribblerockerz/cryptletter/issues/57))
+- Bump github.com/spf13/viper from 1.7.0 to 1.20.1 ([#55](https://github.com/Scribblerockerz/cryptletter/issues/55))
+
+### Documentation
+
+- Replace npm with pnpm
+
+### Features
+
+- Add freebsd build target to build script
+
+### Fixes
+
+- Typo in dependabot config
+
+### Miscellaneous Tasks
+
+- Golang and some web security updates ([#50](https://github.com/Scribblerockerz/cryptletter/issues/50))
+- Re-add pnpm-lock.yaml
+- Add stable node version via .nvmrc
+- Remove package-lock.json in favor of pnpm-lock.yaml
+
 ## [3.1.5] - 2024-04-17
 
 ### Fixes
