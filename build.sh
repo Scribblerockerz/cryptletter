@@ -23,3 +23,6 @@ echo "Successfully build executable for LINUX to ./bin/cryptletter"
 
 CGO_ENABLED=0 GOARCH=amd64 GOOS=darwin go build -ldflags="$LDFLAGS" -o bin/cryptletter-macos *.go && \
 echo "Successfully build executable for MACOS to ./bin/cryptletter-macos"
+
+CGO_ENABLED=0 GOARCH=amd64 GOOS=freebsd go build -ldflags="$LDFLAGS" -o bin/cryptletter-freebsd *.go && \
+echo "Successfully build executable for FreeBSD to ./bin/cryptletter-freebsd"
