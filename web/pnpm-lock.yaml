@@ -62,8 +62,8 @@ importers:
         specifier: ^7.19.0
         version: 7.32.0
       eslint-config-airbnb:
-        specifier: ^18.2.1
-        version: 18.2.1(eslint-plugin-import@2.29.1(eslint@7.32.0))(eslint-plugin-jsx-a11y@6.8.0(eslint@7.32.0))(eslint-plugin-react-hooks@4.6.0(eslint@7.32.0))(eslint-plugin-react@7.34.1(eslint@7.32.0))(eslint@7.32.0)
+        specifier: ^19.0.4
+        version: 19.0.4(eslint-plugin-import@2.29.1(eslint@7.32.0))(eslint-plugin-jsx-a11y@6.8.0(eslint@7.32.0))(eslint-plugin-react-hooks@4.6.0(eslint@7.32.0))(eslint-plugin-react@7.34.1(eslint@7.32.0))(eslint@7.32.0)
       eslint-config-prettier:
         specifier: ^10.1.2
         version: 10.1.2(eslint@7.32.0)
@@ -1982,22 +1982,22 @@ packages:
     resolution: {integrity: sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==}
     engines: {node: '>=10'}
 
-  eslint-config-airbnb-base@14.2.1:
-    resolution: {integrity: sha512-GOrQyDtVEc1Xy20U7vsB2yAoB4nBlfH5HZJeatRXHleO+OS5Ot+MWij4Dpltw4/DyIkqUfqz1epfhVR5XWWQPA==}
-    engines: {node: '>= 6'}
+  eslint-config-airbnb-base@15.0.0:
+    resolution: {integrity: sha512-xaX3z4ZZIcFLvh2oUNvcX5oEofXda7giYmuplVxoOg5A7EXJMrUyqRgR+mhDhPK8LZ4PttFOBvCYDbX3sUoUig==}
+    engines: {node: ^10.12.0 || >=12.0.0}
     peerDependencies:
-      eslint: ^5.16.0 || ^6.8.0 || ^7.2.0
-      eslint-plugin-import: ^2.22.1
+      eslint: ^7.32.0 || ^8.2.0
+      eslint-plugin-import: ^2.25.2
 
-  eslint-config-airbnb@18.2.1:
-    resolution: {integrity: sha512-glZNDEZ36VdlZWoxn/bUR1r/sdFKPd1mHPbqUtkctgNG4yT2DLLtJ3D+yCV+jzZCc2V1nBVkmdknOJBZ5Hc0fg==}
-    engines: {node: '>= 6'}
+  eslint-config-airbnb@19.0.4:
+    resolution: {integrity: sha512-T75QYQVQX57jiNgpF9r1KegMICE94VYwoFQyMGhrvc+lB8YF2E/M/PYDaQe1AJcWaEgqLE+ErXV1Og/+6Vyzew==}
+    engines: {node: ^10.12.0 || ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
-      eslint: ^5.16.0 || ^6.8.0 || ^7.2.0
-      eslint-plugin-import: ^2.22.1
-      eslint-plugin-jsx-a11y: ^6.4.1
-      eslint-plugin-react: ^7.21.5
-      eslint-plugin-react-hooks: ^4 || ^3 || ^2.3.0 || ^1.7.0
+      eslint: ^7.32.0 || ^8.2.0
+      eslint-plugin-import: ^2.25.3
+      eslint-plugin-jsx-a11y: ^6.5.1
+      eslint-plugin-react: ^7.28.0
+      eslint-plugin-react-hooks: ^4.3.0
 
   eslint-config-prettier@10.1.2:
     resolution: {integrity: sha512-Epgp/EofAUeEpIdZkW60MHKvPyru1ruQJxPL+WIycnaPApuseK0Zpkrh/FwL9oIpQvIhJwV7ptOy0DWUjTlCiA==}
@@ -6660,18 +6660,19 @@ snapshots:
 
   escape-string-regexp@4.0.0: {}
 
-  eslint-config-airbnb-base@14.2.1(eslint-plugin-import@2.29.1(eslint@7.32.0))(eslint@7.32.0):
+  eslint-config-airbnb-base@15.0.0(eslint-plugin-import@2.29.1(eslint@7.32.0))(eslint@7.32.0):
     dependencies:
       confusing-browser-globals: 1.0.11
       eslint: 7.32.0
       eslint-plugin-import: 2.29.1(eslint@7.32.0)
       object.assign: 4.1.7
       object.entries: 1.1.9
+      semver: 6.3.1
 
-  eslint-config-airbnb@18.2.1(eslint-plugin-import@2.29.1(eslint@7.32.0))(eslint-plugin-jsx-a11y@6.8.0(eslint@7.32.0))(eslint-plugin-react-hooks@4.6.0(eslint@7.32.0))(eslint-plugin-react@7.34.1(eslint@7.32.0))(eslint@7.32.0):
+  eslint-config-airbnb@19.0.4(eslint-plugin-import@2.29.1(eslint@7.32.0))(eslint-plugin-jsx-a11y@6.8.0(eslint@7.32.0))(eslint-plugin-react-hooks@4.6.0(eslint@7.32.0))(eslint-plugin-react@7.34.1(eslint@7.32.0))(eslint@7.32.0):
     dependencies:
       eslint: 7.32.0
-      eslint-config-airbnb-base: 14.2.1(eslint-plugin-import@2.29.1(eslint@7.32.0))(eslint@7.32.0)
+      eslint-config-airbnb-base: 15.0.0(eslint-plugin-import@2.29.1(eslint@7.32.0))(eslint@7.32.0)
       eslint-plugin-import: 2.29.1(eslint@7.32.0)
       eslint-plugin-jsx-a11y: 6.8.0(eslint@7.32.0)
       eslint-plugin-react: 7.34.1(eslint@7.32.0)
