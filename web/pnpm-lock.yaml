@@ -65,11 +65,11 @@ importers:
         specifier: ^19.0.4
         version: 19.0.4(eslint-plugin-import@2.29.1(eslint@7.32.0))(eslint-plugin-jsx-a11y@6.8.0(eslint@7.32.0))(eslint-plugin-react-hooks@4.6.0(eslint@7.32.0))(eslint-plugin-react@7.34.1(eslint@7.32.0))(eslint@7.32.0)
       eslint-config-prettier:
-        specifier: ^10.1.2
-        version: 10.1.2(eslint@7.32.0)
+        specifier: ^10.1.5
+        version: 10.1.5(eslint@7.32.0)
       eslint-plugin-prettier:
         specifier: ^4.2.1
-        version: 4.2.1(eslint-config-prettier@10.1.2(eslint@7.32.0))(eslint@7.32.0)(prettier@3.5.3)
+        version: 4.2.1(eslint-config-prettier@10.1.5(eslint@7.32.0))(eslint@7.32.0)(prettier@3.5.3)
       eslint-plugin-vue:
         specifier: ^9.33.0
         version: 9.33.0(eslint@7.32.0)
@@ -2009,8 +2009,8 @@ packages:
       eslint-plugin-react: ^7.28.0
       eslint-plugin-react-hooks: ^4.3.0
 
-  eslint-config-prettier@10.1.2:
-    resolution: {integrity: sha512-Epgp/EofAUeEpIdZkW60MHKvPyru1ruQJxPL+WIycnaPApuseK0Zpkrh/FwL9oIpQvIhJwV7ptOy0DWUjTlCiA==}
+  eslint-config-prettier@10.1.5:
+    resolution: {integrity: sha512-zc1UmCpNltmVY34vuLRV61r1K27sWuX39E+uyUnY8xS2Bex88VV9cugG+UZbRSRGtGyFboj+D8JODyme1plMpw==}
     hasBin: true
     peerDependencies:
       eslint: '>=7.0.0'
@@ -6722,7 +6722,7 @@ snapshots:
       object.assign: 4.1.7
       object.entries: 1.1.9
 
-  eslint-config-prettier@10.1.2(eslint@7.32.0):
+  eslint-config-prettier@10.1.5(eslint@7.32.0):
     dependencies:
       eslint: 7.32.0
 
@@ -6788,13 +6788,13 @@ snapshots:
       object.entries: 1.1.9
       object.fromentries: 2.0.8
 
-  eslint-plugin-prettier@4.2.1(eslint-config-prettier@10.1.2(eslint@7.32.0))(eslint@7.32.0)(prettier@3.5.3):
+  eslint-plugin-prettier@4.2.1(eslint-config-prettier@10.1.5(eslint@7.32.0))(eslint@7.32.0)(prettier@3.5.3):
     dependencies:
       eslint: 7.32.0
       prettier: 3.5.3
       prettier-linter-helpers: 1.0.0
     optionalDependencies:
-      eslint-config-prettier: 10.1.2(eslint@7.32.0)
+      eslint-config-prettier: 10.1.5(eslint@7.32.0)
 
   eslint-plugin-react-hooks@4.6.0(eslint@7.32.0):
     dependencies:
