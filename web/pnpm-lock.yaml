@@ -16,8 +16,8 @@ importers:
         specifier: ^3.5.13
         version: 3.5.13
       '@vue/runtime-core':
-        specifier: ^3.5.13
-        version: 3.5.13
+        specifier: ^3.5.16
+        version: 3.5.16
       axios:
         specifier: ^1.9.0
         version: 1.9.0
@@ -994,9 +994,6 @@ packages:
 
   '@vue/reactivity@3.5.16':
     resolution: {integrity: sha512-FG5Q5ee/kxhIm1p2bykPpPwqiUBV3kFySsHEQha5BJvjXdZTUfmya7wP7zC39dFuZAcf/PD5S4Lni55vGLMhvA==}
-
-  '@vue/runtime-core@3.5.13':
-    resolution: {integrity: sha512-Fj4YRQ3Az0WTZw1sFe+QDb0aXCerigEpw418pw1HBUKFtnQHWzwojaukAs2X/c9DQz4MQ4bsXTGlcpGxU/RCIw==}
 
   '@vue/runtime-core@3.5.16':
     resolution: {integrity: sha512-bw5Ykq6+JFHYxrQa7Tjr+VSzw7Dj4ldR/udyBZbq73fCdJmyy5MPIFR9IX/M5Qs+TtTjuyUTCnmK3lWWwpAcFQ==}
@@ -5744,11 +5741,6 @@ snapshots:
   '@vue/reactivity@3.5.16':
     dependencies:
       '@vue/shared': 3.5.16
-
-  '@vue/runtime-core@3.5.13':
-    dependencies:
-      '@vue/reactivity': 3.5.13
-      '@vue/shared': 3.5.13
 
   '@vue/runtime-core@3.5.16':
     dependencies:
