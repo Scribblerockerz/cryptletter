@@ -16,7 +16,7 @@
         "crypto-js": "^4.2.0",
         "http-proxy-middleware": "^3.0.5",
         "vue": "^3.5.16",
-        "vue-i18n": "^11.1.5"
+        "vue-i18n": "^11.1.6"
     },
     "devDependencies": {
         "@vue/cli-plugin-babel": "^5.0.8",
