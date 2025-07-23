@@ -8,7 +8,7 @@
         "lint": "vue-cli-service lint"
     },
     "dependencies": {
-        "@vue/reactivity": "^3.5.16",
+        "@vue/reactivity": "^3.5.18",
         "@vue/runtime-core": "^3.5.17",
         "axios": "^1.11.0",
         "core-js": "^3.43.0",
