@@ -33,7 +33,7 @@
         "prettier": "^3.5.3",
         "cross-spawn": ">=6.0.6",
         "braces": ">=3.0.3",
-        "ws": ">=8.18.2"
+        "ws": ">=8.18.3"
     },
     "resolutions": {
         "ssri": "7.1.1",
