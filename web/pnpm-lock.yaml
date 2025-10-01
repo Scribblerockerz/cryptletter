@@ -16,8 +16,8 @@ importers:
         specifier: ^3.5.22
         version: 3.5.22
       '@vue/runtime-core':
-        specifier: ^3.5.20
-        version: 3.5.20
+        specifier: ^3.5.22
+        version: 3.5.22
       axios:
         specifier: ^1.12.2
         version: 1.12.2
@@ -1033,6 +1033,9 @@ packages:
 
   '@vue/runtime-core@3.5.20':
     resolution: {integrity: sha512-vyQRiH5uSZlOa+4I/t4Qw/SsD/gbth0SW2J7oMeVlMFMAmsG1rwDD6ok0VMmjXY3eI0iHNSSOBilEDW98PLRKw==}
+
+  '@vue/runtime-core@3.5.22':
+    resolution: {integrity: sha512-EHo4W/eiYeAzRTN5PCextDUZ0dMs9I8mQ2Fy+OkzvRPUYQEyK9yAjbasrMCXbLNhF7P0OUyivLjIy0yc6VrLJQ==}
 
   '@vue/runtime-dom@3.5.20':
     resolution: {integrity: sha512-KBHzPld/Djw3im0CQ7tGCpgRedryIn4CcAl047EhFTCCPT2xFf4e8j6WeKLgEEoqPSl9TYqShc3Q6tpWpz/Xgw==}
@@ -5860,6 +5863,11 @@ snapshots:
     dependencies:
       '@vue/reactivity': 3.5.20
       '@vue/shared': 3.5.20
+
+  '@vue/runtime-core@3.5.22':
+    dependencies:
+      '@vue/reactivity': 3.5.22
+      '@vue/shared': 3.5.22
 
   '@vue/runtime-dom@3.5.20':
     dependencies:
