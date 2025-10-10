@@ -11,7 +11,7 @@
         "@vue/reactivity": "^3.5.22",
         "@vue/runtime-core": "^3.5.22",
         "axios": "^1.12.2",
-        "core-js": "^3.45.1",
+        "core-js": "^3.46.0",
         "cross-spawn": "^7.0.6",
         "crypto-js": "^4.2.0",
         "http-proxy-middleware": "^3.0.5",
