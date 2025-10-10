@@ -22,8 +22,8 @@ importers:
         specifier: ^1.12.2
         version: 1.12.2
       core-js:
-        specifier: ^3.45.1
-        version: 3.45.1
+        specifier: ^3.46.0
+        version: 3.46.0
       cross-spawn:
         specifier: ^7.0.6
         version: 7.0.6
@@ -42,7 +42,7 @@ importers:
     devDependencies:
       '@vue/cli-plugin-babel':
         specifier: ^5.0.9
-        version: 5.0.9(@vue/cli-service@5.0.9(@vue/compiler-sfc@3.5.22)(lodash@4.17.21)(prettier@3.6.2)(vue@3.5.22)(webpack-sources@3.3.3))(core-js@3.45.1)(vue@3.5.22)
+        version: 5.0.9(@vue/cli-service@5.0.9(@vue/compiler-sfc@3.5.22)(lodash@4.17.21)(prettier@3.6.2)(vue@3.5.22)(webpack-sources@3.3.3))(core-js@3.46.0)(vue@3.5.22)
       '@vue/cli-plugin-eslint':
         specifier: ^5.0.9
         version: 5.0.9(@vue/cli-service@5.0.9(@vue/compiler-sfc@3.5.22)(lodash@4.17.21)(prettier@3.6.2)(vue@3.5.22)(webpack-sources@3.3.3))(eslint@7.32.0)
@@ -1705,8 +1705,8 @@ packages:
   core-js-compat@3.45.1:
     resolution: {integrity: sha512-tqTt5T4PzsMIZ430XGviK4vzYSoeNJ6CXODi6c/voxOT6IZqBht5/EKaSNnYiEjjRYxjVz7DQIsOsY0XNi8PIA==}
 
-  core-js@3.45.1:
-    resolution: {integrity: sha512-L4NPsJlCfZsPeXukyzHFlg/i7IIVwHSItR0wg0FLNqYClJ4MQYTYLbC7EkjKYRLZF2iof2MUgN0EGy7MdQFChg==}
+  core-js@3.46.0:
+    resolution: {integrity: sha512-vDMm9B0xnqqZ8uSBpZ8sNtRtOdmfShrvT6h2TuQGLs0Is+cR0DYbj/KWP6ALVNbWPpqA/qPLoOuppJN07humpA==}
 
   core-util-is@1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
@@ -5451,7 +5451,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vue/babel-preset-app@5.0.9(@babel/core@7.28.4)(core-js@3.45.1)(vue@3.5.22)':
+  '@vue/babel-preset-app@5.0.9(@babel/core@7.28.4)(core-js@3.46.0)(vue@3.5.22)':
     dependencies:
       '@babel/core': 7.28.4
       '@babel/helper-compilation-targets': 7.27.2
@@ -5469,7 +5469,7 @@ snapshots:
       core-js-compat: 3.45.1
       semver: 7.7.2
     optionalDependencies:
-      core-js: 3.45.1
+      core-js: 3.46.0
       vue: 3.5.22
     transitivePeerDependencies:
       - supports-color
@@ -5533,10 +5533,10 @@ snapshots:
 
   '@vue/cli-overlay@5.0.9': {}
 
-  '@vue/cli-plugin-babel@5.0.9(@vue/cli-service@5.0.9(@vue/compiler-sfc@3.5.22)(lodash@4.17.21)(prettier@3.6.2)(vue@3.5.22)(webpack-sources@3.3.3))(core-js@3.45.1)(vue@3.5.22)':
+  '@vue/cli-plugin-babel@5.0.9(@vue/cli-service@5.0.9(@vue/compiler-sfc@3.5.22)(lodash@4.17.21)(prettier@3.6.2)(vue@3.5.22)(webpack-sources@3.3.3))(core-js@3.46.0)(vue@3.5.22)':
     dependencies:
       '@babel/core': 7.28.4
-      '@vue/babel-preset-app': 5.0.9(@babel/core@7.28.4)(core-js@3.45.1)(vue@3.5.22)
+      '@vue/babel-preset-app': 5.0.9(@babel/core@7.28.4)(core-js@3.46.0)(vue@3.5.22)
       '@vue/cli-service': 5.0.9(@vue/compiler-sfc@3.5.22)(lodash@4.17.21)(prettier@3.6.2)(vue@3.5.22)(webpack-sources@3.3.3)
       '@vue/cli-shared-utils': 5.0.9
       babel-loader: 8.4.1(@babel/core@7.28.4)(webpack@5.102.0)
@@ -6446,7 +6446,7 @@ snapshots:
     dependencies:
       browserslist: 4.26.2
 
-  core-js@3.45.1: {}
+  core-js@3.46.0: {}
 
   core-util-is@1.0.3: {}
 
