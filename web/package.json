@@ -10,7 +10,7 @@
     "dependencies": {
         "@vue/reactivity": "^3.5.22",
         "@vue/runtime-core": "^3.5.22",
-        "axios": "^1.12.2",
+        "axios": "^1.13.0",
         "core-js": "^3.46.0",
         "cross-spawn": "^7.0.6",
         "crypto-js": "^4.2.0",
